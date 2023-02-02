@@ -6480,6 +6480,10 @@
     <Content Include="Themes\dist\css\adminlte.min.css.map" />
     <Content Include="Themes\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Themes\plugins\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Shared\_Sidebar.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_ControlSidebar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
