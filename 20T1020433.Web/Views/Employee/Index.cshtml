@@ -1,0 +1,70 @@
+﻿    
+@{
+    ViewBag.Title = "Quản lí nhân viên";
+}
+<div class="box box-primary">
+    <div class="box-body">
+        <form>
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-info btn-flat">
+                        <i class="glyphicon glyphicon-search"></i> Tìm kiếm
+                    </button>
+                    <a href="~/Supplier/Create" class="btn btn-reddit">Bổ sung</a>
+                </span>
+
+            </div>
+        </form>
+
+        <p>Có <strong>100</strong> bản ghi trong tổng số <strong>10 </strong>trang</p>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr class="bg-aqua">
+                    <th>Họ đệm</th>
+                    <th>Tên</th>
+                    <th>Ngày sinh</th>
+                    <th>Ảnh</th>
+                    <th>Ghi chú</th>
+                    <th>Email</th>
+                    <th>Mật khẩu</th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <tr>
+                        <td>John</td>
+                        <td>Tiền bạc</td>
+                        <td>10 Lê Lợi</td>
+                        <td>012345678</td>
+                        <td>Việt Nam</td>
+                        <td>Huế</td>
+                        <td>1234</td>
+                        <td>
+                            <a href="~/Supplier/Edit" class="btn btn-success">Sửa</a>
+                            <a href="~/Supplier/Delete" class="btn btn-reddit">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="text-aqua">
+            <ul class="pagination">
+                <li class="paginate_button active">
+                    <a href="#">1</a>
+                </li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
