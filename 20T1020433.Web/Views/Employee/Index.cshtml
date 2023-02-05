@@ -1,7 +1,7 @@
-﻿    
-@{
-    ViewBag.Title = "Quản lí nhân viên";
+﻿@{
+    ViewBag.Title = "Quản lý nhân viên";
 }
+
 <div class="box box-primary">
     <div class="box-body">
         <form>
@@ -9,55 +9,59 @@
                 <input type="text" class="form-control">
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-info btn-flat">
-                        <i class="glyphicon glyphicon-search"></i> Tìm kiếm
+                        <i class="glyphicon glyphicon-search"></i> <strong> Tìm kiếm</strong>
                     </button>
-                    <a href="~/Supplier/Create" class="btn btn-reddit">Bổ sung</a>
+                    <a href="~/Supplier/Create" class="btn bg-olive ">
+                        <i class="glyphicon glyphicon-plus-sign"></i><strong> Bổ sung</strong>
+                    </a>
                 </span>
-
             </div>
         </form>
-
-        <p>Có <strong>100</strong> bản ghi trong tổng số <strong>10 </strong>trang</p>
-
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr class="bg-aqua">
-                    <th>Họ đệm</th>
-                    <th>Tên</th>
-                    <th>Ngày sinh</th>
-                    <th>Ảnh</th>
-                    <th>Ghi chú</th>
-                    <th>Email</th>
-                    <th>Mật khẩu</th>
-                    <th>
-
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 1; i <= 5; i++)
-                {
-                    <tr>
-                        <td>John</td>
-                        <td>Tiền bạc</td>
-                        <td>10 Lê Lợi</td>
-                        <td>012345678</td>
-                        <td>Việt Nam</td>
-                        <td>Huế</td>
-                        <td>1234</td>
-                        <td>
-                            <a href="~/Supplier/Edit" class="btn btn-success">Sửa</a>
-                            <a href="~/Supplier/Delete" class="btn btn-reddit">Xóa</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <div class="text-aqua">
+        <br />
+        <p style="margin-left: 5px;">Có <strong>100</strong> bản ghi trong tổng số <strong>10</strong> trang</p>
+        <div class="row ">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="card">
+                                <div class="box-body box-profile">
+                                    <span class="input-group-btn bg-primary">
+                                        <a href="~/Employee/Delete" class="btn btn-danger pull-right">
+                                            <i class="glyphicon glyphicon-trash" title="Xóa"></i>
+                                        </a>
+                                        <a href="~/Employee/Edit" class="btn btn-success pull-right ">
+                                            <i class="glyphicon glyphicon-edit " title="Sửa"></i>
+                                        </a>
+                                    </span>
+                                    <div class="el-card-item">
+                                        <div class="el-card-avatar el-overlay-1">
+                                            <img src="~/Themes/dist/img/avatar5.png" alt="employee photo" class="img-responsive img-circle" style="margin-left: auto; margin-right:auto">
+                                        </div>
+                                        <div class="el-card-content text-center">
+                                            <h3>Chau Anh Kiệt</h3>
+                                        </div>
+                                        <ul class="nav nav-stacked">
+                                            <li>
+                                                <p class="form-control-static" style="font-size: 15px;">Ngày sinh: <span class="pull-right" style="margin-right: 10px;">06/11/2002</span></p>
+                                            </li>
+                                            <li>
+                                                <p class="form-control-static" style="font-size: 15px;">Email: <span class="pull-right" style="margin-right: 10px;">anhkiet1234@gmail.com</span></p>
+                                            </li>
+                                            <li>
+                                                <p class="form-control-static" style="font-size: 15px;">Mật khẩu: <span class="pull-right" style="margin-right: 10px;">123</span></p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
             <ul class="pagination">
-                <li class="paginate_button active">
-                    <a href="#">1</a>
-                </li>
+                <li><a href="#">1</a></li>
                 <li><a href="#">2</a></li>
                 <li><a href="#">3</a></li>
                 <li><a href="#">4</a></li>
@@ -66,5 +70,3 @@
         </div>
     </div>
 </div>
-
-
