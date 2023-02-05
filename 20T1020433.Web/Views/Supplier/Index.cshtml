@@ -9,9 +9,11 @@
                 <input type="text" class="form-control">
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-info btn-flat">
-                        <i class="glyphicon glyphicon-search"></i> Tìm kiếm
+                        <i class="glyphicon glyphicon-search"></i> <strong> Tìm kiếm</strong>
                     </button> 
-                    <a href="~/Supplier/Create" class="btn btn-reddit">Bổ sung</a>
+                    <a href="~/Supplier/Create" class="btn bg-olive "> 
+                        <i class="glyphicon glyphicon-plus-sign"></i><strong> Bổ sung</strong>
+                    </a>
                 </span>
                
             </div>
@@ -21,7 +23,7 @@
 
         <table class="table table-bordered table-hover">
             <thead>
-                <tr class="bg-aqua">
+                <tr class="bg-primary">
                     <th>Tên nhà cung cấp</th>
                     <th>Tên giao dịch</th>
                     <th>Địa chỉ</th>
@@ -47,22 +49,41 @@
                         <td>1234</td>
                         <td>
                             <a href="~/Supplier/Edit" class="btn btn-success">Sửa</a>
-                            <a href="~/Supplier/Delete" class="btn btn-reddit">Xóa</a>
+                            <a href="~/Supplier/Delete" class="btn btn-danger">Xóa</a>
                         </td>
                 </tr>
                 }
             </tbody>
         </table>
-        <div class="text-aqua">
-            <ul class="pagination">
-                <li class="paginate_button active">
-                    <a href="#">1</a>
-                </li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-            </ul>
+        <div class="col-sm-7">
+            <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                <ul class="pagination">
+                    <li class="paginate_button previous disabled" id="example2_previous">
+                        <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
+                    </li>
+                    <li class="paginate_button active">
+                        <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a>
+                    </li>
+                    <li class="paginate_button ">
+                        <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0">2</a>
+                    </li>
+                    <li class="paginate_button ">
+                        <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0">3</a>
+                    </li>
+                    <li class="paginate_button ">
+                        <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0">4</a>
+                    </li>
+                    <li class="paginate_button ">
+                        <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0">5</a>
+                    </li>
+                    <li class="paginate_button ">
+                        <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0">6</a>
+                    </li>
+                    <li class="paginate_button next" id="example2_next">
+                        <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

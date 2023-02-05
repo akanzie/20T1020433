@@ -9,9 +9,11 @@
                 <input type="text" class="form-control">
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-info btn-flat">
-                        <i class="glyphicon glyphicon-search"></i> Tìm kiếm
+                        <i class="glyphicon glyphicon-search"></i> <strong> Tìm kiếm</strong>
                     </button>
-                    <a href="~/Supplier/Create" class="btn btn-reddit">Bổ sung</a>
+                    <a href="~/Shipper/Create" class="btn bg-olive ">
+                        <i class="glyphicon glyphicon-plus-sign"></i><strong> Bổ sung</strong>
+                    </a>
                 </span>
 
             </div>
@@ -21,7 +23,7 @@
 
         <table class="table table-bordered table-hover">
             <thead>
-                <tr class="bg-aqua">
+                <tr class="bg-primary">
                     <th>Tên người giao hàng</th>
                     <th>Số điện thoại</th>
                     
@@ -36,10 +38,9 @@
                     <tr>
                         <td>John</td>
                         <td>012345678</td>
-                        
                         <td>
-                            <a href="~/Supplier/Edit" class="btn btn-success">Sửa</a>
-                            <a href="~/Supplier/Delete" class="btn btn-reddit">Xóa</a>
+                            <a href="~/Shipper/Edit" class="btn btn-success">Sửa</a>
+                            <a href="~/Shipper/Delete" class="btn btn-danger">Xóa</a>
                         </td>
                     </tr>
                 }
