@@ -17,5 +17,23 @@ namespace _20T1020433.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult Create()
+        {
+            ViewBag.Title = "Bổ sung loại hàng";
+            return View("Edit");
+        }
+
+        public ActionResult Edit()
+        {
+            ViewBag.Title = "Cập nhật loại hàng";
+            return View();
+        }
+
+        public ActionResult Delete()
+        {
+            ViewBag.Title = "Xóa loại hàng";
+            return View();
+        }
     }
 }

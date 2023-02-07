@@ -9,16 +9,16 @@ namespace _20T1020433.DomainModels
     /// <summary>
     /// 
     /// </summary>
-    public class Supplier
+    public class Customer
     {
         /// <summary>
         /// 
         /// </summary>
-        public int SupplierID { get; set; }
+        public int CustomerID { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string SupplierName { get; set; }
+        public string CustomerName { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -42,7 +42,10 @@ namespace _20T1020433.DomainModels
         /// <summary>
         /// 
         /// </summary>
-        public string Phone { get; set; }
-
+        public string Email { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Password { get; set; }
     }
 }

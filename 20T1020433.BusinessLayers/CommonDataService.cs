@@ -17,15 +17,22 @@ namespace _20T1020433.BusinessLayers
         private static ICountryDAL countryDB;
         private static ICommonDAL<Supplier> supplierDB;
         private static ICommonDAL<Shipper> shipperDB;
+        private static ICommonDAL<Customer> customerDB;
+        private static ICommonDAL<Employee> employeeDB;
+        private static ICommonDAL<Category> categoryDB;
         /// <summary>
         /// Ctor
         /// </summary>
         static CommonDataService()
         {
-            string connectionString = @"server=DESKTOP-BIAF6GR;user id=sa; password=1; database=LiteComerceDB";
+            //string connectionString = @"server=DESKTOP-BIAF6GR;user id=sa; password=1; database=LiteComerceDB";
+            string connectionString = @"server=DESKTOP-2398BLJ;user id=sa; password=1; database=LiteComerceDB";
             countryDB = new DataLayers.SQLServer.CountryDAL(connectionString);
             supplierDB = new DataLayers.SQLServer.SupplierDAL(connectionString);
             shipperDB = new DataLayers.SQLServer.ShipperDAL(connectionString);
+            customerDB = new DataLayers.SQLServer.CustomerDAL(connectionString);
+            categoryDB = new DataLayers.SQLServer.CategoryDAL(connectionString);
+            employeeDB = new DataLayers.SQLServer.EmployeeDAL(connectionString);
         }
         /// <summary>
         /// Lấy danh sách các quốc gia

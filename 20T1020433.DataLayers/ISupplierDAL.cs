@@ -11,7 +11,7 @@ namespace _20T1020433.DataLayers
     /// Định nghĩa các phép xữ lý dữ liệu trên nhà cung cấp
     /// Sử dụng cách này dânx dến viết lặp đi lặp lại các kiểu code giống nhau
     /// cho các đối tượng
-    /// sử dụng generat
+    /// sử dụng generate
     /// </summary>
     public interface ISupplierDAL
     {

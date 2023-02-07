@@ -9,40 +9,39 @@ namespace _20T1020433.DomainModels
     /// <summary>
     /// 
     /// </summary>
-    public class Supplier
+    public class Employee
     {
         /// <summary>
         /// 
         /// </summary>
-        public int SupplierID { get; set; }
+        public int EmployeeID { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string SupplierName { get; set; }
+        public string LastName { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string ContactName { get; set; }
+        public string FirstName { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string Address { get; set; }
+        public DateTime BirthDate { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string City { get; set; }
+        public string Photo { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string PostalCode { get; set; }
+        public string Notes { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string Country { get; set; }
+        public string Email { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string Phone { get; set; }
-
+        public string Password { get; set; }
     }
 }
