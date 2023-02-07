@@ -32,7 +32,11 @@
                             id="Country"
                             name="Country">
                         <option selected>--Chọn quốc gia--</option>
-                        <option value="1">Việt Nam</option>
+                        @foreach (var item in _20T1020433.BusinessLayers.CommonDataService.ListOfCountries())
+                        {
+                            <option value="@item.CountryName">@item.CountryName</option>
+                        }
+
                     </select>
                 </div>
             </div>

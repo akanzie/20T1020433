@@ -6527,6 +6527,20 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\20T1020433.BusinessLayers\20T1020433.BusinessLayers.csproj">
+      <Project>{5f88e3a0-4560-415e-a9c1-0efe4c60ca58}</Project>
+      <Name>20T1020433.BusinessLayers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\20T1020433.DataLayers\20T1020433.DataLayers.csproj">
+      <Project>{d9d9f1bb-fd38-4932-933d-aa25e294ce8f}</Project>
+      <Name>20T1020433.DataLayers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\20T1020433.DomainModels\20T1020433.DomainModels.csproj">
+      <Project>{bb45424e-51a2-4da6-969d-92652c6d6ff5}</Project>
+      <Name>20T1020433.DomainModels</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

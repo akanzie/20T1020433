@@ -41,8 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="CommonDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\20T1020433.DataLayers\20T1020433.DataLayers.csproj">
+      <Project>{d9d9f1bb-fd38-4932-933d-aa25e294ce8f}</Project>
+      <Name>20T1020433.DataLayers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\20T1020433.DomainModels\20T1020433.DomainModels.csproj">
+      <Project>{bb45424e-51a2-4da6-969d-92652c6d6ff5}</Project>
+      <Name>20T1020433.DomainModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

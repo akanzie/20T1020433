@@ -20,43 +20,43 @@
         <br />
         <p style="margin-left: 5px;">Có <strong>100</strong> bản ghi trong tổng số <strong>10</strong> trang</p>
         <div class="row ">
-                    @for (int i = 1; i <= 5; i++)
-                    {
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="card">
-                                <div class="box-body box-profile">
-                                    <span class="input-group-btn bg-primary">
-                                        <a href="~/Employee/Delete" class="btn btn-danger pull-right">
-                                            <i class="glyphicon glyphicon-trash" title="Xóa"></i>
-                                        </a>
-                                        <a href="~/Employee/Edit" class="btn btn-success pull-right ">
-                                            <i class="glyphicon glyphicon-edit " title="Sửa"></i>
-                                        </a>
-                                    </span>
-                                    <div class="el-card-item">
-                                        <div class="el-card-avatar el-overlay-1">
-                                            <img src="~/Themes/dist/img/avatar5.png" alt="employee photo" class="img-responsive img-circle" style="margin-left: auto; margin-right:auto">
-                                        </div>
-                                        <div class="el-card-content text-center">
-                                            <h3>Chau Anh Kiệt</h3>
-                                        </div>
-                                        <ul class="nav nav-stacked">
-                                            <li>
-                                                <p class="form-control-static" style="font-size: 15px;">Ngày sinh: <span class="pull-right" style="margin-right: 10px;">06/11/2002</span></p>
-                                            </li>
-                                            <li>
-                                                <p class="form-control-static" style="font-size: 15px;">Email: <span class="pull-right" style="margin-right: 10px;">anhkiet1234@gmail.com</span></p>
-                                            </li>
-                                            <li>
-                                                <p class="form-control-static" style="font-size: 15px;">Mật khẩu: <span class="pull-right" style="margin-right: 10px;">123</span></p>
-                                            </li>
-                                        </ul>
-                                    </div>
+            @for (int i = 1; i <= 5; i++)
+            {
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="card">
+                        <div class="box-body box-profile">
+                            <span class="input-group-btn bg-primary">
+                                <a href="~/Employee/Delete" class="btn btn-danger pull-right">
+                                    <i class="glyphicon glyphicon-trash" title="Xóa"></i>
+                                </a>
+                                <a href="~/Employee/Edit" class="btn btn-success pull-right ">
+                                    <i class="glyphicon glyphicon-edit " title="Sửa"></i>
+                                </a>
+                            </span>
+                            <div class="el-card-item">
+                                <div class="el-card-avatar el-overlay-1" style="margin-top: 2px">
+                                    <img src="~/Themes/dist/img/avatar5.png" alt="employee photo" class="img-responsive img-circle" style="margin-left: auto; margin-right: auto">
                                 </div>
+                                <div class="el-card-content text-center">
+                                    <h3>Chau Anh Kiệt</h3>
+                                </div>
+                                <ul class="nav nav-stacked">
+                                    <li>
+                                        <p class="form-control-static" style="font-size: 15px;">Ngày sinh: <span class="pull-right" style="margin-right: 10px;">06/11/2002</span></p>
+                                    </li>
+                                    <li>
+                                        <p class="form-control-static" style="font-size: 15px;">Email: <span class="pull-right" style="margin-right: 10px;">anhkiet1234@gmail.com</span></p>
+                                    </li>
+                                    <li>
+                                        <p class="form-control-static" style="font-size: 15px;">Mật khẩu: <span class="pull-right" style="margin-right: 10px;">123</span></p>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                    }
+                    </div>
                 </div>
+            }
+        </div>
             </div>
         </div>
         <div class="text-center">
