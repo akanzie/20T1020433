@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<_20T1020433.DomainModels.Supplier>
 @{
     ViewBag.Title = "Quản lí nhà cung cấp";
 }
@@ -6,11 +6,10 @@
     <div class="box-body">
         <form>
             <div class="input-group input-group-sm">
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" name="searchValue" autofocus value="@ViewBag.SearchValue">
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-info btn-flat">
-                        <i class="glyphicon glyphicon-search"></i> <strong> Tìm kiếm</strong>
-                    </button> 
+                    <button type="button" class="btn btn-info btn-flat glyphicon glyphicon-search">
+                          Tìm kiếm</button> 
                     <a href="~/Supplier/Create" class="btn bg-olive "> 
                         <i class="glyphicon glyphicon-plus-sign"></i><strong> Bổ sung</strong>
                     </a>
@@ -19,7 +18,7 @@
             </div>
         </form>
 
-        <p>Có <strong>100</strong> bản ghi trong tổng số <strong>10 </strong>trang</p>
+        <p>Có <strong>@ViewBag.RowCount</strong> nhà cung cấp trong tổng số <strong>@ViewBag.PageCount </strong>trang</p>
 
         <table class="table table-bordered table-hover">
             <thead>
@@ -32,24 +31,23 @@
                     <th>Thành phố</th>
                     <th>Mã bưu chính</th>
                     <th>
-                        
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 1; i <= 5; i++) 
+                @foreach (var item in Model)
                 { 
                     <tr>
-                        <td>John</td>
-                        <td>Tiền bạc</td>
-                        <td>10 Lê Lợi</td>
-                        <td>012345678</td>
-                        <td>Việt Nam</td>
-                        <td>Huế</td>
-                        <td>1234</td>
-                        <td>
-                            <a href="~/Supplier/Edit" class="btn btn-success">Sửa</a>
-                            <a href="~/Supplier/Delete" class="btn btn-danger">Xóa</a>
+                        <td>@item.SupplierName</td>
+                        <td>@item.ContactName</td>
+                        <td>@item.Address</td>
+                        <td>@item.Phone</td>
+                        <td>@item.Country</td>
+                        <td>@item.City</td>
+                        <td>@item.PostalCode</td>
+                        <td class = text-right style ="width: 120px">
+                            <a href="~/Supplier/Edit/@item.SupplierID" class="btn btn-success">Sửa</a>
+                            <a href="~/Supplier/Delete/@item.SupplierID" class="btn btn-danger">Xóa</a>
                         </td>
                 </tr>
                 }
@@ -58,30 +56,22 @@
         <div class="col-sm-7">
             <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
                 <ul class="pagination">
-                    <li class="paginate_button previous disabled" id="example2_previous">
-                        <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
-                    </li>
-                    <li class="paginate_button active">
-                        <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a>
-                    </li>
-                    <li class="paginate_button ">
-                        <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0">2</a>
-                    </li>
-                    <li class="paginate_button ">
-                        <a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0">3</a>
-                    </li>
-                    <li class="paginate_button ">
-                        <a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0">4</a>
-                    </li>
-                    <li class="paginate_button ">
-                        <a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0">5</a>
-                    </li>
-                    <li class="paginate_button ">
-                        <a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0">6</a>
-                    </li>
-                    <li class="paginate_button next" id="example2_next">
-                        <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a>
-                    </li>
+                    @for (int i = 1; i <= ViewBag.PageCount; i++)
+                    {
+                        if (i == ViewBag.Page)
+                        {
+                            <li class="paginate_button active">
+                                <a href="#" >@i</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="paginate_button">
+                                <a href="~/Supplier?page=@i&searchValue=@ViewBag.SearchValue">@i</a>
+                            </li>
+                        }
+                        
+                    }
                 </ul>
             </div>
         </div>
