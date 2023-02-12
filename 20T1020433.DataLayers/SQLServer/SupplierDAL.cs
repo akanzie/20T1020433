@@ -5,8 +5,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using _20T1020433.DataLayers;
-using _20T1020433.DataLayers.SQLServer;
 using _20T1020433.DomainModels;
 
 namespace _20T1020433.DataLayers.SQLServer

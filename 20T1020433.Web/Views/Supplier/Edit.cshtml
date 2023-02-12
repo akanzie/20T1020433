@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Tên nhà cung cấp:</label>
                 <div class="col-sm-10">
-                    <input type="email"
+                    <input type="text"
                            class="form-control"
                            id="SupplierName"
                            name="SupplierName"
@@ -34,7 +34,7 @@
                     <select class="form-control"
                             id="Country"
                             name="Country">
-                        <option selected>--Chọn quốc gia--</option>
+                        <optiond>--Chọn quốc gia--</optiond>
                         @foreach (var item in _20T1020433.BusinessLayers.CommonDataService.ListOfCountries())
                         {
                             if (item.CountryName == Model.Country)
@@ -43,7 +43,7 @@
                             }
                             else
                             {
-                                <option value="@item.CountryName" selected>@item.CountryName</option>
+                                <option value="@item.CountryName">@item.CountryName</option>
                             }
 
                         }
@@ -88,8 +88,8 @@
                 <div class="col-sm-10">
                     <input type="text"
                            class="form-control"
-                           id="PotalCode"
-                           name="PotalCode"
+                           id="PostalCode"
+                           name="PostalCode"
                            value="@Model.PostalCode"
                            placeholder="">
                 </div>

@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<_20T1020433.DomainModels.Shipper>
 @{
     ViewBag.Title = "Quản lí người giao hàng";
 }
@@ -6,9 +6,13 @@
     <div class="box-body">
         <form>
             <div class="input-group input-group-sm">
-                <input type="text" class="form-control">
+                <input autofocus class="form-control"
+                       name="searchValue"
+                       placeholder="Search"
+                       type="text"
+                       value="@ViewBag.SearchValue">
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-info btn-flat">
+                    <button type="submit" class="btn btn-info btn-flat">
                         <i class="glyphicon glyphicon-search"></i> <strong> Tìm kiếm</strong>
                     </button>
                     <a href="~/Shipper/Create" class="btn bg-olive ">
@@ -19,7 +23,7 @@
             </div>
         </form>
 
-        <p>Có <strong>100</strong> người giao hàng trong tổng số <strong>10 </strong>trang</p>
+        <p>Có <strong>@ViewBag.RowCount</strong> người giao hàng trong tổng số <strong>@ViewBag.PageCount </strong>trang</p>
 
         <table class="table table-bordered table-hover">
             <thead>
@@ -32,28 +36,37 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 1; i <= 5; i++)
+            @foreach (var item in Model)
                 {
                     <tr>
-                        <td>John</td>
-                        <td>012345678</td>
+                        <td>@item.ShipperName</td>
+                        <td>@item.Phone</td>
                         <td>
-                            <a href="~/Shipper/Edit" class="btn btn-success">Sửa</a>
-                            <a href="~/Shipper/Delete" class="btn btn-danger">Xóa</a>
+                            <a href="~/Shipper/Edit/@item.ShipperID" class="btn btn-success">Sửa</a>
+                            <a href="~/Shipper/Delete/@item.ShipperID" class="btn btn-danger">Xóa</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        <div class="text-aqua">
+        <div class="col-sm-7 text-center">
             <ul class="pagination">
-                <li class="paginate_button active">
-                    <a href="#">1</a>
-                </li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
+                @for (int i = 1; i <= ViewBag.PageCount; i++)
+                {
+                    if (i == ViewBag.Page)
+                    {
+                        <li class="paginate_button active">
+                            <a href="#" >@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="paginate_button">
+                            <a href="~/Shipper?page=@i&searchValue=@ViewBag.SearchValue">@i</a>
+                        </li>
+                    }
+                        
+                }
             </ul>
         </div>
     </div>
