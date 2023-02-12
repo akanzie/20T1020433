@@ -32,8 +32,8 @@ namespace _20T1020433.DataLayers.SQLServer
             using (SqlConnection cn = OpenConnection())
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = @"INSERT INTO Employees(LastName, FirstName, BirthDate, Photo, Notes, Email, Password)
-                                    VALUES(@LastName, @FirstName, @BirthDate, @Photo, @Notes, @Email, @Password);
+                cmd.CommandText = @"INSERT INTO Employees(LastName, FirstName, BirthDate, Photo, Notes, Email)
+                                    VALUES(@LastName, @FirstName, @BirthDate, @Photo, @Notes, @Email);
                                     SELECT SCOPE_IDENTITY()";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cn;
@@ -43,7 +43,7 @@ namespace _20T1020433.DataLayers.SQLServer
                 cmd.Parameters.AddWithValue("@Photo", data.Photo);
                 cmd.Parameters.AddWithValue("@Notes", data.Notes);
                 cmd.Parameters.AddWithValue("@Email", data.Email);
-                cmd.Parameters.AddWithValue("@Password", data.Password);
+                
 
                 result = Convert.ToInt32(cmd.ExecuteScalar());
 

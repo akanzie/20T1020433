@@ -13,8 +13,8 @@ using System.Globalization;
 namespace _20T1020433.BusinessLayers
 {
     /// <summary>
-    /// Các chức năng nghiệp vụ liên quan đến: nhà cung cấp, khách hàng,
-    /// người giao hàng, nhân viên, loại hàng
+    /// Các chức năng nghiệp vụ liên quan đến: nhà cung cấp, nhân vie,
+    /// người giao hàng, khách hàng, loại hàng
     /// </summary>
     public static class CommonDataService
     {
@@ -190,6 +190,7 @@ namespace _20T1020433.BusinessLayers
             return shipperDB.InUsed(shipperID);
         }
         #endregion
+
         #region Các nghiệp vụ liên quan đến nhân viên
 
         /// <summary>
@@ -258,6 +259,77 @@ namespace _20T1020433.BusinessLayers
         public static bool InUsedEmployee(int employeeID)
         {
             return employeeDB.InUsed(employeeID);
+        }
+        #endregion
+
+        #region Các nghiệp vụ liên quan đến khách hàng
+
+        /// <summary>
+        /// Tìm kiếm, lấy danh sách các khách hàng dưới dạng phân trang
+        /// </summary>
+        /// <param name="page">Trang cần xem</param>
+        /// <param name="pageSize">Số dòng trên mỗi trang (0 tức là không phân trang)</param>
+        /// <param name="searchValue">Giá trị tìm kiếm (rỗng tức là không tìm kiếm</param>
+        /// <param name="rowCount">Output: Tổng số dòng tìm được</param>
+        /// <returns></returns>
+        public static List<Customer> ListOfCustomers(int page, int pageSize, string searchValue, out int rowCount)
+        {
+            rowCount = customerDB.Count(searchValue);
+            return customerDB.List(page, pageSize, searchValue).ToList();
+        }
+        /// <summary>
+        /// Tìm kiếm và lấy danh sách các khách hàng (không phân trang)
+        /// </summary>
+        /// <param name="searchValue"></param>
+        /// <returns></returns>
+        public static List<Customer> ListOfCustomers(string searchValue)
+        {
+            return customerDB.List(1, 0, searchValue).ToList();
+        }
+        /// <summary>
+        /// Bổ sung khách hàng
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns>Mã của khách hàng được bổ sung</returns>
+        public static int AddCustomer(Customer data)
+        {
+            return customerDB.Add(data);
+        }
+        /// <summary>
+        /// Cập nhật thông tin của khách hàng
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static bool UpdateCustomer(Customer data)
+        {
+            return customerDB.Update(data);
+        }
+        /// <summary>
+        /// Xóa một khách hàng
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <returns></returns>
+        public static bool DeleteCustomer(int customerID)
+        {
+            return customerDB.Delete(customerID);
+        }
+        /// <summary>
+        /// Lấy thông tin của 1 khách hàng
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <returns></returns>
+        public static Customer GetCustomer(int customerID)
+        {
+            return customerDB.Get(customerID);
+        }
+        /// <summary>
+        /// Kiểm tra xem 1 khách hàng hiện có dữ liệu liên quan hay không?
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <returns></returns>
+        public static bool InUsedCustomer(int customerID)
+        {
+            return customerDB.InUsed(customerID);
         }
         #endregion
     }
