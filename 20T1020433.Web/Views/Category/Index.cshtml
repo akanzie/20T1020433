@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<_20T1020433.DomainModels.Category>
+
 @{
     ViewBag.Title = "Quản lí loại hàng";
 }
@@ -37,15 +38,15 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Select((value, i) => new { i, value}))
                 {
                     <tr>
-                        <td>@item.CategoryName</td>
-                        <td>@item.Description</td>
-                        <td>@ViewBag.parentCategoryNames[1]</td>
+                        <td>@item.value.CategoryName</td>
+                        <td>@item.value.Description</td>
+                        <td>@ViewBag.parentCategoryNames[item.i+1]</td>
                         <td>
-                            <a href="~/Category/Edit/@item.CategoryID" class="btn btn-success">Sửa</a>
-                            <a href="~/Category/Delete/@item.CategoryID" class="btn btn-danger">Xóa</a>
+                            <a href="~/Category/Edit/@item.value.CategoryID" class="btn btn-success">Sửa</a>
+                            <a href="~/Category/Delete/@item.value.CategoryID" class="btn btn-danger">Xóa</a>
                         </td>
                     </tr>
                 }

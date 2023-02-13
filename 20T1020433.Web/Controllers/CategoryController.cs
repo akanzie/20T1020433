@@ -19,18 +19,19 @@ namespace _20T1020433.Web.Controllers
         {
             var rowCount = 0;
             var data = CommonDataService.ListOfCategories(page, pageSize, searchValue, out rowCount);
-            string[] parentCategoryNames = new string[data.Count];
-            for (var i = 0; i < data.Count; i++)
+            var data2 = CommonDataService.ListOfCategories(searchValue);
+            string[] parentCategoryNames = new string[data2.Count+1];
+            int parentCategoryId;
+            for (var i = 0; i < data2.Count; i++)
             {
-                int parentCategoryId;
-                parentCategoryId = data[i].ParentCategoryId;
+                parentCategoryId = data2[i].ParentCategoryId;
                 if (parentCategoryId != 0)
                 {
                     Category category = new Category();
                     category = CommonDataService.GetCategory(parentCategoryId);
-                    parentCategoryNames[i] = category.CategoryName;
+                    parentCategoryNames[i+1] = category.CategoryName;
                 }
-                else parentCategoryNames[i] = "Không có";
+                else parentCategoryNames[i+1] = "Không có";
             }
 
             ViewBag.parentCategoryNames = parentCategoryNames;
