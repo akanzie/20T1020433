@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<_20T1020433.DomainModels.Customer>
 @{
     ViewBag.Title = "Quản lí khách hàng";
 }
@@ -7,9 +7,9 @@
     <div class="box-body">
         <form>
             <div class="input-group input-group-sm">
-                <input type="text" class="form-control">
+                <input autofocus class="form-control" name="searchValue" placeholder="Search" type="text" value="@ViewBag.SearchValue">
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-info btn-flat">
+                    <button type="submit" class="btn btn-info btn-flat">
                         <i class="glyphicon glyphicon-search"></i> <strong> Tìm kiếm</strong>
                     </button>
                     <a href="~/Customer/Create" class="btn bg-olive ">
@@ -20,53 +20,62 @@
             </div>
         </form>
 
-        <p>Có <strong>100</strong> khách hàng trong tổng số <strong>10 </strong>trang</p>
+        <p>Có <strong>@ViewBag.RowCount</strong> khách hàng trong tổng số <strong>@ViewBag.PageCount </strong>trang</p>
 
         <table class="table table-bordered table-hover">
             <thead>
-                <tr class="bg-aqua">
+                <tr class="bg bg-primary">
                     <th>Tên khách hàng</th>
                     <th>Tên giao dịch</th>
-                    <th>Địa chỉ</th>
                     <th>Quốc gia</th>
                     <th>Thành phố</th>
+                    <th>Địa chỉ</th>
                     <th>Mã bưu chính</th>
                     <th>Email</th>
-                    
+
                     <th>
 
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 1; i <= 5; i++)
+            @foreach (var item in Model)
                 {
-                <tr>
-                    <td>John</td>
-                    <td>Mua sắm</td>
-                    <td>10 Lê Lợi</td>
-                    <td>Việt Nam</td>
-                    <td>Huế</td>
-                    <td>1234</td>
-                    <td>anhkiet@gmail.com</td>
-                    
-                    <td>
-                        <a href="~/Customer/Edit" class="btn btn-success">Sửa</a>
-                        <a href="~/Customer/Delete" class="btn btn-danger">Xóa</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>@item.CustomerName</td>
+                        <td>@item.ContactName</td>
+                        <td>@item.Country</td>
+                        <td>@item.City</td>
+                        <td>@item.Address</td>
+                        <td>@item.PostalCode</td>
+                        <td>@item.Email</td>
+
+                        <td>
+                            <a href="~/Customer/Edit/@item.CustomerID" class="btn btn-success">Sửa</a>
+                            <a href="~/Customer/Delete/@item.CustomerID" class="btn btn-danger">Xóa</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
-        <div class="text-aqua">
+        <div class="col-sm-7 text-center">
             <ul class="pagination">
-                <li class="paginate_button">
-                    <a href="#">1</a>
-                </li>
-                <li class="paginate_button active"><a href="#">2</a></li>
-                <li class="paginate_button"><a href="#">3</a></li>
-                <li class="paginate_button"><a href="#">4</a></li>
-                <li class="paginate_button"><a href="#">5</a></li>
+                @for (int i = 1; i <= ViewBag.PageCount; i++)
+                {
+                    if (i == ViewBag.Page)
+                    {
+                        <li class="paginate_button active">
+                            <a href="#">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="paginate_button">
+                            <a href="~/Customer?page=@i&searchValue=@ViewBag.SearchValue">@i</a>
+                        </li>
+                    }
+
+                }
             </ul>
         </div>
     </div>

@@ -236,7 +236,7 @@ namespace _20T1020433.DataLayers.SQLServer
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = @"UPDATE Employees
-                                    SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Photo = @Photo, Notes = @Notes, Email = @Email, Password = @Password
+                                    SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Photo = @Photo, Notes = @Notes, Email = @Email
                                     WHERE EmployeeID = @EmployeeID";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cn;
@@ -247,7 +247,6 @@ namespace _20T1020433.DataLayers.SQLServer
                 cmd.Parameters.AddWithValue("@Photo", data.Photo);
                 cmd.Parameters.AddWithValue("@Notes", data.Notes);
                 cmd.Parameters.AddWithValue("@Email", data.Email);
-                cmd.Parameters.AddWithValue("@Password", data.Password);
 
                 result = cmd.ExecuteNonQuery() > 0;
 

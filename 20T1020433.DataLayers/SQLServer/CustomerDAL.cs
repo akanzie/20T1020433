@@ -33,7 +33,7 @@ namespace _20T1020433.DataLayers.SQLServer
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = @"INSERT INTO Customers(CustomerName, ContactName, Address, City, PostalCode, Country, Email)
-                                    VALUES(@CustomerName, @ContactName, @Address, @City, @PostalCode, @Country, Email);
+                                    VALUES(@CustomerName, @ContactName, @Address, @City, @PostalCode, @Country, @Email);
                                     SELECT SCOPE_IDENTITY()";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cn;
@@ -188,12 +188,12 @@ namespace _20T1020433.DataLayers.SQLServer
                 cmd.CommandText = @"SELECT *
                                     FROM 
                                     (
-	                                    SELECT	*, ROW_NUMBER() OVER (ORDER BY LastName) AS RowNumber
+	                                    SELECT	*, ROW_NUMBER() OVER (ORDER BY CustomerName) AS RowNumber
 	                                    FROM	Customers 
 	                                    WHERE	(@SearchValue = N'')
 		                                    OR	(
-				                                    (LastName LIKE @SearchValue)
-			                                     OR (FirstName LIKE @SearchValue)
+				                                    (CustomerName LIKE @SearchValue)
+			                                     OR (ContactName LIKE @SearchValue)
 			                                     OR (Email LIKE @SearchValue)                                                 
 			                                    )
                                     ) AS t
@@ -239,7 +239,7 @@ namespace _20T1020433.DataLayers.SQLServer
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = @"UPDATE Customers
-                                    SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Photo = @Photo, Notes = @Notes, Email = @Email, Password = @Password
+                                    SET CustomerName = @CustomerName, ContactName = @ContactName, Address = @Address, City = @City, PostalCode = @PostalCode, Email = @Email
                                     WHERE CustomerID = @CustomerID";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cn;
@@ -251,7 +251,6 @@ namespace _20T1020433.DataLayers.SQLServer
                 cmd.Parameters.AddWithValue("@PostalCode", data.PostalCode);
                 cmd.Parameters.AddWithValue("@Country", data.Country);
                 cmd.Parameters.AddWithValue("@Email", data.Email);
-                cmd.Parameters.AddWithValue("@Password", data.Password);
 
                 result = cmd.ExecuteNonQuery() > 0;
 

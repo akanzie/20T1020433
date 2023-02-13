@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<_20T1020433.DomainModels.Category>
 @{
     ViewBag.Title = "Quản lí loại hàng";
 }
@@ -6,9 +6,13 @@
     <div class="box-body">
         <form>
             <div class="input-group input-group-sm">
-                <input type="text" class="form-control">
+                <input autofocus class="form-control"
+                       name="searchValue"
+                       placeholder="Search"
+                       type="text"
+                       value="@ViewBag.SearchValue">
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-info btn-flat">
+                    <button type="submit" class="btn btn-info btn-flat">
                         <i class="glyphicon glyphicon-search"></i> <strong> Tìm kiếm</strong>
                     </button>
                     <a href="~/Category/Create" class="btn bg-olive ">
@@ -18,44 +22,58 @@
 
             </div>
         </form>
-        <p>Có <strong>100</strong> loại hàng trong tổng số <strong>10 </strong>trang</p>
+
+        <p>Có <strong>@ViewBag.RowCount</strong> loại hàng trong tổng số <strong>@ViewBag.PageCount </strong>trang</p>
+
         <table class="table table-bordered table-hover">
             <thead>
-                <tr class="bg-aqua">
+                <tr class="bg-primary">
                     <th>Tên loại hàng</th>
                     <th>Mô tả</th>
+                    <th>Loại hàng cha</th>
                     <th>
 
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 1; i <= 5; i++)
+                @foreach (var item in Model)
                 {
                     <tr>
-                        <td>Thức ăn</td>
-                        <td>Các loại món ăn</td>                     >
+                        <td>@item.CategoryName</td>
+                        <td>@item.Description</td>
+                        <td>@ViewBag.parentCategoryNames[1]</td>
                         <td>
-                            <a href="~/Category/Edit" class="btn btn-success">Sửa</a>
-                            <a href="~/Category/Delete" class="btn btn-danger">Xóa</a>
+                            <a href="~/Category/Edit/@item.CategoryID" class="btn btn-success">Sửa</a>
+                            <a href="~/Category/Delete/@item.CategoryID" class="btn btn-danger">Xóa</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        <div class="text-aqua">
+        <div class="col-sm-7 text-center">
             <ul class="pagination">
-                <li class="paginate_button active">
-                    <a href="#">1</a>
-                </li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
+                @for (int i = 1; i <= ViewBag.PageCount; i++)
+                {
+                    if (i == ViewBag.Page)
+                    {
+                        <li class="paginate_button active">
+                            <a href="#">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="paginate_button">
+                            <a href="~/Category?page=@i&searchValue=@ViewBag.SearchValue">@i</a>
+                        </li>
+                    }
+
+                }
             </ul>
         </div>
     </div>
 </div>
+
 
 
 

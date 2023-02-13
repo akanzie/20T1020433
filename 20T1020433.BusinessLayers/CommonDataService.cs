@@ -332,5 +332,76 @@ namespace _20T1020433.BusinessLayers
             return customerDB.InUsed(customerID);
         }
         #endregion
+
+        #region Các nghiệp vụ liên quan đến loại hàng
+
+        /// <summary>
+        /// Tìm kiếm, lấy danh sách các loại hàng dưới dạng phân trang
+        /// </summary>
+        /// <param name="page">Trang cần xem</param>
+        /// <param name="pageSize">Số dòng trên mỗi trang (0 tức là không phân trang)</param>
+        /// <param name="searchValue">Giá trị tìm kiếm (rỗng tức là không tìm kiếm</param>
+        /// <param name="rowCount">Output: Tổng số dòng tìm được</param>
+        /// <returns></returns>
+        public static List<Category> ListOfCategories(int page, int pageSize, string searchValue, out int rowCount)
+        {
+            rowCount = categoryDB.Count(searchValue);
+            return categoryDB.List(page, pageSize, searchValue).ToList();
+        }
+        /// <summary>
+        /// Tìm kiếm và lấy danh sách các loại hàng (không phân trang)
+        /// </summary>
+        /// <param name="searchValue"></param>
+        /// <returns></returns>
+        public static List<Category> ListOfCategories(string searchValue)
+        {
+            return categoryDB.List(1, 0, searchValue).ToList();
+        }
+        /// <summary>
+        /// Bổ sung loại hàng
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns>Mã của loại hàng được bổ sung</returns>
+        public static int AddCategory(Category data)
+        {
+            return categoryDB.Add(data);
+        }
+        /// <summary>
+        /// Cập nhật thông tin của loại hàng
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static bool UpdateCategory(Category data)
+        {
+            return categoryDB.Update(data);
+        }
+        /// <summary>
+        /// Xóa một loại hàng
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public static bool DeleteCategory(int categoryID)
+        {
+            return categoryDB.Delete(categoryID);
+        }
+        /// <summary>
+        /// Lấy thông tin của 1 loại hàng
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public static Category GetCategory(int categoryID)
+        {
+            return categoryDB.Get(categoryID);
+        }
+        /// <summary>
+        /// Kiểm tra xem 1 loại hàng hiện có dữ liệu liên quan hay không?
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public static bool InUsedCategory(int categoryID)
+        {
+            return categoryDB.InUsed(categoryID);
+        }
+        #endregion
     }
 }
