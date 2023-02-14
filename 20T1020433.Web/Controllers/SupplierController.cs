@@ -3,33 +3,72 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using Microsoft.Ajax.Utilities;
 using _20T1020433.DomainModels;
 using _20T1020433.BusinessLayers;
+using _20T1020433.Web.Models;
+
 namespace _20T1020433.Web.Controllers
 {
     public class SupplierController : Controller
     {
+        private const int PAGE_SIZE = 5;
+        private const string SUPPLIER_SEARCH = "SearchSupplierCondition";
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         // GET: Supplier
-        public ActionResult Index(int page = 1, int pageSize = 5, string searchValue = "")
+        //public ActionResult Index(int page = 1, int pageSize = 5, string searchValue = "")
+        //{
+        //    int rowCount = 0;
+        //    var data = CommonDataService.ListOfSuppliers(page, pageSize, searchValue, out rowCount);
+
+        //    int pageCount = rowCount / pageSize;
+        //    if (rowCount % pageSize > 0)
+        //        pageCount += 1;
+
+        //    ViewBag.Page = page;
+        //    ViewBag.PageCount = pageCount;
+        //    ViewBag.RowCount = rowCount;
+        //    ViewBag.PageSize = pageSize;
+        //    ViewBag.SearchValue = searchValue;
+        //    return View(data);
+        //}
+        public ActionResult Index()
+        {
+            PaginationSearchInput condition = Session[SUPPLIER_SEARCH] as PaginationSearchInput;
+            if (condition == null)
+            {
+                condition = new PaginationSearchInput()
+                {
+                    Page = 1,
+                    PageSize = PAGE_SIZE,
+                    SearchValue = ""
+                };
+            }
+            
+            return View(condition);
+        }
+
+        public ActionResult Search(PaginationSearchInput condition)
         {
             int rowCount = 0;
-            var data = CommonDataService.ListOfSuppliers(page, pageSize, searchValue, out rowCount);
-            
-            int pageCount = rowCount / pageSize;
-            if (rowCount % pageSize > 0)
-                pageCount += 1;
-
-            ViewBag.Page = page;
-            ViewBag.PageCount = pageCount;
-            ViewBag.RowCount = rowCount;
-            ViewBag.PageSize = pageSize;
-            ViewBag.SearchValue = searchValue;
-            return View(data);
+            var data = CommonDataService.ListOfSuppliers(condition.Page, 
+                condition.PageSize, 
+                condition.SearchValue,
+                out rowCount);
+            var result = new SupplierSearchOutput()
+            {
+                Page = condition.Page,
+                PageSize = condition.PageSize,
+                SearchValue = condition.SearchValue,
+                RowCount = rowCount,
+                Data = data
+            };
+            Session[SUPPLIER_SEARCH] = condition;
+            return View(result);
         }
         /// <summary>
         /// 

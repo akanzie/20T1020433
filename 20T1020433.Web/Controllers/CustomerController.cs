@@ -10,6 +10,8 @@ namespace _20T1020433.Web.Controllers
 {
     public class CustomerController : Controller
     {
+        private const int PAGE_SIZE = 5;
+        private const string CUSTOMER_SEARCH = "SearchSupplierCondition";
         /// <summary>
         /// 
         /// </summary>
