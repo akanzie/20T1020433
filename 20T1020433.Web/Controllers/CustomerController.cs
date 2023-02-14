@@ -15,7 +15,7 @@ namespace _20T1020433.Web.Controllers
         /// </summary>
         /// <returns></returns>
         // GET: Customer
-        public ActionResult Index(int page = 1, int pageSize = 5, string searchValue = "")
+        public ActionResult Index(int page = 1, int pageSize = 10, string searchValue = "")
         {
             int rowCount = 0;
             var data = CommonDataService.ListOfCustomers(page, pageSize, searchValue, out rowCount);

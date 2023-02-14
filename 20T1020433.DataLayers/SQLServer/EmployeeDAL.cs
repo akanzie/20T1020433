@@ -133,8 +133,8 @@ namespace _20T1020433.DataLayers.SQLServer
                         BirthDate = Convert.ToDateTime(dbReader["BirthDate"]),
                         Photo = Convert.ToString(dbReader["Photo"]),
                         Notes = Convert.ToString(dbReader["Notes"]),
-                        Email = Convert.ToString(dbReader["Email"]),
-                        Password = Convert.ToString(dbReader["Password"])
+                        Email = Convert.ToString(dbReader["Email"])
+                        
                     };
                 }
                 cn.Close();
@@ -215,7 +215,7 @@ namespace _20T1020433.DataLayers.SQLServer
                         Photo = Convert.ToString(dbReader["Photo"]),
                         Notes = Convert.ToString(dbReader["Notes"]),
                         Email = Convert.ToString(dbReader["Email"]),
-                        Password = Convert.ToString(dbReader["Password"])
+                        
                     });
                 }
                 dbReader.Close();

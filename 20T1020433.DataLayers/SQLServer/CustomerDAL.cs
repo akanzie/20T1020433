@@ -135,8 +135,8 @@ namespace _20T1020433.DataLayers.SQLServer
                         City = Convert.ToString(dbReader["City"]),
                         PostalCode = Convert.ToString(dbReader["PostalCode"]),
                         Country = Convert.ToString(dbReader["Country"]),
-                        Email = Convert.ToString(dbReader["Email"]),
-                        Password = Convert.ToString(dbReader["Password"])
+                        Email = Convert.ToString(dbReader["Email"])
+                        
                     };
                 }
                 cn.Close();
@@ -217,8 +217,8 @@ namespace _20T1020433.DataLayers.SQLServer
                         City = Convert.ToString(dbReader["City"]),
                         PostalCode = Convert.ToString(dbReader["PostalCode"]),
                         Country = Convert.ToString(dbReader["Country"]),
-                        Email = Convert.ToString(dbReader["Email"]),
-                        Password = Convert.ToString(dbReader["Password"])
+                        Email = Convert.ToString(dbReader["Email"])
+                        
                     });
                 }
                 dbReader.Close();
