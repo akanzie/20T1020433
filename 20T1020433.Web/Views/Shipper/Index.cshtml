@@ -1,16 +1,17 @@
-﻿@model IEnumerable<_20T1020433.DomainModels.Shipper>
+﻿@model _20T1020433.Web.Models.PaginationSearchInput
 @{
     ViewBag.Title = "Quản lí người giao hàng";
 }
 <div class="box box-primary">
     <div class="box-body">
-        <form>
+        <form id="formSearch" action="~/Shipper/Search">
             <div class="input-group input-group-sm">
+                <input type="hidden" name="PageSize" value="@Model.PageSize" />
                 <input autofocus class="form-control"
                        name="searchValue"
                        placeholder="Search"
                        type="text"
-                       value="@ViewBag.SearchValue">
+                       value="@Model.SearchValue">
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-info btn-flat">
                         <i class="glyphicon glyphicon-search"></i> <strong> Tìm kiếm</strong>
@@ -22,56 +23,42 @@
 
             </div>
         </form>
+        <div id="searchResult"></div>
 
-        <p>Có <strong>@ViewBag.RowCount</strong> người giao hàng trong tổng số <strong>@ViewBag.PageCount </strong>trang</p>
-
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr class="bg-primary">
-                    <th>Tên người giao hàng</th>
-                    <th>Số điện thoại</th>
-                    <th>
-
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.ShipperName</td>
-                        <td>@item.Phone</td>
-                        <td>
-                            <a href="~/Shipper/Edit/@item.ShipperID" class="btn btn-success">Sửa</a>
-                            <a href="~/Shipper/Delete/@item.ShipperID" class="btn btn-danger">Xóa</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <div class="col-sm-7 text-center">
-            <ul class="pagination">
-                @for (int i = 1; i <= ViewBag.PageCount; i++)
-                {
-                    if (i == ViewBag.Page)
-                    {
-                        <li class="paginate_button active">
-                            <a href="#" >@i</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="paginate_button">
-                            <a href="~/Shipper?page=@i&searchValue=@ViewBag.SearchValue">@i</a>
-                        </li>
-                    }
-                        
-                }
-            </ul>
-        </div>
     </div>
 </div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#formSearch").submit(function (e) {
+                e.preventDefault();
+                doSearch(1);
+                return;
+            });
+            doSearch(@Model.Page);
+        })
+        function doSearch(page) {
+            var url = $("#formSearch").prop("action");
+            var postData = $("#formSearch").serializeArray();
+            postData.push({ "name": "page", "value": page });
 
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: postData,
+                error: function () {
+                    alert("Your request is not valid!");
+                },
+                success: function (data) {
+                    $("#searchResult").html(data);
+                }
+            });
+
+            return;
+        }
+    </script>
+}
 
 
 
