@@ -5,33 +5,47 @@ using System.Web;
 using System.Web.Mvc;
 using _20T1020433.BusinessLayers;
 using _20T1020433.DomainModels;
+using _20T1020433.Web.Models;
 
 namespace _20T1020433.Web.Controllers
 {
     public class CustomerController : Controller
     {
         private const int PAGE_SIZE = 5;
-        private const string CUSTOMER_SEARCH = "SearchSupplierCondition";
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        // GET: Customer
-        public ActionResult Index(int page = 1, int pageSize = 10, string searchValue = "")
+        private const string CUSTOMER_SEARCH = "SearchCustomerCondition";
+        public ActionResult Index()
+        {
+            PaginationSearchInput condition = Session[CUSTOMER_SEARCH] as PaginationSearchInput;
+            if (condition == null)
+            {
+                condition = new PaginationSearchInput()
+                {
+                    Page = 1,
+                    PageSize = PAGE_SIZE,
+                    SearchValue = ""
+                };
+            }
+
+            return View(condition);
+        }
+
+        public ActionResult Search(PaginationSearchInput condition)
         {
             int rowCount = 0;
-            var data = CommonDataService.ListOfCustomers(page, pageSize, searchValue, out rowCount);
-
-            int pageCount = rowCount / pageSize;
-            if (rowCount % pageSize > 0)
-                pageCount += 1;
-
-            ViewBag.Page = page;
-            ViewBag.PageCount = pageCount;
-            ViewBag.RowCount = rowCount;
-            ViewBag.PageSize = pageSize;
-            ViewBag.SearchValue = searchValue;
-            return View(data);
+            var data = CommonDataService.ListOfCustomers(condition.Page,
+                condition.PageSize,
+                condition.SearchValue,
+                out rowCount);
+            var result = new CustomerSearchOutput()
+            {
+                Page = condition.Page,
+                PageSize = condition.PageSize,
+                SearchValue = condition.SearchValue,
+                RowCount = rowCount,
+                Data = data
+            };
+            Session[CUSTOMER_SEARCH] = condition;
+            return View(result);
         }
         /// <summary>
         /// 

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using _20T1020433.BusinessLayers;
 using _20T1020433.DomainModels;
+using _20T1020433.Web.Models;
 
 namespace _20T1020433.Web.Controllers
 {
@@ -15,36 +16,72 @@ namespace _20T1020433.Web.Controllers
         /// </summary>
         /// <returns></returns>
         // GET: Category
-        public ActionResult Index(int page = 1, int pageSize = 5, string searchValue = "")
+        //public ActionResult Index(int page = 1, int pageSize = 5, string searchValue = "")
+        //{
+        //    var rowCount = 0;
+        //    var data = CommonDataService.ListOfCategories(page, pageSize, searchValue, out rowCount);
+        //    var data2 = CommonDataService.ListOfCategories(searchValue);
+        //    string[] parentCategoryNames = new string[data2.Count+1];
+        //    int parentCategoryId;
+        //    for (var i = 0; i < data2.Count; i++)
+        //    {
+        //        parentCategoryId = data2[i].ParentCategoryId;
+        //        if (parentCategoryId != 0)
+        //        {
+        //            Category category = new Category();
+        //            category = CommonDataService.GetCategory(parentCategoryId);
+        //            parentCategoryNames[i+1] = category.CategoryName;
+        //        }
+        //        else parentCategoryNames[i+1] = "Không có";
+        //    }
+
+        //    ViewBag.parentCategoryNames = parentCategoryNames;
+        //    var pageCount = rowCount / pageSize;
+        //    if (rowCount % pageSize > 0)
+        //        pageCount += 1;
+
+        //    ViewBag.Page = page;
+        //    ViewBag.PageCount = pageCount;
+        //    ViewBag.RowCount = rowCount;
+        //    ViewBag.PageSize = pageSize;
+        //    ViewBag.SearchValue = searchValue;
+        //    return View(data);
+        //}
+        private const int PAGE_SIZE = 5;
+        private const string CATEGORY_SEARCH = "SearchCustomerCondition";
+        public ActionResult Index()
         {
-            var rowCount = 0;
-            var data = CommonDataService.ListOfCategories(page, pageSize, searchValue, out rowCount);
-            var data2 = CommonDataService.ListOfCategories(searchValue);
-            string[] parentCategoryNames = new string[data2.Count+1];
-            int parentCategoryId;
-            for (var i = 0; i < data2.Count; i++)
+            PaginationSearchInput condition = Session[CATEGORY_SEARCH] as PaginationSearchInput;
+            if (condition == null)
             {
-                parentCategoryId = data2[i].ParentCategoryId;
-                if (parentCategoryId != 0)
+                condition = new PaginationSearchInput()
                 {
-                    Category category = new Category();
-                    category = CommonDataService.GetCategory(parentCategoryId);
-                    parentCategoryNames[i+1] = category.CategoryName;
-                }
-                else parentCategoryNames[i+1] = "Không có";
+                    Page = 1,
+                    PageSize = PAGE_SIZE,
+                    SearchValue = ""
+                };
             }
 
-            ViewBag.parentCategoryNames = parentCategoryNames;
-            var pageCount = rowCount / pageSize;
-            if (rowCount % pageSize > 0)
-                pageCount += 1;
+            return View(condition);
+        }
 
-            ViewBag.Page = page;
-            ViewBag.PageCount = pageCount;
-            ViewBag.RowCount = rowCount;
-            ViewBag.PageSize = pageSize;
-            ViewBag.SearchValue = searchValue;
-            return View(data);
+        public ActionResult Search(PaginationSearchInput condition)
+        {
+            int rowCount = 0;
+            var data = CommonDataService.ListOfCategories(condition.Page,
+                condition.PageSize,
+                condition.SearchValue,
+                out rowCount);
+            var result = new CategorySearchOutput()
+            {
+                Page = condition.Page,
+                PageSize = condition.PageSize,
+                SearchValue = condition.SearchValue,
+                RowCount = rowCount,
+                Data = data
+            };
+            Session[CATEGORY_SEARCH] = condition;
+            return View(result);
         }
         /// <summary>
         /// 
