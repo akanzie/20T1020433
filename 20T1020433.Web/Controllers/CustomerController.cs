@@ -11,7 +11,7 @@ namespace _20T1020433.Web.Controllers
 {
     public class CustomerController : Controller
     {
-        private const int PAGE_SIZE = 5;
+        private const int PAGE_SIZE = 10;
         private const string CUSTOMER_SEARCH = "SearchCustomerCondition";
         public ActionResult Index()
         {
@@ -64,11 +64,14 @@ namespace _20T1020433.Web.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int id = 0)
         {
-            int customerId = Convert.ToInt32(id);
+            if (id <= 0)
+                return RedirectToAction("Index");
 
-            var data = CommonDataService.GetCustomer(customerId);
+            var data = CommonDataService.GetCustomer(id);
+            if (data == null)
+                return RedirectToAction("Index");
             ViewBag.Title = "Cập nhật nhà cung cấp";
             return View(data);
         }
@@ -78,33 +81,65 @@ namespace _20T1020433.Web.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer data)
         {
-            if (data.CustomerID == 0)
+            try
             {
-                CommonDataService.AddCustomer(data);
+                if (string.IsNullOrWhiteSpace(data.CustomerName))
+                    ModelState.AddModelError("CustomerName", "Tên không được để trống");
+                if (string.IsNullOrWhiteSpace(data.ContactName))
+                    ModelState.AddModelError("ContactName", "Tên giao dịch không được để trống");
+                if (string.IsNullOrWhiteSpace(data.Country))
+                    ModelState.AddModelError("Country", "Vui lòng chọn quốc gia");
+                if (string.IsNullOrWhiteSpace(data.City))
+                    ModelState.AddModelError("City", "Thành phố không được để trống");
+                if (string.IsNullOrWhiteSpace(data.Address))
+                    ModelState.AddModelError("Address", "Địa chỉ không được để trống");                
+                if (string.IsNullOrWhiteSpace(data.PostalCode))
+                    ModelState.AddModelError("PostalCode", "Mã bưu chính không được để trống");
+                if (string.IsNullOrWhiteSpace(data.Email))
+                    ModelState.AddModelError("Email", "Email không được để trống");
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.Title = data.CustomerID == 0 ? "Bổ sung khách hàng" : "Cập nhật khách hàng";
+                    return View("Edit", data);
+                }
+                if (data.CustomerID == 0)
+                {
+                    CommonDataService.AddCustomer(data);
+                }
+                else
+                {
+                    CommonDataService.UpdateCustomer(data);
+                }
+                return RedirectToAction("Index");
             }
-            else
+            catch (Exception ex)
             {
-                CommonDataService.UpdateCustomer(data);
+                //Ghi lại log lỗi
+                return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
             }
-            return RedirectToAction("Index");
         }
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public ActionResult Delete(string id)
+        public ActionResult Delete(int id = 0)
         {
-            int customerId = Convert.ToInt32(id);
+            if (id <= 0)
+                return RedirectToAction("Index");
+
             if (Request.HttpMethod == "GET")
             {
-                var data = CommonDataService.GetCustomer(customerId);
+                var data = CommonDataService.GetCustomer(id);
+                if (data == null)
+                    return RedirectToAction("Index");
                 return View(data);
             }
             else
             {
-                CommonDataService.DeleteCustomer(customerId);
+                CommonDataService.DeleteCustomer(id);
                 return RedirectToAction("Index");
             }
         }

@@ -39,7 +39,7 @@
         }
     </tbody>
 </table>
-<div class="col-sm-7 text-center">
+<div class="text-center">
     <ul class="pagination">
         @for (int i = 1; i <= Model.PageCount; i++)
         {
@@ -59,3 +59,35 @@
         }
     </ul>
 </div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#formSearch").submit(function (e) {
+                e.preventDefault();
+                doSearch(1);
+                return;
+            });
+            doSearch(@Model.Page);
+        })
+        function doSearch(page) {
+            var url = $("#formSearch").prop("action");
+            var postData = $("#formSearch").serializeArray();
+            postData.push({ "name": "page", "value": page });
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: postData,
+                error: function () {
+                    alert("Your request is not valid!");
+                },
+                success: function (data) {
+                    $("#searchResult").html(data);
+                }
+            });
+
+            return;
+        }
+    </script>
+}

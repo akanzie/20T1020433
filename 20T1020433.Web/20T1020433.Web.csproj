@@ -120,6 +120,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Codes\SelectListHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
@@ -135,6 +136,7 @@
     </Compile>
     <Compile Include="Models\CategorySearchOutput.cs" />
     <Compile Include="Models\CustomerSearchOutput.cs" />
+    <Compile Include="Models\EmployeeSearchOutput.cs" />
     <Compile Include="Models\PaginationSearchInput.cs" />
     <Compile Include="Models\PaginationSearchOutput.cs" />
     <Compile Include="Models\ShipperSearchOutput.cs" />
@@ -6522,6 +6524,8 @@
     <Content Include="Views\Customer\Search.cshtml" />
     <Content Include="Views\Category\Search.cshtml" />
     <Content Include="Views\Shipper\Search.cshtml" />
+    <Content Include="Views\Supplier\Edit - Copy.cshtml" />
+    <Content Include="Views\Employee\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

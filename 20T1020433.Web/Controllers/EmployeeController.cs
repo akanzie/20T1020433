@@ -5,31 +5,47 @@ using System.Web;
 using System.Web.Mvc;
 using _20T1020433.BusinessLayers;
 using _20T1020433.DomainModels;
+using _20T1020433.Web.Models;
 
 namespace _20T1020433.Web.Controllers
 {
     public class EmployeeController : Controller
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        // GET: Employee
-        public ActionResult Index(int page = 1, int pageSize = 6, string searchValue = "")
+        private const int PAGE_SIZE = 10;
+        private const string EMPLOYEE_SEARCH = "SearchEmployeeCondition";
+        public ActionResult Index()
+        {
+            PaginationSearchInput condition = Session[EMPLOYEE_SEARCH] as PaginationSearchInput;
+            if (condition == null)
+            {
+                condition = new PaginationSearchInput()
+                {
+                    Page = 1,
+                    PageSize = PAGE_SIZE,
+                    SearchValue = ""
+                };
+            }
+
+            return View(condition);
+        }
+
+        public ActionResult Search(PaginationSearchInput condition)
         {
             int rowCount = 0;
-            var data = CommonDataService.ListOfEmployees(page, pageSize, searchValue, out rowCount);
-
-            int pageCount = rowCount / pageSize;
-            if (rowCount % pageSize > 0)
-                pageCount += 1;
-
-            ViewBag.Page = page;
-            ViewBag.PageCount = pageCount;
-            ViewBag.RowCount = rowCount;
-            ViewBag.PageSize = pageSize;
-            ViewBag.SearchValue = searchValue;
-            return View(data);
+            var data = CommonDataService.ListOfEmployees(condition.Page,
+                condition.PageSize,
+                condition.SearchValue,
+                out rowCount);
+            var result = new EmployeeSearchOutput()
+            {
+                Page = condition.Page,
+                PageSize = condition.PageSize,
+                SearchValue = condition.SearchValue,
+                RowCount = rowCount,
+                Data = data
+            };
+            Session[EMPLOYEE_SEARCH] = condition;
+            return View(result);
         }
         /// <summary>
         /// 
@@ -48,11 +64,14 @@ namespace _20T1020433.Web.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int id = 0)
         {
-            int employeeId = Convert.ToInt32(id);
+            if (id <= 0)
+                return RedirectToAction("Index");
 
-            var data = CommonDataService.GetEmployee(employeeId);
+            var data = CommonDataService.GetEmployee(id);
+            if (data == null)
+                return RedirectToAction("Index");
             ViewBag.Title = "Cập nhật nhân viên";
             return View(data);
         }
@@ -62,33 +81,67 @@ namespace _20T1020433.Web.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Employee data)
         {
-            if (data.EmployeeID == 0)
+            try
             {
-                CommonDataService.AddEmployee(data);
+                if (string.IsNullOrWhiteSpace(data.FirstName))
+                    ModelState.AddModelError("FirstName", "Tên không được để trống");
+                if (string.IsNullOrWhiteSpace(data.LastName))
+                    ModelState.AddModelError("LastName", "Họ không được để trống");
+                if (string.IsNullOrWhiteSpace(data.BirthDate.ToString()))
+                    ModelState.AddModelError("BirthDate", "Vui lòng chọn ngày sinh");
+                if (string.IsNullOrWhiteSpace(data.Photo))
+                    ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
+                if (string.IsNullOrWhiteSpace(data.Notes))
+                    ModelState.AddModelError("Notes", "Ghi chú không được để trống");
+                if (string.IsNullOrWhiteSpace(data.Email))
+                    ModelState.AddModelError("Email", "Email không được để trống");
+                
+
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.Title = data.EmployeeID == 0 ? "Bổ sung nhà cung cấp" : "Cập nhật nhà cung cấp";
+                    return View("Edit", data);
+                }
+                if (data.EmployeeID == 0)
+                {
+                    CommonDataService.AddEmployee(data);
+                }
+                else
+                {
+                    CommonDataService.UpdateEmployee(data);
+                }
+                return RedirectToAction("Index");
             }
-            else
+            catch (Exception ex)
             {
-                CommonDataService.UpdateEmployee(data);
+                //Ghi lại log lỗi
+                return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
             }
-            return RedirectToAction("Index");
+
+        }
+            
         }
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public ActionResult Delete(string id)
+        public ActionResult Delete(int id = 0)
         {
-            int employeeId = Convert.ToInt32(id);
-            if (Request.HttpMethod == "GET")
+        if (id <= 0)
+            return RedirectToAction("Index");
+        if (Request.HttpMethod == "GET")
             {
-                var data = CommonDataService.GetEmployee(employeeId);
+                var data = CommonDataService.GetEmployee(id);
+                if (data == null)
+                    return RedirectToAction("Index");
                 return View(data);
             }
             else
             {
-                CommonDataService.DeleteEmployee(employeeId);
+                CommonDataService.DeleteEmployee(id);
                 return RedirectToAction("Index");
             }
         }

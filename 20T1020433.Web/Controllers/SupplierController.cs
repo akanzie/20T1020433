@@ -87,11 +87,13 @@ namespace _20T1020433.Web.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int id = 0)
         {
-            int supplierId = Convert.ToInt32(id);
-
-            var data = CommonDataService.GetSupplier(supplierId);
+            if (id <= 0)
+                return RedirectToAction("Index");
+            var data = CommonDataService.GetSupplier(id);
+            if (data == null)
+                return RedirectToAction("Index");
             ViewBag.Title = "Cập nhật nhà cung cấp";
             return View(data);
         }
@@ -101,33 +103,67 @@ namespace _20T1020433.Web.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Supplier data)
         {
-            if (data.SupplierID == 0)
+            try
             {
-                CommonDataService.AddSupplier(data);
+                if (string.IsNullOrWhiteSpace(data.SupplierName))
+                    ModelState.AddModelError("SupplierName", "Tên không được để trống");
+                if (string.IsNullOrWhiteSpace(data.ContactName))
+                    ModelState.AddModelError("ContactName", "Tên giao dịch không được để trống");
+                if (string.IsNullOrWhiteSpace(data.Country))
+                    ModelState.AddModelError("Country", "Vui lòng chọn quốc gia");
+                if (string.IsNullOrWhiteSpace(data.City))
+                    ModelState.AddModelError("City", "Thành phố không được để trống");
+                if (string.IsNullOrWhiteSpace(data.Address))
+                    ModelState.AddModelError("Address", "Địa chỉ không được để trống");
+                if (string.IsNullOrWhiteSpace(data.Phone))
+                    ModelState.AddModelError("Phone", "Điện thoại không được để trống");
+                if (string.IsNullOrWhiteSpace(data.PostalCode))
+                    ModelState.AddModelError("PostalCode", "Mã bưu chính không được để trống");
+
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.Title = data.SupplierID == 0 ? "Bổ sung nhà cung cấp" : "Cập nhật nhà cung cấp";
+                    return View("Edit", data);
+                }
+                if (data.SupplierID == 0)
+                {
+                    CommonDataService.AddSupplier(data);
+                }
+                else
+                {
+                    CommonDataService.UpdateSupplier(data);
+                }
+                return RedirectToAction("Index");
             }
-            else
+            catch (Exception ex)
             {
-                CommonDataService.UpdateSupplier(data);
+                //Ghi lại log lỗi
+                return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
             }
-            return RedirectToAction("Index");
+            
         }
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public ActionResult Delete(string id)
+        public ActionResult Delete(int id = 0)
         {
-            int supplierID = Convert.ToInt32(id);
+            if (id <= 0)
+                return RedirectToAction("Index");
+
             if (Request.HttpMethod == "GET")
             {
-                var data = CommonDataService.GetSupplier(supplierID);
+                var data = CommonDataService.GetSupplier(id);
+                if (data == null)
+                    return RedirectToAction("Index");
                 return View(data);
             }
             else
             {
-                CommonDataService.DeleteSupplier(supplierID);
+                CommonDataService.DeleteSupplier(id);
                 return RedirectToAction("Index");
             }
         }

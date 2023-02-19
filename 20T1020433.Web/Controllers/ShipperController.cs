@@ -64,11 +64,14 @@ namespace _20T1020433.Web.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int id = 0)
         {
-            int shipperId = Convert.ToInt32(id);
+            if (id <= 0)
+                return RedirectToAction("Index");
 
-            var data = CommonDataService.GetShipper(shipperId);
+            var data = CommonDataService.GetShipper(id);
+            if (data == null)
+                return RedirectToAction("Index");
             ViewBag.Title = "Cập nhật người giao hàng";
             return View(data);
         }
@@ -78,33 +81,56 @@ namespace _20T1020433.Web.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Shipper data)
         {
-            if (data.ShipperID == 0)
+            try
             {
-                CommonDataService.AddShipper(data);
+                if (string.IsNullOrWhiteSpace(data.ShipperName))
+                    ModelState.AddModelError("ShipperName", "Tên không được để trống");
+                if (string.IsNullOrWhiteSpace(data.Phone))
+                    ModelState.AddModelError("Phone", "Điện thoại không được để trống");
+
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.Title = data.ShipperID == 0 ? "Bổ sung người giao hàng" : "Cập nhật người giao hàng";
+                    return View("Edit", data);
+                }
+                if (data.ShipperID == 0)
+                {
+                    CommonDataService.AddShipper(data);
+                }
+                else
+                {
+                    CommonDataService.UpdateShipper(data);
+                }
+                return RedirectToAction("Index");
             }
-            else
+            catch (Exception ex)
             {
-                CommonDataService.UpdateShipper(data);
+                //Ghi lại log lỗi
+                return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
             }
-            return RedirectToAction("Index");
         }
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public ActionResult Delete(string id)
+        public ActionResult Delete(int id = 0)
         {
-            int shipperId = Convert.ToInt32(id);
+            if (id <= 0)
+                return RedirectToAction("Index");
+            
             if (Request.HttpMethod == "GET")
             {
-                var data = CommonDataService.GetShipper(shipperId);
+                var data = CommonDataService.GetShipper(id);
+                if (data == null)
+                    return RedirectToAction("Index");
                 return View(data);
             }
             else
             {
-                CommonDataService.DeleteShipper(shipperId);
+                CommonDataService.DeleteShipper(id);
                 return RedirectToAction("Index");
             }
         }

@@ -1,0 +1,81 @@
+﻿@model _20T1020433.Web.Models.EmployeeSearchOutput
+@{
+    Layout = null;
+}
+<p style="margin-left: 5px;">Có <strong>@Model.RowCount</strong> nhân viên trong tổng số <strong>@Model.PageCount</strong> trang</p>
+<div class="row ">
+    @foreach (var item in Model.Data)
+    {
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="card">
+                <div class="box-body box-profile">
+                    <span class="input-group-btn bg-primary">
+                        <a href="~/Employee/Delete/@item.EmployeeID" class="btn btn-danger pull-right">
+                            <i class="glyphicon glyphicon-trash" title="Xóa"></i>
+                        </a>
+                        <a href="~/Employee/Edit/@item.EmployeeID" class="btn btn-success pull-right ">
+                            <i class="glyphicon glyphicon-edit " title="Sửa"></i>
+                        </a>
+                    </span>
+                    <div class="el-card-item">
+                        <div class="el-card-avatar el-overlay-1" style="margin-top: 2px">
+                            <img src="@item.Photo" alt="employee photo" class="img-responsive img-circle" style="margin-left: auto; margin-right: auto">
+                        </div>
+                        <div class="el-card-content text-center">
+                            <h3>@item.FirstName @item.LastName</h3>
+                        </div>
+                        <ul class="nav nav-stacked">
+                            <li>
+                                <p class="form-control-static" style="font-size: 15px;">
+                                    <strong>Ngày sinh:</strong>
+                                    <span class="pull-right" style="margin-right: 10px;">@item.BirthDate.ToString("dd/MM/yyyy")</span>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="form-control-static" style="font-size: 15px;">
+                                    <strong>Email: </strong>
+                                    <span class="pull-right" style="margin-right: 10px;">@item.Email</span>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="form-control-static" style="font-size: 15px;
+                                                                              overflow: hidden;
+                                                                              text-overflow: ellipsis;
+                                                                              line-height: 25px;
+                                                                              -webkit-line-clamp: 3;
+                                                                              height: 80px;
+                                                                              display: -webkit-box;
+                                                                              -webkit-box-orient: vertical;">
+                                    <strong>Ghi chú: </strong>
+                                    @item.Notes
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+    </div>
+</div>
+<div class="text-center">
+    <ul class="pagination">
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            if (i == Model.Page)
+            {
+                <li class="paginate_button active">
+                    <a href="#">@i</a>
+                </li>
+            }
+            else
+            {
+                <li class="paginate_button">
+                    <a href="javascript:;" onclick="doSearch(@i)">@i</a>
+                </li>
+            }
+
+        }
+    </ul>
+</div>
