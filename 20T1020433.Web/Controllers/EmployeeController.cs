@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,7 +12,7 @@ namespace _20T1020433.Web.Controllers
 {
     public class EmployeeController : Controller
     {
-        private const int PAGE_SIZE = 10;
+        private const int PAGE_SIZE = 5;
         private const string EMPLOYEE_SEARCH = "SearchEmployeeCondition";
         public ActionResult Index()
         {
@@ -90,7 +91,7 @@ namespace _20T1020433.Web.Controllers
                     ModelState.AddModelError("FirstName", "Tên không được để trống");
                 if (string.IsNullOrWhiteSpace(data.LastName))
                     ModelState.AddModelError("LastName", "Họ không được để trống");
-                if (string.IsNullOrWhiteSpace(data.BirthDate.ToString()))
+                if (string.IsNullOrWhiteSpace(data.BirthDate.ToString(CultureInfo.InvariantCulture)))
                     ModelState.AddModelError("BirthDate", "Vui lòng chọn ngày sinh");
                 if (string.IsNullOrWhiteSpace(data.Photo))
                     ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
@@ -123,7 +124,7 @@ namespace _20T1020433.Web.Controllers
 
         }
             
-        }
+        
         /// <summary>
         /// 
         /// </summary>
