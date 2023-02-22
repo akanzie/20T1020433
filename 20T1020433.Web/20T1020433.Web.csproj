@@ -120,6 +120,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Codes\Converter.cs" />
     <Compile Include="Codes\SelectListHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
@@ -6526,10 +6527,11 @@
     <Content Include="Views\Shipper\Search.cshtml" />
     <Content Include="Views\Supplier\Edit - Copy.cshtml" />
     <Content Include="Views\Employee\Search.cshtml" />
+    <Content Include="Views\Test\Input.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Test\" />
+    <Folder Include="Photo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

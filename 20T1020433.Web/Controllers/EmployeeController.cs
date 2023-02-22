@@ -83,23 +83,36 @@ namespace _20T1020433.Web.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(Employee data)
+        public ActionResult Save(Employee data, string birthday, HttpPostedFileBase uploadPhoto)
         {
-            try
-            {
+            //try
+            //{               
+                DateTime? d = Converter.DMYStringToDateTime(birthday);
+                if (d == null)
+                    ModelState.AddModelError("BirthDate", $"Ngày { birthday}  không hợp lệ. Vui lòng nhập theo định dạng dd/MM/yyyy");
+                else
+                    data.BirthDate = d.Value;
                 if (string.IsNullOrWhiteSpace(data.FirstName))
                     ModelState.AddModelError("FirstName", "Tên không được để trống");
                 if (string.IsNullOrWhiteSpace(data.LastName))
                     ModelState.AddModelError("LastName", "Họ không được để trống");
-                if (string.IsNullOrWhiteSpace(data.BirthDate.ToString(CultureInfo.InvariantCulture)))
-                    ModelState.AddModelError("BirthDate", "Vui lòng chọn ngày sinh");
-                if (string.IsNullOrWhiteSpace(data.Photo))
-                    ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
+            //if (string.IsNullOrWhiteSpace(data.BirthDate.ToString(CultureInfo.InvariantCulture)))
+            //    ModelState.AddModelError("BirthDate", "Vui lòng chọn ngày sinh");
+            if (string.IsNullOrWhiteSpace(data.Photo))
+                data.Photo = "";
+                    //ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
                 if (string.IsNullOrWhiteSpace(data.Notes))
                     ModelState.AddModelError("Notes", "Ghi chú không được để trống");
                 if (string.IsNullOrWhiteSpace(data.Email))
                     ModelState.AddModelError("Email", "Email không được để trống");
-                
+                if(uploadPhoto != null)
+            {
+                string path = Server.MapPath("~/Photo");
+                string fileName = $"{DateTime.Now.Ticks}_{uploadPhoto.FileName}";
+                string filePath = System.IO.Path.Combine(path, fileName);
+                uploadPhoto.SaveAs(filePath);
+                data.Photo = fileName;
+            }
 
                 if (!ModelState.IsValid)
                 {
@@ -115,12 +128,12 @@ namespace _20T1020433.Web.Controllers
                     CommonDataService.UpdateEmployee(data);
                 }
                 return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                //Ghi lại log lỗi
-                return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    //Ghi lại log lỗi
+            //    return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
+            //}
 
         }
             
