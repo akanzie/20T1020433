@@ -42,8 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountTypes.cs" />
     <Compile Include="CommonDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserAccountService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\20T1020433.DataLayers\20T1020433.DataLayers.csproj">

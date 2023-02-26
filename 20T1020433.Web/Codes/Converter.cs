@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using _20T1020433.DomainModels;
 
 namespace _20T1020433.Web
 {
@@ -42,5 +43,12 @@ namespace _20T1020433.Web
                 return null;
             }
         }
+        public static UserAccount CookieToUserAccount(string cookie)
+        {
+            // Json -> obj
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UserAccount>(cookie);
+        }
+
+        //public 
     }
 }
