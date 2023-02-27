@@ -43,6 +43,11 @@ namespace _20T1020433.Web
                 return null;
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cookie"></param>
+        /// <returns></returns>
         public static UserAccount CookieToUserAccount(string cookie)
         {
             // Json -> obj
