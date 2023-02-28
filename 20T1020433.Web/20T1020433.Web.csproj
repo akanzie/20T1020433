@@ -6528,6 +6528,12 @@
     <Content Include="Views\Supplier\Edit - Copy.cshtml" />
     <Content Include="Views\Employee\Search.cshtml" />
     <Content Include="Views\Test\Input.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\Delete.cshtml" />
+    <Content Include="Views\Product\Photo.cshtml" />
+    <Content Include="Views\Product\Attribute.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

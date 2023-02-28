@@ -20,4 +20,9 @@ namespace _20T1020433.Web.Models
         /// </summary>
         public string SearchValue { get; set; }
     }
+    public class ProductSearchInput : PaginationSearchInput
+    {
+        public int CategoryID { get; set; }
+        public int SupplierID { get; set; }
+    }
 }
