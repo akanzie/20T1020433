@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Web.Services.Description;
+using System.Web.UI;
 using _20T1020433.BusinessLayers;
 
 namespace _20T1020433.Web.Controllers
@@ -107,7 +109,11 @@ namespace _20T1020433.Web.Controllers
                 ModelState.AddModelError("", "Mật khẩu cũ không đúng");
                 return View();
             }
-            return RedirectToAction("Index", "Home");         
+            Response.Write("<script>alert('Đổi mật khẩu thành công! Vui lòng đăng nhập lại!')</script>");
+
+            Session.Clear();
+            FormsAuthentication.SignOut();
+            return View();
         }
           
     }
