@@ -30,7 +30,12 @@ namespace _20T1020433.Web.Controllers
         {
             return View();
         }
-
+        public ActionResult ChangePassword()
+        {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            ViewBag.UserName = userAccount.UserName;
+            return View();
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -78,5 +83,32 @@ namespace _20T1020433.Web.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="oldPassword"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ChangePassword(string userName = "", string oldPassword = "", string newPassword = "")
+        {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);                   
+            ViewBag.UserName = userAccount.UserName;
+            userName = userAccount.UserName;
+            if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
+            {
+                ModelState.AddModelError("", "Vui lòng nhập đầy đủ thông tin!");
+                return View();
+            }                
+            var check = UserAccountService.ChangePassword(AccountTypes.Employee, userName, oldPassword, newPassword);
+            if(check == false)
+            {
+                ModelState.AddModelError("", "Mật khẩu cũ không đúng");
+                return View();
+            }
+            return RedirectToAction("Index", "Home");         
+        }
+          
     }
 }
