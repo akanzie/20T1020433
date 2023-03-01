@@ -1,4 +1,5 @@
-﻿@{
+﻿@model _20T1020433.DomainModels.ProductPhoto
+@{
 
 }
 
@@ -7,38 +8,43 @@
     </div>
 
     <div class="box-body">
-        <form class="form-horizontal" action="~/Product/SavePhoto" method="post">
-
+        <form class="form-horizontal" action="~/Product/SavePhoto" method="post" enctype="multipart/form-data">
+            @Html.HiddenFor(m => m.ProductID)
+            @Html.HiddenFor(m => m.PhotoID)
             <div class="form-group">
-                <label class="control-label col-sm-2">Ảnh:</label>
+                <label class="control-label col-sm-2">Ảnh minh họa:</label>
                 <div class="col-sm-10">
-                    <input type="file" class="form-control" name="Photo" />
-                </div>
-            </div>
+                    <label for="Photo-Uploader" style="cursor: pointer" title="Click để thay đổi ảnh">
+                        <img id="photo" src="~/Photo/Product/@Model.Photo" class="img img-bordered" style="width:150px" alt="">
+                    </label>
+                    <input accept="image/*" type="file"
+                           id="Photo-Uploader"
+                           name="uploadPhoto"
+                           onchange="document.getElementById('photo').src = window.URL.createObjectURL(this.files[0])">
 
-            <div class="form-group">
-                <div class="col-lg-offset-2 col-sm-10">
-                    <img src="~/Images/Products/Samsung_1.jpg" class="img img-bordered" style="width:150px" />
+                    @Html.HiddenFor(m => m.Photo)
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Mô tả:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" name="Description" autofocus>
+                    <input type="text" class="form-control" name="Description" value="@Model.Description" autofocus>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Thứ tự hiển thị:</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" name="DisplayOrder" autofocus>
+                    <input type="number" class="form-control" name="DisplayOrder" value ="@Model.DisplayOrder" autofocus>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-lg-offset-2 col-sm-10 checkbox">
-                    <label><input type="checkbox" name="IsHidden">Ẩn ảnh (không hiển thị với khách hàng)</label>
+                    <label>
+                        @Html.CheckBoxFor(m => m.IsHidden) Ẩn ảnh (không hiển thị với khách hàng)
+                    </label>
                 </div>
             </div>
 
@@ -47,7 +53,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fa fa-save"></i> Lưu dữ liệu
                     </button>
-                    <a class="btn btn-warning" href="~/product/edit/123">
+                    <a class="btn btn-warning" href="~/product/edit/@Model.ProductID">
                         <i class="fa fa-ban"></i> Quay lại
                     </a>
                 </div>

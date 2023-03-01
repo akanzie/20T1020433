@@ -32,12 +32,7 @@ namespace _20T1020433.Web.Controllers
         {
             return View();
         }
-        public ActionResult ChangePassword()
-        {
-            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
-            ViewBag.UserName = userAccount.UserName;
-            return View();
-        }
+        
         /// <summary>
         /// 
         /// </summary>
@@ -85,6 +80,10 @@ namespace _20T1020433.Web.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
         }
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -93,16 +92,18 @@ namespace _20T1020433.Web.Controllers
         /// <param name="newPassword"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult ChangePassword(string userName = "", string oldPassword = "", string newPassword = "")
+        public ActionResult ChangePassword(string userName = "", string oldPassword = "", string newPassword = "", string newPass = "")
         {
-            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);                   
-            ViewBag.UserName = userAccount.UserName;
-            userName = userAccount.UserName;
             if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
             {
                 ModelState.AddModelError("", "Vui lòng nhập đầy đủ thông tin!");
                 return View();
-            }                
+            }      
+            if (newPass != newPassword)
+            {
+                ModelState.AddModelError("", "Mật khẩu không khớp");
+                return View();
+            }
             var check = UserAccountService.ChangePassword(AccountTypes.Employee, userName, oldPassword, newPassword);
             if(check == false)
             {
@@ -113,7 +114,7 @@ namespace _20T1020433.Web.Controllers
 
             Session.Clear();
             FormsAuthentication.SignOut();
-            return View();
+            return View("Login");
         }
           
     }

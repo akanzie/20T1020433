@@ -37,7 +37,7 @@ namespace _20T1020433.BusinessLayers
         {
             return productDB.List(1, 0, searchValue, categoryID, supplierID).ToList();
         }
-        public static Product GetProducts(int productID)
+        public static Product GetProduct(int productID)
         {
             return productDB.Get(productID);
 
@@ -82,6 +82,8 @@ namespace _20T1020433.BusinessLayers
         /// <returns></returns>
         public static bool DeleteProduct(int productID)
         {
+            productDB.DeleteAttribute(productID);
+            productDB.DeletePhoto(productID);
             return productDB.Delete(productID);
         }
         /// <summary>
@@ -156,7 +158,7 @@ namespace _20T1020433.BusinessLayers
         /// </summary>
         /// <param name="attributeID"></param>
         /// <returns></returns>
-        public static ProductAttribute GetAttribute(int attributeID)
+        public static ProductAttribute GetAttribute(long attributeID)
         {
             return productDB.GetAttribute(attributeID);
         }

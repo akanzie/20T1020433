@@ -53,7 +53,7 @@ namespace _20T1020433.Web
             // Json -> obj
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UserAccount>(cookie);
         }
-
+        
         //public 
     }
 }

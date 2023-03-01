@@ -1,32 +1,34 @@
-﻿@{
+﻿@model _20T1020433.DomainModels.ProductAttribute
+@{
 
 }
 
 <div class="box box-primary">
     <div class="box-header with-border ">
     </div>
-
+    
     <div class="box-body">
-        <form class="form-horizontal" action="#" method="post">
-
+        <form class="form-horizontal" action="~/Product/SaveAttribute" method="post">
+            @Html.HiddenFor(m => m.ProductID)
+            @Html.HiddenFor(m => m.AttributeID)
             <div class="form-group">
                 <label class="control-label col-sm-2">Tên thuộc tính:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" name="AttributeName" autofocus>
+                    <input type="text" class="form-control" name="AttributeName" value="@Model.AttributeName" autofocus>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Giá trị thuộc tính:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" name="AttributeValue" autofocus>
+                    <input type="text" class="form-control" name="AttributeValue" value="@Model.AttributeValue" autofocus>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Thứ tự hiển thị:</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" name="DisplayOrder" autofocus>
+                    <input type="number" class="form-control" name="DisplayOrder" value="@Model.DisplayOrder" autofocus>
                 </div>
             </div>
 
@@ -35,7 +37,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fa fa-save"></i> Lưu dữ liệu
                     </button>
-                    <a class="btn btn-warning" href="~/product/edit/123">
+                    <a class="btn btn-warning" href="~/product/edit/@Model.ProductID">
                         <i class="fa fa-ban"></i> Quay lại
                     </a>
                 </div>

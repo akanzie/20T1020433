@@ -118,6 +118,7 @@ namespace _20T1020433.BusinessLayers
         {
             return supplierDB.InUsed(supplierID);
         }
+       
         #endregion
 
         #region Các nghiệp vụ liên quan đến người giao hàng
@@ -189,6 +190,7 @@ namespace _20T1020433.BusinessLayers
         {
             return shipperDB.InUsed(shipperID);
         }
+
         #endregion
 
         #region Các nghiệp vụ liên quan đến nhân viên
@@ -402,6 +404,7 @@ namespace _20T1020433.BusinessLayers
         {
             return categoryDB.InUsed(categoryID);
         }
+        
         #endregion
     }
 }
