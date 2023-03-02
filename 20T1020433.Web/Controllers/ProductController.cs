@@ -216,7 +216,8 @@ namespace _20T1020433.Web.Controllers
                 case "add":
                     var data = new ProductPhoto()
                     {
-                        PhotoID = 0
+                        PhotoID = 0,
+                        ProductID = productID
                     };
                     ViewBag.Title = "Bổ sung ảnh";
                     return View(data);
@@ -292,7 +293,8 @@ namespace _20T1020433.Web.Controllers
                 case "add":
                     var data = new ProductAttribute()
                     {
-                        AttributeID = 0
+                        AttributeID = 0,
+                        ProductID = productID
                     };
                     ViewBag.Title = "Bổ sung thuộc tính";
                     return View(data);
