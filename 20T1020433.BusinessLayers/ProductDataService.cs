@@ -33,9 +33,9 @@ namespace _20T1020433.BusinessLayers
         /// <param name="categoryID">Mã loại hàng cần tìm (chuỗi rỗng nếu không tìm kiếm theo loại hàng)</param>
         /// <param name="supplierID">Mã nhà cung cấp cần tìm (chuỗi rỗng nếu không tìm kiếm theo nhà cung cấp)</param>
         /// <returns></returns>
-        public static List<Product> ListProducts(string searchValue = "", int categoryID = 0, int supplierID = 0)
+        public static List<Product> ListProducts(string searchValue = "", int categoryID = 0, int supplierID = 0, int orderByPrice = 0)
         {
-            return productDB.List(1, 0, searchValue, categoryID, supplierID).ToList();
+            return productDB.List(1, 0, searchValue, categoryID, supplierID, orderByPrice).ToList();
         }
         public static Product GetProduct(int productID)
         {
@@ -52,10 +52,10 @@ namespace _20T1020433.BusinessLayers
         /// <param name="supplierID"></param>
         /// <param name="rowCount"></param>
         /// <returns></returns>
-        public static List<Product> ListProducts(int page, int pageSize, string searchValue, int categoryID, int supplierID, out int rowCount)
+        public static List<Product> ListProducts(int page, int pageSize, string searchValue, int categoryID, int supplierID, int orderByPrice, out int rowCount)
         {
             rowCount = productDB.Count(searchValue, categoryID, supplierID);
-            return productDB.List(page, pageSize, searchValue, categoryID, supplierID).ToList();
+            return productDB.List(page, pageSize, searchValue, categoryID, supplierID, orderByPrice).ToList();
         }
         /// <summary>
         /// 

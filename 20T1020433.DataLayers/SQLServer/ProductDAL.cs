@@ -323,7 +323,7 @@ namespace _20T1020433.DataLayers.SQLServer
             return result;
         }
 
-        public IList<Product> List(int page = 1, int pageSize = 0, string searchValue = "", int categoryID = 0, int supplierID = 0)
+        public IList<Product> List(int page = 1, int pageSize = 0, string searchValue = "", int categoryID = 0, int supplierID = 0, int orderByPrice = 0)
         {
             List<Product> data = new List<Product>();
 
@@ -333,16 +333,45 @@ namespace _20T1020433.DataLayers.SQLServer
             using (SqlConnection cn = OpenConnection())
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = @"SELECT *
+                if (orderByPrice == 1)
+                {
+                    cmd.CommandText = @"SELECT *
                                     FROM 
                                     (
-	                                    SELECT	*, ROW_NUMBER() OVER (ORDER BY ProductName) AS RowNumber
+	                                    SELECT	*, ROW_NUMBER() OVER (ORDER BY Price asc) AS RowNumber
 	                                    FROM	Products 
 	                                    WHERE	((@SearchValue = N'') OR (ProductName LIKE @SearchValue))                              
 		                                    AND ((@CategoryID = 0) OR (CategoryID = @CategoryID))
 		                                    AND ((@SupplierID = 0) OR (SupplierID = @SupplierID))
                                     ) AS t
                                     WHERE (@PageSize = 0) OR (t.RowNumber BETWEEN (@Page - 1) * @PageSize + 1 AND @Page * @PageSize);";
+                }
+                else if (orderByPrice == 2)
+                {
+                    cmd.CommandText = @"SELECT *
+                                    FROM 
+                                    (
+	                                    SELECT	*, ROW_NUMBER() OVER (ORDER BY Price desc) AS RowNumber
+	                                    FROM	Products 
+	                                    WHERE	((@SearchValue = N'') OR (ProductName LIKE @SearchValue))                              
+		                                    AND ((@CategoryID = 0) OR (CategoryID = @CategoryID))
+		                                    AND ((@SupplierID = 0) OR (SupplierID = @SupplierID))
+                                    ) AS t
+                                    WHERE (@PageSize = 0) OR (t.RowNumber BETWEEN (@Page - 1) * @PageSize + 1 AND @Page * @PageSize);";
+                }
+                else
+                {
+                    cmd.CommandText = @"SELECT *
+                                    FROM 
+                                    (
+	                                    SELECT	*, ROW_NUMBER() OVER (ORDER BY ProductID) AS RowNumber
+	                                    FROM	Products 
+	                                    WHERE	((@SearchValue = N'') OR (ProductName LIKE @SearchValue))                              
+		                                    AND ((@CategoryID = 0) OR (CategoryID = @CategoryID))
+		                                    AND ((@SupplierID = 0) OR (SupplierID = @SupplierID))
+                                    ) AS t
+                                    WHERE (@PageSize = 0) OR (t.RowNumber BETWEEN (@Page - 1) * @PageSize + 1 AND @Page * @PageSize);";
+                }
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cn;
 
@@ -351,6 +380,7 @@ namespace _20T1020433.DataLayers.SQLServer
                 cmd.Parameters.AddWithValue("@SearchValue", searchValue);
                 cmd.Parameters.AddWithValue("@CategoryID", categoryID);
                 cmd.Parameters.AddWithValue("@SupplierID", supplierID);
+                
                 var dbReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dbReader.Read())
                 {

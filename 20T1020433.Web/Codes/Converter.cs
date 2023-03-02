@@ -9,6 +9,17 @@ namespace _20T1020433.Web
 {
     public static class Converter
     {
+        public static decimal? StringToDecimal(string s)
+        {
+            try
+            {
+                return decimal.Parse(s, CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return null;
+            }
+        }
         /// <summary>
         /// Chuyen một chuỗi DMY sang DateTime
         /// </summary>

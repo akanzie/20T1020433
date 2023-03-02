@@ -8,15 +8,25 @@
     </div>
     <div class="box-body">
         <form id="formSearch" action="~/Product/Search">
+            <input type="hidden" name="PageSize" value="@Model.PageSize" />
             <div class="row">
-                <div class="col-sm-3">
-                    @Html.DropDownListFor(m => m.CategoryID, SelectListHelper.Categories(), new { @class = "form-control" })
+                <div class="col-sm-2">
+                    @Html.DropDownListFor(m => m.CategoryID, SelectListHelper.Categories(), new { @class = "form-control"@*, @onchange = "this.form.submit();"*@ })
                 </div>
                 <div class="col-sm-3">
-                    @Html.DropDownListFor(m => m.SupplierID, SelectListHelper.Suppliers(), new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.SupplierID, SelectListHelper.Suppliers(), new { @class = "form-control"@*, @onchange = "this.form.submit();"*@ })
                 </div>
-                <div class="col-sm-6 input-group">
-                    <input type="hidden" name="PageSize" value="@Model.PageSize" />
+                <div class="col-sm-2">
+                    <select class="form-control"
+                            data-val="true"
+                            id="OrderByPrice"
+                            name="OrderByPrice">
+                        <option value="0">-- Giá --</option>
+                        <option value="1">Giá: Thấp đến cao</option>
+                        <option value="2">Giá: Cao đến thấp</option>
+                    </select>
+                </div>
+                <div class="col-sm-5 input-group">
                     <input type="text" name="searchValue"
                            class="form-control"
                            placeholder="Nhập tên mặt hàng cần tìm"

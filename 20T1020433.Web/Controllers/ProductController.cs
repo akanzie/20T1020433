@@ -1,6 +1,7 @@
 ﻿using _20T1020433.BusinessLayers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -30,6 +31,7 @@ namespace _20T1020433.Web.Controllers
             {
                 condition = new ProductSearchInput()
                 {
+                    OrderByPrice = 0,
                     CategoryID = 0,
                     SupplierID = 0,
                     Page = 1,
@@ -45,10 +47,17 @@ namespace _20T1020433.Web.Controllers
             int rowCount = 0;
             var data = ProductDataService.ListProducts(condition.Page,
                 condition.PageSize,
-                condition.SearchValue, condition.CategoryID, condition.SupplierID,
+                condition.SearchValue, condition.CategoryID, condition.SupplierID, condition.OrderByPrice,
                 out rowCount);
+            //if (condition.OrderByPrice == 1)
+            //    data = OrderBy.OrderByPriceAsc(data);
+            //else if (condition.OrderByPrice == 2)
+            //{
+            //    data = OrderBy.OrderByPriceDesc(data);
+            //}
             var result = new ProductSearchOutput()
             {
+                OrderByPrice = condition.OrderByPrice,
                 Page = condition.Page,
                 PageSize = condition.PageSize,
                 SearchValue = condition.SearchValue,
@@ -106,8 +115,11 @@ namespace _20T1020433.Web.Controllers
         {
             //try
             //{
-            decimal priceDecimal = Convert.ToDecimal(price);
-            
+            decimal? d = Converter.StringToDecimal(price);
+            if (d == null)
+                ModelState.AddModelError("Price", $"Giá { price}  không hợp lệ.");
+            else
+                data.Price = d.Value;
             if (string.IsNullOrWhiteSpace(data.ProductName))
                 ModelState.AddModelError("ProductName", "Tên mặt hàng không được để trống");
             if (data.SupplierID <= 0)
@@ -116,12 +128,6 @@ namespace _20T1020433.Web.Controllers
                 ModelState.AddModelError("CategoryID", "Vui lòng chọn loại hàng");
             if (string.IsNullOrWhiteSpace(data.Unit))
                 ModelState.AddModelError("Unit", "Đơn vị tính không được để trống");
-            if (priceDecimal==0)
-                ModelState.AddModelError("Price", "Vui lòng nhập giá");
-            else
-            {
-                data.Price = priceDecimal;
-            }
             if (string.IsNullOrWhiteSpace(data.Photo))
             {
                 data.Photo = "";

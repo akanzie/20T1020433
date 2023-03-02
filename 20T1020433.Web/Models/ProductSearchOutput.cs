@@ -13,6 +13,7 @@ namespace _20T1020433.Web.Models
         /// </summary>
         public List<Product> Data { get; set; }
 
+        public int OrderByPrice { get; set; } = 0;
         public int CategoryID { get; set; } = 0;
         public int SupplierID { get; set; } = 0;
     }
