@@ -26,7 +26,7 @@
                     </td>
                     <td style="vertical-align:middle">@item.ProductName</td>
                     <td style="vertical-align:middle">@item.Unit</td>
-                    <td style="vertical-align:middle">@item.Price</td>
+                    <td style="vertical-align:middle">@item.Price.ToString("0.00")</td>
                     <td class="text-right" style="vertical-align:middle">
                         <a href="~/product/edit/@item.ProductID" class="btn btn-xs btn-flat btn-info">
                             <i class="fa fa-edit"></i>

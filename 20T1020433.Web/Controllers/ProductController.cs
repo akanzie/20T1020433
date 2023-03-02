@@ -111,13 +111,25 @@ namespace _20T1020433.Web.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(Product data, string price, HttpPostedFileBase uploadPhoto)
+        public ActionResult Save(Product data, string unPrice, HttpPostedFileBase uploadPhoto)
         {
             //try
             //{
-            decimal? d = Converter.StringToDecimal(price);
+            ProductModel model = new ProductModel()
+            {
+                ProductID = data.ProductID,
+                ProductName = data.ProductName,
+                CategoryID = data.CategoryID,
+                SupplierID = data.SupplierID,
+                Unit = data.Unit,
+                Price = data.Price,
+                Photo = data.Photo,
+                Attributes = ProductDataService.ListAttributes(data.ProductID),
+                Photos = ProductDataService.ListPhotos(data.ProductID)
+            };
+            decimal? d = Converter.StringToDecimal(unPrice);
             if (d == null)
-                ModelState.AddModelError("Price", $"Giá { price}  không hợp lệ.");
+                ModelState.AddModelError("Price", $"Giá { unPrice}  không hợp lệ.");
             else
                 data.Price = d.Value;
             if (string.IsNullOrWhiteSpace(data.ProductName))
@@ -145,6 +157,10 @@ namespace _20T1020433.Web.Controllers
             {
                 if (data.ProductID == 0)
                     return View("Create", data);
+                else
+                {
+                    return View("Edit", model);
+                }
             }
 
             if (data.ProductID == 0)

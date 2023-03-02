@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -34,7 +35,12 @@ namespace _20T1020433.Web.Controllers
             DateTime d = value;
             return string.Format("{0:dd/MM/yyyy}", d);
         }
-
+        public decimal? TestDecimal(string s)
+        {
+            decimal? d = decimal.Parse("aa", CultureInfo.InvariantCulture); ;
+            return d;
+        }
+        
     }
     public class Person
     {
@@ -42,4 +48,5 @@ namespace _20T1020433.Web.Controllers
         public DateTime BirthDate { get; set; }
         public float Salary { get; set; }
     }
+    
 }
