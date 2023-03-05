@@ -364,7 +364,7 @@ namespace _20T1020433.DataLayers.SQLServer
                     cmd.CommandText = @"SELECT *
                                     FROM 
                                     (
-	                                    SELECT	*, ROW_NUMBER() OVER (ORDER BY ProductID) AS RowNumber
+	                                    SELECT	*, ROW_NUMBER() OVER (ORDER BY ProductName) AS RowNumber
 	                                    FROM	Products 
 	                                    WHERE	((@SearchValue = N'') OR (ProductName LIKE @SearchValue))                              
 		                                    AND ((@CategoryID = 0) OR (CategoryID = @CategoryID))
