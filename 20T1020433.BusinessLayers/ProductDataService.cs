@@ -82,8 +82,6 @@ namespace _20T1020433.BusinessLayers
         /// <returns></returns>
         public static bool DeleteProduct(int productID)
         {
-            productDB.DeleteAttribute(productID);
-            productDB.DeletePhoto(productID);
             return productDB.Delete(productID);
         }
         /// <summary>

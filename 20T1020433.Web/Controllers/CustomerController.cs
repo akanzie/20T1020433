@@ -134,18 +134,15 @@ namespace _20T1020433.Web.Controllers
             if (id <= 0)
                 return RedirectToAction("Index");
 
-            if (Request.HttpMethod == "GET")
-            {
-                var data = CommonDataService.GetCustomer(id);
-                if (data == null)
-                    return RedirectToAction("Index");
-                return View(data);
-            }
-            else
+            if (Request.HttpMethod == "POST")
             {
                 CommonDataService.DeleteCustomer(id);
                 return RedirectToAction("Index");
             }
+            var data = CommonDataService.GetCustomer(id);
+            if (data == null)
+                return RedirectToAction("Index");
+            return View(data);
         }
     }
 }

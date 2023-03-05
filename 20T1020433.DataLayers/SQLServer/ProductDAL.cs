@@ -34,7 +34,7 @@ namespace _20T1020433.DataLayers.SQLServer
                 cmd.Parameters.AddWithValue("@CategoryID", data.CategoryID);
                 cmd.Parameters.AddWithValue("@Unit", data.Unit);
                 cmd.Parameters.AddWithValue("@Price", data.Price);
-                cmd.Parameters.AddWithValue("@Photo", data.Photo);                
+                cmd.Parameters.AddWithValue("@Photo", data.Photo);
 
                 result = Convert.ToInt32(cmd.ExecuteScalar());
 
@@ -58,7 +58,7 @@ namespace _20T1020433.DataLayers.SQLServer
                 cmd.Parameters.AddWithValue("@AttributeName", data.AttributeName);
                 cmd.Parameters.AddWithValue("@AttributeValue", data.AttributeValue);
                 cmd.Parameters.AddWithValue("@DisplayOrder", data.DisplayOrder);
-                
+
                 result = Convert.ToInt32(cmd.ExecuteScalar());
 
                 cn.Close();
@@ -81,7 +81,7 @@ namespace _20T1020433.DataLayers.SQLServer
                 cmd.Parameters.AddWithValue("@Photo", data.Photo);
                 cmd.Parameters.AddWithValue("@Description", data.Description);
                 cmd.Parameters.AddWithValue("@DisplayOrder", data.DisplayOrder);
-                cmd.Parameters.AddWithValue("@IsHidden", data.IsHidden);               
+                cmd.Parameters.AddWithValue("@IsHidden", data.IsHidden);
 
                 result = Convert.ToInt32(cmd.ExecuteScalar());
 
@@ -124,12 +124,9 @@ namespace _20T1020433.DataLayers.SQLServer
             using (SqlConnection cn = OpenConnection())
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = @"DELETE FROM Products 
-                                    WHERE ProductID = @ProductID AND NOT EXISTS(SELECT * FROM OrderDetails WHERE ProductID = @ProductID)";
-                //cmd.CommandText = @"DELETE FROM ProductAttributes
-                //                WHERE ProductID = @ProductID";
-                //cmd.CommandText = @"DELETE FROM ProductPhotos
-                //                WHERE ProductID = @ProductID";
+                cmd.CommandText = @"DELETE FROM ProductAttributes  WHERE ProductID = @ProductID
+                                    DELETE FROM ProductPhotos WHERE ProductID = @ProductID
+                                    DELETE FROM Products WHERE ProductID = @ProductID";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cn;
                 cmd.Parameters.AddWithValue("@ProductID", productID);
@@ -160,7 +157,7 @@ namespace _20T1020433.DataLayers.SQLServer
             return result;
         }
 
-        public bool DeleteAttribute(int productID)
+        public bool DeleteAttributes(int productID)
         {
             bool result = false;
             using (SqlConnection cn = OpenConnection())
@@ -179,7 +176,7 @@ namespace _20T1020433.DataLayers.SQLServer
             return result;
         }
 
-        public bool DeletePhoto(int productID)
+        public bool DeletePhotos(int productID)
         {
             bool result = false;
             using (SqlConnection cn = OpenConnection())
@@ -309,7 +306,7 @@ namespace _20T1020433.DataLayers.SQLServer
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = @"SELECT CASE 
-                                                WHEN EXISTS(SELECT * FROM Products WHERE ProductID = @ProductID) THEN 1 
+                                                WHEN EXISTS(SELECT * FROM OrderDetails WHERE ProductID = @ProductID) THEN 1 
                                                 ELSE 0 
                                             END";
                 cmd.CommandType = CommandType.Text;
@@ -380,11 +377,11 @@ namespace _20T1020433.DataLayers.SQLServer
                 cmd.Parameters.AddWithValue("@SearchValue", searchValue);
                 cmd.Parameters.AddWithValue("@CategoryID", categoryID);
                 cmd.Parameters.AddWithValue("@SupplierID", supplierID);
-                
+
                 var dbReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dbReader.Read())
                 {
-                    data.Add(new Product() 
+                    data.Add(new Product()
                     {
                         ProductID = Convert.ToInt32(dbReader["ProductID"]),
                         ProductName = Convert.ToString(dbReader["ProductName"]),

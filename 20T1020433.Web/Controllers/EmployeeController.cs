@@ -150,18 +150,15 @@ namespace _20T1020433.Web.Controllers
         {
         if (id <= 0)
             return RedirectToAction("Index");
-        if (Request.HttpMethod == "GET")
-            {
-                var data = CommonDataService.GetEmployee(id);
-                if (data == null)
-                    return RedirectToAction("Index");
-                return View(data);
-            }
-            else
-            {
-                CommonDataService.DeleteEmployee(id);
-                return RedirectToAction("Index");
-            }
+        if (Request.HttpMethod == "POST")
+        {
+            CommonDataService.DeleteEmployee(id);
+            return RedirectToAction("Index");
+
         }
-    }
+        var data = CommonDataService.GetEmployee(id);
+        if (data == null)
+            return RedirectToAction("Index");
+        return View(data);
+        }
 }

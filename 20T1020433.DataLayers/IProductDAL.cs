@@ -122,9 +122,6 @@ namespace _20T1020433.DataLayers
         /// <returns></returns>
         bool DeleteAttribute(long attributeID);
 
-        bool DeleteAttribute(int productID);
-
-        bool DeletePhoto(int productID);
 
     }
 }

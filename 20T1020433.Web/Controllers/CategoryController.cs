@@ -161,18 +161,16 @@ namespace _20T1020433.Web.Controllers
         {
             if (id <= 0)
                 return RedirectToAction("Index");
-            if (Request.HttpMethod == "GET")
-            {
-                var data = CommonDataService.GetCategory(id);
-                if (data == null)
-                    return RedirectToAction("Index");
-                return View(data);
-            }
-            else
+            if (Request.HttpMethod == "POST")
             {
                 CommonDataService.DeleteCategory(id);
                 return RedirectToAction("Index");
             }
+
+            var data = CommonDataService.GetCategory(id);
+            if (data == null)
+                return RedirectToAction("Index");
+            return View(data);
         }
     }
 }

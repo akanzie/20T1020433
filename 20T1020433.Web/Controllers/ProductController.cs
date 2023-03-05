@@ -170,7 +170,7 @@ namespace _20T1020433.Web.Controllers
             else
                 ProductDataService.UpdateProduct(data);
             return RedirectToAction("Index");
-            
+
             //catch (Exception ex)
             //{
             //    //Ghi lại log lỗi
@@ -186,19 +186,21 @@ namespace _20T1020433.Web.Controllers
         {
             if (id <= 0)
                 return RedirectToAction("Index");
-
-            if (Request.HttpMethod == "GET")
+            var data = ProductDataService.GetProduct(id);
+            if (data == null)
+                return RedirectToAction("Index");
+            if (Request.HttpMethod == "POST")
             {
-                var data = ProductDataService.GetProduct(id);
-                if (data == null)
-                    return RedirectToAction("Index");
-                return View(data);
-            }
-            else
-            {
+                if (ProductDataService.InUsedProduct(id))
+                {
+                    Response.Write("<script>alert('Không thể xóa mặt hàng này!')</script>");
+                    return View(data);
+                }
                 ProductDataService.DeleteProduct(id);
                 return RedirectToAction("Index");
             }
+
+            return View(data);
         }
 
         /// <summary>
@@ -237,8 +239,9 @@ namespace _20T1020433.Web.Controllers
                     return RedirectToAction($"Edit/{productID}");
             }
         }
-        
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SavePhoto(ProductPhoto data, HttpPostedFileBase uploadPhoto)
         {
             //try
@@ -256,7 +259,7 @@ namespace _20T1020433.Web.Controllers
             if (string.IsNullOrWhiteSpace(data.Description))
                 ModelState.AddModelError("Description", "Giá trị thuộc tính không được để trống");
             if (data.DisplayOrder == 0)
-                ModelState.AddModelError("DisplayOrder", "không được để trống");
+                ModelState.AddModelError("DisplayOrder", "Thứ tự hiển thị không được để trống");
             if (!ModelState.IsValid)
             {
                 ViewBag.Title = data.PhotoID == 0 ? "Bổ sung ảnh" : "Cập nhật ảnh";
@@ -306,41 +309,41 @@ namespace _20T1020433.Web.Controllers
                     if (data == null)
                         return RedirectToAction("Index");
                     ViewBag.Title = "Thay đổi thuộc tính";
-                    return View(data); 
+                    return View(data);
                 case "delete":
                     ProductDataService.DeleteAttribute(attributeID);
                     return RedirectToAction($"Edit/{productID}"); //return RedirectToAction("Edit", new { productID = productID });
-                
+
                 default:
                     return RedirectToAction($"Edit/{productID}");
             }
         }
         [HttpPost]
-        
+        [ValidateAntiForgeryToken]
         public ActionResult SaveAttribute(ProductAttribute data)
         {
             //try
             //{
-                if (string.IsNullOrWhiteSpace(data.AttributeName))
-                    ModelState.AddModelError("AttributeName", "Tên thuộc tính không được để trống");
-                if (string.IsNullOrWhiteSpace(data.AttributeValue))
-                    ModelState.AddModelError("AttributeValue", "Giá trị thuộc tính không được để trống");
-                if (data.DisplayOrder == 0)
-                    ModelState.AddModelError("DisplayOrder", "không được để trống");
-                if (!ModelState.IsValid)
-                {
-                    ViewBag.Title = data.AttributeID == 0 ? "Bổ sung thuộc tính" : "Cập nhật thuộc tính";
-                    return View("Attribute", data);
-                }
-                if (data.AttributeID == 0)
-                {
-                    ProductDataService.AddAttribute(data);
-                }
-                else
-                {
-                    ProductDataService.UpdateAttribute(data);
-                }
-                return RedirectToAction($"Edit/{data.ProductID}");
+            if (string.IsNullOrWhiteSpace(data.AttributeName))
+                ModelState.AddModelError("AttributeName", "Tên thuộc tính không được để trống");
+            if (string.IsNullOrWhiteSpace(data.AttributeValue))
+                ModelState.AddModelError("AttributeValue", "Giá trị thuộc tính không được để trống");
+            if (data.DisplayOrder == 0)
+                ModelState.AddModelError("DisplayOrder", "Thứ tự thuộc tính không được để trống");
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Title = data.AttributeID == 0 ? "Bổ sung thuộc tính" : "Cập nhật thuộc tính";
+                return View("Attribute", data);
+            }
+            if (data.AttributeID == 0)
+            {
+                ProductDataService.AddAttribute(data);
+            }
+            else
+            {
+                ProductDataService.UpdateAttribute(data);
+            }
+            return RedirectToAction($"Edit/{data.ProductID}");
             //}
             //catch (Exception ex)
             //{
