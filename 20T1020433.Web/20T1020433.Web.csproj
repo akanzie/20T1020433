@@ -139,6 +139,7 @@
     <Compile Include="Models\CategorySearchOutput.cs" />
     <Compile Include="Models\CustomerSearchOutput.cs" />
     <Compile Include="Models\EmployeeSearchOutput.cs" />
+    <Compile Include="Models\OrderSearchOutput.cs" />
     <Compile Include="Models\PaginationSearchInput.cs" />
     <Compile Include="Models\PaginationSearchOutput.cs" />
     <Compile Include="Models\ProductModel.cs" />
@@ -6542,6 +6543,7 @@
     <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\Order\SearchProducts.cshtml" />
     <Content Include="Views\Order\Shipping.cshtml" />
+    <Content Include="Views\Order\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -49,12 +49,6 @@ namespace _20T1020433.Web.Controllers
                 condition.PageSize,
                 condition.SearchValue, condition.CategoryID, condition.SupplierID, condition.OrderByPrice,
                 out rowCount);
-            //if (condition.OrderByPrice == 1)
-            //    data = OrderBy.OrderByPriceAsc(data);
-            //else if (condition.OrderByPrice == 2)
-            //{
-            //    data = OrderBy.OrderByPriceDesc(data);
-            //}
             var result = new ProductSearchOutput()
             {
                 OrderByPrice = condition.OrderByPrice,

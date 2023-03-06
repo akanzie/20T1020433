@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using _20T1020433.BusinessLayers;
 using _20T1020433.DomainModels;
+using _20T1020433.Web.Models;
 
 namespace _20T1020433.Web.Controllers
 {
@@ -15,6 +16,7 @@ namespace _20T1020433.Web.Controllers
     [RoutePrefix("Order")]
     public class OrderController : Controller
     {
+        private const string ORDER_SEARCH = "SearchOrderCondition";
         private const string SHOPPING_CART = "ShoppingCart";
         private const string ERROR_MESSAGE = "ErrorMessage";
         private const int PAGE_SIZE = 4;
@@ -26,8 +28,37 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Index()
         {
             //TODO: Code chức năng tìm kiếm, phân trang cho đơn hàng
-
-            return View();
+            OrderSearchInput condition = Session[ORDER_SEARCH] as OrderSearchInput;
+            if (condition == null)
+            {
+                condition = new OrderSearchInput()
+                {
+                    Status = 0,
+                    Page = 1,
+                    PageSize = PAGE_SIZE,
+                    SearchValue = ""
+                };
+            }
+            return View(condition);
+        }
+        public ActionResult Search(OrderSearchInput condition)
+        {
+            int rowCount = 0;
+            var data = OrderService.ListOrders(condition.Page,
+                condition.PageSize, condition.Status,
+                condition.SearchValue, 
+                out rowCount);
+            var result = new OrderSearchOutput() {
+                
+                Page = condition.Page,
+                PageSize = condition.PageSize,
+                SearchValue = condition.SearchValue,
+                Status = condition.Status,
+                RowCount = rowCount,
+                Data = data
+            };
+            Session[ORDER_SEARCH] = condition;
+            return View(result);
         }
         /// <summary>
         /// Xem thông tin và chi tiết của đơn hàng

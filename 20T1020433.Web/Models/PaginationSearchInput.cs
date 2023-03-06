@@ -26,4 +26,9 @@ namespace _20T1020433.Web.Models
         public int CategoryID { get; set; } = 0;
         public int SupplierID { get; set; } = 0;
     }
+
+    public class OrderSearchInput : PaginationSearchInput
+    {
+        public int Status { get; set; } = 0;
+    }
 }
