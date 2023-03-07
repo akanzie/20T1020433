@@ -139,6 +139,7 @@
     <Compile Include="Models\CategorySearchOutput.cs" />
     <Compile Include="Models\CustomerSearchOutput.cs" />
     <Compile Include="Models\EmployeeSearchOutput.cs" />
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\OrderSearchOutput.cs" />
     <Compile Include="Models\PaginationSearchInput.cs" />
     <Compile Include="Models\PaginationSearchOutput.cs" />

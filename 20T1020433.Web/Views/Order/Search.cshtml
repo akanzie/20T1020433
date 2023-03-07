@@ -30,11 +30,11 @@
                     <td>@item.EmployeeFullName</td>
                     <td>@item.AcceptTime</td>
                     <td>@item.ShipperName</td>
-                    <td></td>
-                    <td>03/10/2022 11:45</td>
-                    <td>Finished</td>
+                    <td>@item.ShippedTime</td>
+                    <td>@item.FinishedTime</td>
+                    <td>@item.StatusDescription</td>
                     <td>
-                        <a href="~/Order/Details/123" class="btn btn-info btn-xs">
+                        <a href="~/Order/Details/@item.OrderID" class="btn btn-info btn-xs">
                             <i class="glyphicon glyphicon-th-list"></i>
                         </a>
                     </td>
@@ -46,10 +46,21 @@
 
 <div class="text-center">
     <ul class="pagination">
-        <li><a href="#">1</a></li>
-        <li class="active"><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            if (i == Model.Page)
+            {
+                <li class="paginate_button active">
+                    <a href="#">@i</a>
+                </li>
+            }
+            else
+            {
+                <li class="paginate_button">
+                    <a href="javascript:;" onclick="doSearch(@i)">@i</a>
+                </li>
+            }
+
+        }
     </ul>
 </div>

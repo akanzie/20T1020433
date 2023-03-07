@@ -20,6 +20,17 @@ namespace _20T1020433.Web
                 return null;
             }
         }
+        public static int? StringToInt(string s)
+        {
+            try
+            {
+                return int.Parse(s, CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return null;
+            }
+        }
         /// <summary>
         /// Chuyen một chuỗi DMY sang DateTime
         /// </summary>
