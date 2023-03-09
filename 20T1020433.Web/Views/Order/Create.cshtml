@@ -4,6 +4,7 @@
     int stt = 0;
     decimal sumTotal = 0;
     string errorMessage = ViewBag.ErrorMessage.ToString();
+    var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
 }
 
 <div class="box box-primary">
@@ -104,6 +105,7 @@
                             @foreach (var item in _20T1020433.BusinessLayers.CommonDataService.ListOfCustomers(""))
                             {
                                 <option value="@item.CustomerID">@item.CustomerName</option>
+
                             }
                         </select>
                     </div>
@@ -111,9 +113,15 @@
                         <label>Nhân viên phụ trách:</label>
                         <select class="form-control" name="employeeID">
                             <option value="0">-- Chọn nhân viên --</option>
+                            <option selected value="@userAccount.UserId">@userAccount.FullName</option>
                             @foreach (var item in _20T1020433.BusinessLayers.CommonDataService.ListOfEmployees(""))
                             {
-                                <option value="@item.EmployeeID">@item.FirstName @item.LastName</option>
+                                if (Convert.ToInt32(@userAccount.UserId) != item.EmployeeID)
+                                {
+                                    <option value="@item.EmployeeID">@item.FirstName @item.LastName</option>
+                                }
+
+
                             }
                         </select>
                     </div>

@@ -59,7 +59,7 @@
                            class="form-control"
                            id="Price"
                            name="unPrice"
-                           value="@Model.Price.ToString("0.00")">
+                           value="@string.Format("{0:N}", @Model.Price)">
                     @Html.ValidationMessageFor(m => m.Price, "", new { @style = "color:#f00" })
                     @Html.HiddenFor(m => m.Price)
                 </div>

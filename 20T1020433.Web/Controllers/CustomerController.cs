@@ -61,7 +61,7 @@ namespace _20T1020433.Web.Controllers
             {
                 CustomerID = 0
             };
-            ViewBag.Title = "Bổ sung nhà cung cấp";
+            ViewBag.Title = "Bổ sung khách hàng";
             return View("Edit", data);
         }
         /// <summary>
@@ -76,7 +76,7 @@ namespace _20T1020433.Web.Controllers
             var data = CommonDataService.GetCustomer(id);
             if (data == null)
                 return RedirectToAction("Index");
-            ViewBag.Title = "Cập nhật nhà cung cấp";
+            ViewBag.Title = "Cập nhật khách hàng";
             return View(data);
         }
         /// <summary>

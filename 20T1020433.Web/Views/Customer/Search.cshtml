@@ -41,22 +41,67 @@
 </table>
 <div class="text-center">
     <ul class="pagination">
-        @for (int i = 1; i <= Model.PageCount; i++)
+        <li class="paginate_button">
+            <a href="javascript:;" onclick="doSearch(1)">First</a>
+        </li>
+        @if (Model.Page <= 4)
         {
-            if (i == Model.Page)
+            for (int i = 1; i <= 7 && i <= Model.PageCount; i++)
             {
-                <li class="paginate_button active">
-                    <a href="#">@i</a>
-                </li>
-            }
-            else
-            {
-                <li class="paginate_button">
-                    <a href="javascript:;" onclick="doSearch(@i)">@i</a>
-                </li>
-            }
 
+                if (i == Model.Page)
+                {
+                    <li class="paginate_button active">
+                        <a href="#">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="paginate_button">
+                        <a href="javascript:;" onclick="doSearch(@i)">@i</a>
+                    </li>
+                }
+            }
         }
+        else if (Model.Page > 4 && Model.Page <= Model.PageCount - 4)
+        {
+            for (int i = Model.Page - 3; i <= Model.Page + 3 && i <= Model.PageCount; i++)
+            {
+                if (i == Model.Page)
+                {
+                    <li class="paginate_button active">
+                        <a href="#">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="paginate_button">
+                        <a href="javascript:;" onclick="doSearch(@i)">@i</a>
+                    </li>
+                }
+            }
+        }
+        else
+        {
+            for (int i = Model.PageCount - 6; i <= Model.PageCount; i++)
+            {
+                if (i == Model.Page)
+                {
+                    <li class="paginate_button active">
+                        <a href="#">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="paginate_button">
+                        <a href="javascript:;" onclick="doSearch(@i)">@i</a>
+                    </li>
+                }
+            }
+        }
+        <li class="paginate_button">
+            <a href="javascript:;" onclick="doSearch(@Model.PageCount)">Last</a>
+        </li>
     </ul>
 </div>
 

@@ -16,7 +16,7 @@ namespace _20T1020433.Web.Controllers
     [Authorize]
     public class EmployeeController : Controller
     {
-        private const int PAGE_SIZE = 5;
+        private const int PAGE_SIZE = 6;
         private const string EMPLOYEE_SEARCH = "SearchEmployeeCondition";
         public ActionResult Index()
         {
@@ -89,8 +89,8 @@ namespace _20T1020433.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Save(Employee data, string birthday, HttpPostedFileBase uploadPhoto)
         {
-            //try
-            //{               
+            try
+            {
                 DateTime? d = Converter.DMYStringToDateTime(birthday);
                 if (d == null)
                     ModelState.AddModelError("BirthDate", $"Ngày { birthday}  không hợp lệ. Vui lòng nhập theo định dạng dd/MM/yyyy");
@@ -100,24 +100,28 @@ namespace _20T1020433.Web.Controllers
                     ModelState.AddModelError("FirstName", "Tên không được để trống");
                 if (string.IsNullOrWhiteSpace(data.LastName))
                     ModelState.AddModelError("LastName", "Họ không được để trống");
-            //if (string.IsNullOrWhiteSpace(data.BirthDate.ToString(CultureInfo.InvariantCulture)))
-            //    ModelState.AddModelError("BirthDate", "Vui lòng chọn ngày sinh");
-            if (string.IsNullOrWhiteSpace(data.Photo))
-                data.Photo = "";
-                    //ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
+                if (string.IsNullOrWhiteSpace(data.BirthDate.ToString(CultureInfo.InvariantCulture)))
+                    ModelState.AddModelError("BirthDate", "Vui lòng chọn ngày sinh");
+                if (string.IsNullOrWhiteSpace(data.Photo))
+                {
+                    data.Photo = "";                    
+                }
                 if (string.IsNullOrWhiteSpace(data.Notes))
                     ModelState.AddModelError("Notes", "Ghi chú không được để trống");
                 if (string.IsNullOrWhiteSpace(data.Email))
                     ModelState.AddModelError("Email", "Email không được để trống");
-                if(uploadPhoto != null)
-            {
-                string path = Server.MapPath("~/Photo");
-                string fileName = $"{DateTime.Now.Ticks}_{uploadPhoto.FileName}";
-                string filePath = System.IO.Path.Combine(path, fileName);
-                uploadPhoto.SaveAs(filePath);
-                data.Photo = fileName;
-            }
-
+                if (uploadPhoto != null)
+                {
+                    string path = Server.MapPath("~/Photo");
+                    string fileName = $"{DateTime.Now.Ticks}_{uploadPhoto.FileName}";
+                    string filePath = System.IO.Path.Combine(path, fileName);
+                    uploadPhoto.SaveAs(filePath);
+                    data.Photo = fileName;
+                }
+                else
+                {
+                    ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
+                }
                 if (!ModelState.IsValid)
                 {
                     ViewBag.Title = data.EmployeeID == 0 ? "Bổ sung nhà cung cấp" : "Cập nhật nhà cung cấp";
@@ -132,34 +136,34 @@ namespace _20T1020433.Web.Controllers
                     CommonDataService.UpdateEmployee(data);
                 }
                 return RedirectToAction("Index");
-            //}
-            //catch (Exception ex)
-            //{
-            //    //Ghi lại log lỗi
-            //    return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
-            //}
+            }
+            catch (Exception ex)
+            {
+                //Ghi lại log lỗi
+                return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
+            }
 
         }
-            
-        
+
+
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         public ActionResult Delete(int id = 0)
         {
-        if (id <= 0)
-            return RedirectToAction("Index");
-        if (Request.HttpMethod == "POST")
-        {
-            CommonDataService.DeleteEmployee(id);
-            return RedirectToAction("Index");
+            if (id <= 0)
+                return RedirectToAction("Index");
+            if (Request.HttpMethod == "POST")
+            {
+                CommonDataService.DeleteEmployee(id);
+                return RedirectToAction("Index");
 
+            }
+            var data = CommonDataService.GetEmployee(id);
+            if (data == null)
+                return RedirectToAction("Index");
+            return View(data);
         }
-        var data = CommonDataService.GetEmployee(id);
-        if (data == null)
-            return RedirectToAction("Index");
-        return View(data);
-        }
-}
     }
+}

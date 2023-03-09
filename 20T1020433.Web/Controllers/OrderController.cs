@@ -69,6 +69,7 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Details(int id = 0)
         {
             //TODO: Code chức năng lấy và hiển thị thông tin của đơn hàng và chi tiết của đơn hàng
+            ViewBag.ErrorMessage = TempData[ERROR_MESSAGE] ?? "";
             if (id <= 0)
                 return RedirectToAction("Index");
             var data = new OrderModel()
@@ -90,13 +91,19 @@ namespace _20T1020433.Web.Controllers
         public ActionResult EditDetail(int orderID = 0, int productID = 0)
         {
             //TODO: Code chức năng để lấy chi tiết đơn hàng cần edit
-            if (productID <= 0)
+            ViewBag.ErrorMessage = TempData[ERROR_MESSAGE] ?? "";
+            if (orderID <= 0 || productID <= 0)
                 return RedirectToAction("Index");
-
-            var data = OrderService.GetOrderDetail(orderID, productID);
-            if (data == null)
-                return RedirectToAction("Index");
-            return View(data);
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(orderID).EmployeeID)
+            {
+                var data = OrderService.GetOrderDetail(orderID, productID);
+                if (data == null)
+                    return RedirectToAction("Index");
+                return View(data);
+            }
+            TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";            
+            return RedirectToAction($"Details/{orderID}");
         }
         /// <summary>
         /// Thay đổi thông tin chi tiết đơn hàng
@@ -104,24 +111,30 @@ namespace _20T1020433.Web.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult UpdateDetail(OrderDetail data)
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateDetail(OrderDetail data, string soLuong, string giaBan)
         {
             //TODO: Code chức năng để cập nhật chi tiết đơn hàng
-            //if(data.Quantity == 0)
-            //    ModelState.AddModelError("Quantity", "Số lượng không được để trống");
-            //decimal? d = Converter.StringToDecimal(unPrice);
-            //if (d == null)
-            //    ModelState.AddModelError("Price", $"Giá { unPrice}  không hợp lệ.");
-            //else
-            //    data.Price = d.Value;
-            //if (!ModelState.IsValid)
-            //{
-            //    ViewBag.Title = data.CustomerID == 0 ? "Bổ sung khách hàng" : "Cập nhật khách hàng";
-            //    return View("Edit", data);
-            //}            
-            OrderService.SaveOrderDetail(data.OrderID, data.ProductID, data.Quantity, data.SalePrice);
+            int? sL = Converter.StringToInt(soLuong);
+            if (sL == null)
+                ModelState.AddModelError("Quantity", $"Giá {soLuong}  không hợp lệ.");
+            else
+                data.Quantity = sL.Value;
 
-            return RedirectToAction($"Details/{data.OrderID}");
+            decimal? d = Converter.StringToDecimal(giaBan);
+            if (d == null)
+                ModelState.AddModelError("SalePrice", $"Giá {giaBan}  không hợp lệ.");
+            else
+                data.SalePrice = d.Value;
+            if (ModelState.IsValid)
+            {
+                OrderService.SaveOrderDetail(data.OrderID, data.ProductID, data.Quantity, data.SalePrice);
+                return RedirectToAction($"Details/{data.OrderID}");
+            }
+            else
+            {
+                return RedirectToAction($"Details/{data.OrderID}");
+            }
         }
         /// <summary>
         /// Xóa 1 chi tiết trong đơn hàng
@@ -133,7 +146,15 @@ namespace _20T1020433.Web.Controllers
         public ActionResult DeleteDetail(int orderID = 0, int productID = 0)
         {
             //TODO: Code chức năng xóa 1 chi tiết trong đơn hàng
-            OrderService.DeleteOrderDetail(orderID, productID);
+            if (orderID <= 0 || productID <= 0)
+                return RedirectToAction("Index");
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(orderID).EmployeeID)
+            {
+                OrderService.DeleteOrderDetail(orderID, productID);
+                return RedirectToAction($"Details/{orderID}");
+            }
+            TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
             return RedirectToAction($"Details/{orderID}");
         }
         /// <summary>
@@ -146,20 +167,23 @@ namespace _20T1020433.Web.Controllers
             //TODO: Code chức năng để xóa đơn hàng (nếu được phép xóa)
             if (id <= 0)
                 return RedirectToAction("Index");
-            var data = OrderService.GetOrder(id);
-            if (data == null)
-                return RedirectToAction("Index");
-            if (data.Status >= 0)
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
             {
-                TempData[ERROR_MESSAGE] = "Không thể xóa đơn hàng này!";
-                return RedirectToAction($"Details/{id}");
+                var data = OrderService.GetOrder(id);
+                if (data == null)
+                    return RedirectToAction("Index");
+                if (data.Status > 1)
+                {
+                    TempData[ERROR_MESSAGE] = "Không thể xóa đơn hàng này!";
+                    return RedirectToAction($"Details/{id}");
+                }
+                else
+                {
+                    OrderService.DeleteOrder(id);                    
+                }
             }
-            else
-            {
-                OrderService.DeleteOrder(id);
-                return RedirectToAction("Index");
-            }
-
+            return RedirectToAction("Index");
         }
         /// <summary>
         /// Chấp nhận đơn hàng
@@ -169,8 +193,15 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Accept(int id = 0)
         {
             //TODO: Code chức năng chấp nhận đơn hàng (nếu được phép)
-
-            OrderService.AcceptOrder(id);
+            if (id <= 0)
+                return RedirectToAction("Index");
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
+            {
+                OrderService.AcceptOrder(id);
+                return RedirectToAction($"Details/{id}");
+            }
+            TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
             return RedirectToAction($"Details/{id}");
         }
         /// <summary>
@@ -181,13 +212,20 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Shipping(int id = 0, int shipperID = 0)
         {
             //TODO: Code chức năng chuyển đơn hàng sang trạng thái đang giao hàng (nếu được phép)
+            if (id <= 0)
+                return RedirectToAction("Index");
             ViewBag.OrderID = id;
-            if (Request.HttpMethod == "GET")
-            {
-                
+            if (Request.HttpMethod == "GET")            {
+
                 return View();
-            }                
-            OrderService.ShipOrder(id, shipperID);
+            }
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
+            {
+                OrderService.ShipOrder(id, shipperID);
+                return RedirectToAction($"Details/{id}");
+            }
+            TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
             return RedirectToAction($"Details/{id}");
         }
         /// <summary>
@@ -198,7 +236,15 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Finish(int id = 0)
         {
             //TODO: Code chức năng ghi nhận hoàn tất đơn hàng (nếu được phép)
-            OrderService.FinishOrder(id);
+            if (id <= 0)
+                return RedirectToAction("Index");
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
+            {
+                OrderService.FinishOrder(id);
+                return RedirectToAction($"Details/{id}");
+            }
+            TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
             return RedirectToAction($"Details/{id}");
         }
         /// <summary>
@@ -209,7 +255,15 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Cancel(int id = 0)
         {
             //TODO: Code chức năng hủy đơn hàng (nếu được phép)
-            OrderService.CancelOrder(id);
+            if (id <= 0)
+                return RedirectToAction("Index");
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
+            {
+                OrderService.CancelOrder(id);
+                return RedirectToAction($"Details/{id}");
+            }
+            TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
             return RedirectToAction($"Details/{id}");
         }
         /// <summary>
@@ -220,7 +274,15 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Reject(int id = 0)
         {
             //TODO: Code chức năng từ chối đơn hàng (nếu được phép)
-            OrderService.RejectOrder(id);
+            if (id <= 0)
+                return RedirectToAction("Index");
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
+            {
+                OrderService.RejectOrder(id);
+                return RedirectToAction($"Details/{id}");
+            }
+            TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
             return RedirectToAction($"Details/{id}");
         }
 
@@ -266,7 +328,7 @@ namespace _20T1020433.Web.Controllers
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost]        
         public ActionResult AddToCart(OrderDetail data)
         {
             if (data == null)
@@ -327,7 +389,7 @@ namespace _20T1020433.Web.Controllers
         /// <param name="customerID"></param>
         /// <param name="employeeID"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost]        
         public ActionResult Init(int customerID = 0, int employeeID = 0)
         {
             List<OrderDetail> shoppingCart = GetShoppingCart();
