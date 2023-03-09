@@ -118,10 +118,10 @@ namespace _20T1020433.Web.Controllers
                     uploadPhoto.SaveAs(filePath);
                     data.Photo = fileName;
                 }
-                else
-                {
-                    ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
-                }
+                //else
+                //{
+                //    ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
+                //}
                 if (!ModelState.IsValid)
                 {
                     ViewBag.Title = data.EmployeeID == 0 ? "Bổ sung nhà cung cấp" : "Cập nhật nhà cung cấp";

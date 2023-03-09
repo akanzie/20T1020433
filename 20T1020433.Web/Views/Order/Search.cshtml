@@ -46,9 +46,16 @@
 
 <div class="text-center">
     <ul class="pagination">
-        <li class="paginate_button">
-            <a href="javascript:;" onclick="doSearch(1)">First</a>
-        </li>
+        @if (Model.Page > 1)
+        {
+            <li class="paginate_button">
+                <a href="javascript:;" onclick="doSearch(1)">First</a>
+            </li>
+
+            <li class="paginate_button">
+                <a href="javascript:;" onclick="doSearch(@Model.Page - 1)">Previous</a>
+            </li>
+        }
         @if (Model.Page <= 4)
         {
             for (int i = 1; i <= 7 && i <= Model.PageCount; i++)
@@ -104,9 +111,18 @@
                 }
             }
         }
-        <li class="paginate_button">
-            <a href="javascript:;" onclick="doSearch(@Model.PageCount)">Last</a>
-        </li>
+        @if (Model.Page < Model.PageCount)
+        {
+            <li class="paginate_button">
+                <a href="javascript:;" onclick="doSearch(@Model.Page + 1)">Next</a>
+            </li>
+        
+            <li class="paginate_button">
+                <a href="javascript:;" onclick="doSearch(@Model.PageCount)">Last</a>
+            </li>
+        }
+
+
 
 
     </ul>
