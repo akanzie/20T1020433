@@ -204,36 +204,40 @@ namespace _20T1020433.Web.Controllers
             TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
             return RedirectToAction($"Details/{id}");
         }
+        public ActionResult SelectShipper(int id = 0)
+        {
+            //TODO: Code chức năng chuyển đơn hàng sang trạng thái đang giao hàng (nếu được phép)
+            if (id <= 0)
+                return RedirectToAction("Index");
+            ViewBag.OrderID = id;
+            return View();
+        }
         /// <summary>
         /// Xác nhận chuyển đơn hàng cho người giao hàng
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
-        public ActionResult Shipping(int id = 0, int shipperID = 0)
+        /// <returns></returns>        
+        public string Shipping(int id = 0, int shipperID = 0)
         {
             //TODO: Code chức năng chuyển đơn hàng sang trạng thái đang giao hàng (nếu được phép)
-            if (id <= 0)
-                return RedirectToAction("Index");            
-            ViewBag.OrderID = id;
-            if (Request.HttpMethod == "GET")
-            {
-                return View();
-            }
             if (shipperID <= 0)
             {
-                TempData[ERROR_MESSAGE] = "Bạn chưa chọn Shipper!";
-                return RedirectToAction($"Details/{id}");
+                return "Vui lòng chọn người giao hàng";
             }
             var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
             if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
             {
                 OrderService.ShipOrder(id, shipperID);
                 TempData[SUCCESS_MESSAGE] = "Đơn hàng đã được chuyển sang trạng thái đang giao hàng!";
-                return RedirectToAction($"Details/{id}");
             }
-            TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
-            return RedirectToAction($"Details/{id}");
+            else
+            {
+                TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
+            }
+
+            return "";
         }
+
         /// <summary>
         /// Ghi nhận hoàn tất thành công đơn hàng
         /// </summary>

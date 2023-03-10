@@ -6542,7 +6542,7 @@
     <Content Include="Views\Order\EditDetail.cshtml" />
     <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\Order\SearchProducts.cshtml" />
-    <Content Include="Views\Order\Shipping.cshtml" />
+    <Content Include="Views\Order\SelectShipper.cshtml" />
     <Content Include="Views\Order\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>

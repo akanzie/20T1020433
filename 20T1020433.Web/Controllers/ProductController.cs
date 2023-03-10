@@ -234,7 +234,7 @@ namespace _20T1020433.Web.Controllers
 
                     data = ProductDataService.GetPhoto(photoID);
                     if (data == null)
-                        return RedirectToAction("Index");
+                        return RedirectToAction($"Edit/{productID}");
                     ViewBag.Title = "Thay đổi ảnh";
                     return View(data);
                 case "delete":
@@ -252,8 +252,7 @@ namespace _20T1020433.Web.Controllers
         public ActionResult SavePhoto(ProductPhoto data, HttpPostedFileBase uploadPhoto)
         {
             try
-            {
-                
+            {                
                 if (string.IsNullOrWhiteSpace(data.Photo))
                     data.Photo = "";
                 if (uploadPhoto != null)

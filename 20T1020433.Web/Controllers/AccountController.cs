@@ -13,6 +13,7 @@ namespace _20T1020433.Web.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private const string MESSAGE = "Message";
         // GET: Account
         /// <summary>
         /// 
@@ -25,11 +26,14 @@ namespace _20T1020433.Web.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
+        /// <returns></returns>        
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Login()
         {
+            if (!String.IsNullOrEmpty(Converter.CookieToUserAccount(User.Identity.Name).UserId))
+                return View("Home");
+            ViewBag.Message = TempData[MESSAGE] ?? "";
             return View();
         }
         
@@ -46,6 +50,7 @@ namespace _20T1020433.Web.Controllers
         [HttpPost]
         public ActionResult Login(string userName = "", string password = "")
         {
+            ViewBag.Message = TempData[MESSAGE] ?? "";
             ViewBag.UserName = userName;
             if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
             {
@@ -110,8 +115,7 @@ namespace _20T1020433.Web.Controllers
                 ModelState.AddModelError("", "Mật khẩu cũ không đúng");
                 return View();
             }
-            Response.Write("<script>alert('Đổi mật khẩu thành công! Vui lòng đăng nhập lại!')</script>");
-
+            TempData[MESSAGE] = "Đổi mật khẩu thành công!";
             return RedirectToAction("Logout");
 
         }

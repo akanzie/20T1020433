@@ -114,12 +114,12 @@
                         <select class="form-control" name="employeeID">
                             <option value="0">-- Chọn nhân viên --</option>
                             <option selected value="@userAccount.UserId">@userAccount.FullName</option>
-                            @foreach (var item in _20T1020433.BusinessLayers.CommonDataService.ListOfEmployees(""))
+                            @*@foreach (var item in _20T1020433.BusinessLayers.CommonDataService.ListOfEmployees(""))
                             {
                                 if (Convert.ToInt32(@userAccount.UserId) != item.EmployeeID)
                                 {
                                     <option value="@item.EmployeeID">@item.FirstName @item.LastName</option>
-                                }
+                                }*@
 
 
                             }
