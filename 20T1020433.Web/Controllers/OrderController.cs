@@ -75,9 +75,14 @@ namespace _20T1020433.Web.Controllers
             ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
             if (id <= 0)
                 return RedirectToAction("Index");
+            var order = OrderService.GetOrder(id);
+            if (order == null)
+            {
+                return RedirectToAction("Index");
+            }
             var data = new OrderModel()
             {
-                Order = OrderService.GetOrder(id),
+                Order = order,
                 OrderDetails = OrderService.ListOrderDetails(id)
             };
             if (data == null)
