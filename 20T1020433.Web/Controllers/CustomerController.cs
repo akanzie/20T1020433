@@ -114,10 +114,12 @@ namespace _20T1020433.Web.Controllers
                 if (data.CustomerID == 0)
                 {
                     CommonDataService.AddCustomer(data);
+                    TempData[SUCCESS_MESSAGE] = $"Bổ sung khách hàng: {data.CustomerName} thành công!";
                 }
                 else
                 {
                     CommonDataService.UpdateCustomer(data);
+                    TempData[SUCCESS_MESSAGE] = $"Cập nhật khách hàng: {data.CustomerName} thành công!";
                 }
                 return RedirectToAction("Index");
             }
@@ -139,6 +141,7 @@ namespace _20T1020433.Web.Controllers
             if (Request.HttpMethod == "POST")
             {
                 CommonDataService.DeleteCustomer(id);
+                TempData[SUCCESS_MESSAGE] = $"Xóa khách hàng thành công!";
                 return RedirectToAction("Index");
             }
             var data = CommonDataService.GetCustomer(id);

@@ -105,10 +105,12 @@ namespace _20T1020433.Web.Controllers
                 if (data.ShipperID == 0)
                 {
                     CommonDataService.AddShipper(data);
+                    TempData[SUCCESS_MESSAGE] = $"Bổ sung người giao hàng: {data.ShipperName} thành công!";
                 }
                 else
                 {
                     CommonDataService.UpdateShipper(data);
+                    TempData[SUCCESS_MESSAGE] = $"Cập nhật người giao hàng: {data.ShipperName} thành công!";
                 }
                 return RedirectToAction("Index");
             }
@@ -130,6 +132,7 @@ namespace _20T1020433.Web.Controllers
             if (Request.HttpMethod == "POST")
             {
                 CommonDataService.DeleteShipper(id);
+                TempData[SUCCESS_MESSAGE] = $"Xóa người giao hàng thành công!";
                 return RedirectToAction("Index");
             }
             var data = CommonDataService.GetShipper(id);

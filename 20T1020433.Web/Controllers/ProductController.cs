@@ -1,11 +1,7 @@
 ﻿using _20T1020433.BusinessLayers;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Xml.Linq;
 using _20T1020433.DomainModels;
 using _20T1020433.Web.Models;
 
@@ -169,9 +165,15 @@ namespace _20T1020433.Web.Controllers
                 if (data.ProductID == 0)
                 {
                     ProductDataService.AddProduct(data);
+                    TempData[SUCCESS_MESSAGE] = $"Bổ sung mặt hàng: {data.ProductName} thành công!";
                 }
                 else
+                {
                     ProductDataService.UpdateProduct(data);
+                    TempData[SUCCESS_MESSAGE] = $"Cập nhật mặt hàng: {data.ProductName} thành công!";
+                }
+
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -201,7 +203,7 @@ namespace _20T1020433.Web.Controllers
                     return View(data);
                 }
                 ProductDataService.DeleteProduct(id);
-                TempData[SUCCESS_MESSAGE] = "Xóa mặt hàng thành công!";
+                TempData[SUCCESS_MESSAGE] = $"Xóa mặt hàng: {data.ProductName} thành công!";
                 return RedirectToAction("Index");
             }
 
@@ -231,7 +233,6 @@ namespace _20T1020433.Web.Controllers
                 case "edit":
                     if (photoID <= 0 || productID <= 0)
                         return RedirectToAction($"Edit/{productID}");
-
                     data = ProductDataService.GetPhoto(photoID);
                     if (data == null)
                         return RedirectToAction($"Edit/{productID}");
@@ -241,6 +242,7 @@ namespace _20T1020433.Web.Controllers
                     if (photoID <= 0 || productID <= 0)
                         return RedirectToAction($"Edit/{productID}");
                     ProductDataService.DeletePhoto(photoID);
+                    TempData[SUCCESS_MESSAGE] = $"Xóa ảnh thành công!";
                     return RedirectToAction($"Edit/{productID}"); //return RedirectToAction("Edit", new { productID = productID });
                 default:
                     return RedirectToAction($"Edit/{productID}");
@@ -252,7 +254,7 @@ namespace _20T1020433.Web.Controllers
         public ActionResult SavePhoto(ProductPhoto data, HttpPostedFileBase uploadPhoto)
         {
             try
-            {                
+            {
                 if (string.IsNullOrWhiteSpace(data.Photo))
                     data.Photo = "";
                 if (uploadPhoto != null)
@@ -279,10 +281,12 @@ namespace _20T1020433.Web.Controllers
                 if (data.PhotoID == 0)
                 {
                     ProductDataService.AddPhoto(data);
+                    TempData[SUCCESS_MESSAGE] = $"Thêm ảnh thành công!";
                 }
                 else
                 {
                     ProductDataService.UpdatePhoto(data);
+                    TempData[SUCCESS_MESSAGE] = $"Cập nhật ảnh thành công!";
                 }
                 return RedirectToAction($"Edit/{data.ProductID}");
             }
@@ -329,6 +333,7 @@ namespace _20T1020433.Web.Controllers
                     if (attributeID <= 0 || productID <= 0)
                         return RedirectToAction($"Edit/{productID}");
                     ProductDataService.DeleteAttribute(attributeID);
+                    TempData[SUCCESS_MESSAGE] = $"Xóa thuộc tính thành công!";
                     return RedirectToAction($"Edit/{productID}"); //return RedirectToAction("Edit", new { productID = productID });
                 default:
                     return RedirectToAction($"Edit/{productID}");
@@ -354,10 +359,12 @@ namespace _20T1020433.Web.Controllers
                 if (data.AttributeID == 0)
                 {
                     ProductDataService.AddAttribute(data);
+                    TempData[SUCCESS_MESSAGE] = $"Thêm thuộc tính thành công!";
                 }
                 else
                 {
                     ProductDataService.UpdateAttribute(data);
+                    TempData[SUCCESS_MESSAGE] = $"Cập nhật thuộc tính thành công!";
                 }
                 return RedirectToAction($"Edit/{data.ProductID}");
             }

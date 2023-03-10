@@ -26,24 +26,20 @@
         }
         <div class="btn-group">
             <!-- //TODO
-        YÊU CẦU: Đối với các chức năng liên quan đến đơn hàng, chỉ được hiển thị menu/nút của những chức năng
-        phù hợp với trạng thái hiện tại của đơn hàng (ví dụ: Nếu đơn hàng chưa được chấp nhận thì không được chuyển để giao hàng)
-        -->
+            YÊU CẦU: Đối với các chức năng liên quan đến đơn hàng, chỉ được hiển thị menu/nút của những chức năng
+            phù hợp với trạng thái hiện tại của đơn hàng (ví dụ: Nếu đơn hàng chưa được chấp nhận thì không được chuyển để giao hàng)
+            -->
 
             <div class="btn-group">
                 @{
                     if (Model.Order.EmployeeID == Convert.ToInt32(userAccount.UserId))
                     {
-                        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
-                            Xử lý đơn hàng <span class="caret"></span>
-                        </button>
-                        if (Model.Order.Status == 4 || Model.Order.Status == -1 || Model.Order.Status == -2)
-                        {
-                            <ul class="dropdown-menu" role="menu">
-                            </ul>
-                        }
+
                         if (Model.Order.Status == 1)
                         {
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                                Xử lý đơn hàng <span class="caret"></span>
+                            </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
                                     <a href="~/Order/Accept/@Model.Order.OrderID" onclick="return confirm('Xác nhận duyệt chấp nhận đơn hàng này?')">Duyệt đơn hàng</a>
@@ -59,6 +55,9 @@
                         }
                         if (Model.Order.Status == 2)
                         {
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                                Xử lý đơn hàng <span class="caret"></span>
+                            </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
                                     <a href="~/Order/SelectShipper/@Model.Order.OrderID" class="btn-modal">Chuyển giao hàng</a>
@@ -71,6 +70,9 @@
                         }
                         if (Model.Order.Status == 3)
                         {
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                                Xử lý đơn hàng <span class="caret"></span>
+                            </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
                                     <a href="~/Order/Finish/@Model.Order.OrderID" onclick="return confirm('Xác nhận đơn hàng đã hoàn tất thành công?')">Xác nhận hoàn tất đơn hàng</a>
@@ -204,7 +206,7 @@
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     }
-                                }                                
+                                }
                             </td>
                         </tr>
                     }

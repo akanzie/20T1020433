@@ -99,7 +99,7 @@ namespace _20T1020433.Web.Controllers
             {
                 CategoryID = 0
             };
-            ViewBag.Title = "Bổ sung loại hàng";
+            ViewBag.Title = "Bổ sung loại hàng";            
             return View("Edit", data);
         }
         /// <summary>
@@ -115,6 +115,7 @@ namespace _20T1020433.Web.Controllers
             if (data == null)
                 return RedirectToAction("Index");
             ViewBag.Title = "Cập nhật loại hàng";
+            
             return View(data);
         }
         /// <summary>
@@ -141,10 +142,12 @@ namespace _20T1020433.Web.Controllers
                 if (data.CategoryID == 0)
                 {
                     CommonDataService.AddCategory(data);
+                    TempData[SUCCESS_MESSAGE] = $"Bổ sung loại hàng: {data.CategoryName} thành công!";
                 }
                 else
                 {
                     CommonDataService.UpdateCategory(data);
+                    TempData[SUCCESS_MESSAGE] = $"Cập nhật loại hàng: {data.CategoryName} thành công!";
                 }
                 return RedirectToAction("Index");
             }
@@ -166,6 +169,7 @@ namespace _20T1020433.Web.Controllers
             if (Request.HttpMethod == "POST")
             {
                 CommonDataService.DeleteCategory(id);
+                TempData[SUCCESS_MESSAGE] = $"Xóa loại hàng thành công!";
                 return RedirectToAction("Index");
             }
 

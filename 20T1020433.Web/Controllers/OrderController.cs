@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using _20T1020433.BusinessLayers;
 using _20T1020433.DomainModels;
@@ -95,7 +94,7 @@ namespace _20T1020433.Web.Controllers
         /// <param name="orderID"></param>
         /// <param name="productID"></param>
         /// <returns></returns>
-        [Route("EditDetail/{orderID}/{productID}")]
+        [Route("EditDetail/{orderID?}/{productID?}")]
         public ActionResult EditDetail(int orderID = 0, int productID = 0)
         {
             //TODO: Code chức năng để lấy chi tiết đơn hàng cần edit            
@@ -139,7 +138,7 @@ namespace _20T1020433.Web.Controllers
         /// <param name="orderID"></param>
         /// <param name="productID"></param>
         /// <returns></returns>
-        [Route("DeleteDetail/{orderID}/{productID}")]
+        [Route("DeleteDetail/{orderID?}/{productID?}")]
         public ActionResult DeleteDetail(int orderID = 0, int productID = 0)
         {
             //TODO: Code chức năng xóa 1 chi tiết trong đơn hàng

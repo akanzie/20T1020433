@@ -31,8 +31,9 @@ namespace _20T1020433.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
-            if (!String.IsNullOrEmpty(Converter.CookieToUserAccount(User.Identity.Name).UserId))
-                return View("Home");
+            var cookie = Converter.CookieToUserAccount(User.Identity.Name);
+            if (cookie != null)
+                return RedirectToAction("Index","Home");
             ViewBag.Message = TempData[MESSAGE] ?? "";
             return View();
         }
@@ -115,7 +116,7 @@ namespace _20T1020433.Web.Controllers
                 ModelState.AddModelError("", "Mật khẩu cũ không đúng");
                 return View();
             }
-            TempData[MESSAGE] = "Đổi mật khẩu thành công!";
+            TempData[MESSAGE] = "Đổi mật khẩu thành công! Vui lòng đăng nhập lại!";
             return RedirectToAction("Logout");
 
         }

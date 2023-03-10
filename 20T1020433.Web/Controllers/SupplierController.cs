@@ -137,10 +137,12 @@ namespace _20T1020433.Web.Controllers
                 if (data.SupplierID == 0)
                 {
                     CommonDataService.AddSupplier(data);
+                    TempData[SUCCESS_MESSAGE] = $"Bổ sung nhà cung cấp: {data.SupplierName} thành công!";
                 }
                 else
                 {
                     CommonDataService.UpdateSupplier(data);
+                    TempData[SUCCESS_MESSAGE] = $"Cập nhật nhà cung cấp: {data.SupplierName} thành công!";
                 }
                 return RedirectToAction("Index");
             }
@@ -163,6 +165,7 @@ namespace _20T1020433.Web.Controllers
             if (Request.HttpMethod == "POST")
             {
                 CommonDataService.DeleteSupplier(id);
+                TempData[SUCCESS_MESSAGE] = "Xóa nhà cung cấp thành công!";
                 return RedirectToAction("Index");
             }
                 var data = CommonDataService.GetSupplier(id);

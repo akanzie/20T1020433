@@ -132,10 +132,12 @@ namespace _20T1020433.Web.Controllers
                 if (data.EmployeeID == 0)
                 {
                     CommonDataService.AddEmployee(data);
+                    TempData[SUCCESS_MESSAGE] = $"Bổ sung nhân viên: {data.FirstName} {data.LastName} thành công!";
                 }
                 else
                 {
                     CommonDataService.UpdateEmployee(data);
+                    TempData[SUCCESS_MESSAGE] = $"Cập nhật nhân viên: {data.FirstName} {data.LastName} thành công!";
                 }
                 return RedirectToAction("Index");
             }
@@ -159,6 +161,7 @@ namespace _20T1020433.Web.Controllers
             if (Request.HttpMethod == "POST")
             {
                 CommonDataService.DeleteEmployee(id);
+                TempData[SUCCESS_MESSAGE] = $"Xóa nhân viên thành công!";
                 return RedirectToAction("Index");
 
             }

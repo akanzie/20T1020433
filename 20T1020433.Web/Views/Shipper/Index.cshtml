@@ -5,6 +5,13 @@
 }
 <div class="box box-primary">
     <div class="box-body">
+        @if (!string.IsNullOrWhiteSpace(Message))
+        {
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Thành công!</strong> @Message
+            </div>
+        }
         <form id="formSearch" action="~/Shipper/Search">
             <div class="input-group input-group-sm">
                 <input type="hidden" name="PageSize" value="@Model.PageSize" />
