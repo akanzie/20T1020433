@@ -19,6 +19,7 @@ namespace _20T1020433.Web.Controllers
     {
         private const int PAGE_SIZE = 5;
         private const string SUPPLIER_SEARCH = "SearchSupplierCondition";
+        private const string SUCCESS_MESSAGE = "SuccessMessage";
         /// <summary>
         /// 
         /// </summary>
@@ -43,6 +44,7 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Index()
         {
             PaginationSearchInput condition = Session[SUPPLIER_SEARCH] as PaginationSearchInput;
+            ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
             if (condition == null)
             {
                 condition = new PaginationSearchInput()

@@ -20,6 +20,8 @@ namespace _20T1020433.Web.Controllers
     {
         private const int PAGE_SIZE = 10;
         private const string PRODUCT_SEARCH = "SearchProductCondition";
+        private const string SUCCESS_MESSAGE = "SuccessMessage";
+        private const string ERROR_MESSAGE = "ErrorMessage";
         /// <summary>
         /// Tìm kiếm, hiển thị mặt hàng dưới dạng phân trang
         /// </summary>
@@ -27,6 +29,7 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Index()
         {
             ProductSearchInput condition = Session[PRODUCT_SEARCH] as ProductSearchInput;
+            ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
             if (condition == null)
             {
                 condition = new ProductSearchInput()
@@ -87,6 +90,8 @@ namespace _20T1020433.Web.Controllers
             if (id <= 0)
                 return RedirectToAction("Index");
             var product = ProductDataService.GetProduct(id);
+            if (product == null)
+                return RedirectToAction("Index");
             var data = new ProductModel()
             {
                 ProductID = product.ProductID,
@@ -147,7 +152,7 @@ namespace _20T1020433.Web.Controllers
                     uploadPhoto.SaveAs(filePath);
                     data.Photo = fileName;
                 }
-                else
+                if (string.IsNullOrWhiteSpace(data.Photo))
                 {
                     ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
                 }
@@ -182,6 +187,7 @@ namespace _20T1020433.Web.Controllers
         /// <returns></returns>        
         public ActionResult Delete(int id = 0)
         {
+            ViewBag.ErrorMessage = TempData[ERROR_MESSAGE] ?? "";
             if (id <= 0)
                 return RedirectToAction("Index");
             var data = ProductDataService.GetProduct(id);
@@ -191,10 +197,11 @@ namespace _20T1020433.Web.Controllers
             {
                 if (ProductDataService.InUsedProduct(id))
                 {
-                    Response.Write("<script>alert('Không thể xóa mặt hàng này!')</script>");
+                    TempData[ERROR_MESSAGE] = "Không thể xóa mặt hàng này!";
                     return View(data);
                 }
                 ProductDataService.DeleteProduct(id);
+                TempData[SUCCESS_MESSAGE] = "Xóa mặt hàng thành công!";
                 return RedirectToAction("Index");
             }
 
@@ -223,7 +230,7 @@ namespace _20T1020433.Web.Controllers
                     return View(data);
                 case "edit":
                     if (photoID <= 0 || productID <= 0)
-                        return RedirectToAction("Index");
+                        return RedirectToAction($"Edit/{productID}");
 
                     data = ProductDataService.GetPhoto(photoID);
                     if (data == null)
@@ -232,7 +239,7 @@ namespace _20T1020433.Web.Controllers
                     return View(data);
                 case "delete":
                     if (photoID <= 0 || productID <= 0)
-                        return RedirectToAction("Index");                    
+                        return RedirectToAction($"Edit/{productID}");
                     ProductDataService.DeletePhoto(photoID);
                     return RedirectToAction($"Edit/{productID}"); //return RedirectToAction("Edit", new { productID = productID });
                 default:
@@ -246,6 +253,7 @@ namespace _20T1020433.Web.Controllers
         {
             try
             {
+                
                 if (string.IsNullOrWhiteSpace(data.Photo))
                     data.Photo = "";
                 if (uploadPhoto != null)
@@ -256,7 +264,7 @@ namespace _20T1020433.Web.Controllers
                     uploadPhoto.SaveAs(filePath);
                     data.Photo = fileName;
                 }
-                else
+                if (string.IsNullOrWhiteSpace(data.Photo))
                 {
                     ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
                 }
@@ -298,6 +306,10 @@ namespace _20T1020433.Web.Controllers
             switch (method)
             {
                 case "add":
+                    if (productID <= 0)
+                    {
+                        return RedirectToAction("Index");
+                    }
                     var data = new ProductAttribute()
                     {
                         AttributeID = 0,
@@ -307,7 +319,7 @@ namespace _20T1020433.Web.Controllers
                     return View(data);
                 case "edit":
                     if (attributeID <= 0 || productID <= 0)
-                        return RedirectToAction("Index");
+                        return RedirectToAction($"Edit/{productID}");
 
                     data = ProductDataService.GetAttribute(attributeID);
                     if (data == null)
@@ -316,10 +328,9 @@ namespace _20T1020433.Web.Controllers
                     return View(data);
                 case "delete":
                     if (attributeID <= 0 || productID <= 0)
-                        return RedirectToAction("Index");
+                        return RedirectToAction($"Edit/{productID}");
                     ProductDataService.DeleteAttribute(attributeID);
                     return RedirectToAction($"Edit/{productID}"); //return RedirectToAction("Edit", new { productID = productID });
-
                 default:
                     return RedirectToAction($"Edit/{productID}");
             }

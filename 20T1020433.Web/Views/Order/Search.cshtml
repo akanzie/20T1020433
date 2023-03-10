@@ -26,12 +26,12 @@
             {
                 <tr>
                     <td>@item.CustomerName</td>
-                    <td>@item.OrderTime</td>
+                    <td>@(item.OrderTime == null ? " " : item.OrderTime.ToString("dd/MM/yyyy H:mm"))</td>
                     <td>@item.EmployeeFullName</td>
-                    <td>@item.AcceptTime</td>
+                    <td>@(item.AcceptTime == null ? " " : item.AcceptTime.Value.ToString("dd/MM/yyyy H:mm"))</td>
                     <td>@item.ShipperName</td>
-                    <td>@item.ShippedTime</td>
-                    <td>@item.FinishedTime</td>
+                    <td>@(item.ShippedTime == null ? " " : item.ShippedTime.Value.ToString("dd/MM/yyyy H:mm"))</td>
+                    <td>@(item.FinishedTime == null ? " " : item.FinishedTime.Value.ToString("dd/MM/yyyy H:mm"))</td>
                     <td>@item.StatusDescription</td>
                     <td>
                         <a href="~/Order/Details/@item.OrderID" class="btn btn-info btn-xs">

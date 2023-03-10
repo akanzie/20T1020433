@@ -53,9 +53,11 @@ namespace _20T1020433.Web.Controllers
         //}
         private const int PAGE_SIZE = 5;
         private const string CATEGORY_SEARCH = "SearchCustomerCondition";
+        private const string SUCCESS_MESSAGE = "SuccessMessage";
         public ActionResult Index()
         {
             PaginationSearchInput condition = Session[CATEGORY_SEARCH] as PaginationSearchInput;
+            ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
             if (condition == null)
             {
                 condition = new PaginationSearchInput()

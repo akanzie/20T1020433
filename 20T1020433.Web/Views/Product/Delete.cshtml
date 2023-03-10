@@ -1,6 +1,7 @@
 ﻿@model _20T1020433.DomainModels.Product
 @{
     ViewBag.Title = "Xóa mặt hàng";
+    string errorMessage = ViewBag.ErrorMessage.ToString();
 }
 
 <div class="box box-primary">
@@ -8,6 +9,13 @@
     </div>
 
     <div class="box-body">
+        @if (!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            <div class="alert alert-warning alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Lỗi!</strong> @errorMessage
+            </div>
+        }
         <form class="form-horizontal" action="~/Product/Delete/@Model.ProductID" method="post">
             <div class="form-group">
                 <label class="control-label col-sm-2">Tên mặt hàng:</label>

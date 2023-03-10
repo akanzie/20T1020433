@@ -19,6 +19,7 @@ namespace _20T1020433.Web.Controllers
         private const string ORDER_SEARCH = "SearchOrderCondition";
         private const string SHOPPING_CART = "ShoppingCart";
         private const string ERROR_MESSAGE = "ErrorMessage";
+        private const string SUCCESS_MESSAGE = "SuccessMessage";
         private const int PAGE_SIZE = 15;
 
         /// <summary>
@@ -29,6 +30,7 @@ namespace _20T1020433.Web.Controllers
         {
             //TODO: Code chức năng tìm kiếm, phân trang cho đơn hàng
             OrderSearchInput condition = Session[ORDER_SEARCH] as OrderSearchInput;
+            ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
             if (condition == null)
             {
                 condition = new OrderSearchInput()
@@ -70,6 +72,7 @@ namespace _20T1020433.Web.Controllers
         {
             //TODO: Code chức năng lấy và hiển thị thông tin của đơn hàng và chi tiết của đơn hàng
             ViewBag.ErrorMessage = TempData[ERROR_MESSAGE] ?? "";
+            ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
             if (id <= 0)
                 return RedirectToAction("Index");
             var data = new OrderModel()
@@ -90,8 +93,7 @@ namespace _20T1020433.Web.Controllers
         [Route("EditDetail/{orderID}/{productID}")]
         public ActionResult EditDetail(int orderID = 0, int productID = 0)
         {
-            //TODO: Code chức năng để lấy chi tiết đơn hàng cần edit
-            ViewBag.ErrorMessage = TempData[ERROR_MESSAGE] ?? "";
+            //TODO: Code chức năng để lấy chi tiết đơn hàng cần edit            
             if (orderID <= 0 || productID <= 0)
                 return RedirectToAction("Index");
             var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
@@ -102,7 +104,7 @@ namespace _20T1020433.Web.Controllers
                     return RedirectToAction("Index");
                 return View(data);
             }
-            TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";            
+            TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
             return RedirectToAction($"Details/{orderID}");
         }
         /// <summary>
@@ -112,29 +114,19 @@ namespace _20T1020433.Web.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateDetail(OrderDetail data, string soLuong, string giaBan)
+        public string UpdateDetail(OrderDetail data)
         {
             //TODO: Code chức năng để cập nhật chi tiết đơn hàng
-            int? sL = Converter.StringToInt(soLuong);
-            if (sL == null)
-                ModelState.AddModelError("Quantity", $"Giá {soLuong}  không hợp lệ.");
-            else
-                data.Quantity = sL.Value;
-
-            decimal? d = Converter.StringToDecimal(giaBan);
-            if (d == null)
-                ModelState.AddModelError("SalePrice", $"Giá {giaBan}  không hợp lệ.");
-            else
-                data.SalePrice = d.Value;
-            if (ModelState.IsValid)
+            if (data.Quantity < 1)
             {
-                OrderService.SaveOrderDetail(data.OrderID, data.ProductID, data.Quantity, data.SalePrice);
-                return RedirectToAction($"Details/{data.OrderID}");
+                return $"Số lượng {data.Quantity} không hợp lệ";
             }
-            else
+            if (data.SalePrice < 1)
             {
-                return RedirectToAction($"Details/{data.OrderID}");
+                return $"Giá {data.SalePrice} không hợp lệ";
             }
+            OrderService.SaveOrderDetail(data.OrderID, data.ProductID, data.Quantity, data.SalePrice);
+            return "";
         }
         /// <summary>
         /// Xóa 1 chi tiết trong đơn hàng
@@ -152,6 +144,7 @@ namespace _20T1020433.Web.Controllers
             if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(orderID).EmployeeID)
             {
                 OrderService.DeleteOrderDetail(orderID, productID);
+                TempData[SUCCESS_MESSAGE] = "Xóa thành công!";
                 return RedirectToAction($"Details/{orderID}");
             }
             TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
@@ -180,7 +173,8 @@ namespace _20T1020433.Web.Controllers
                 }
                 else
                 {
-                    OrderService.DeleteOrder(id);                    
+                    OrderService.DeleteOrder(id);
+                    TempData[SUCCESS_MESSAGE] = "Xóa đơn hàng thành công!";
                 }
             }
             return RedirectToAction("Index");
@@ -199,6 +193,7 @@ namespace _20T1020433.Web.Controllers
             if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
             {
                 OrderService.AcceptOrder(id);
+                TempData[SUCCESS_MESSAGE] = "Đơn hàng đã được chấp nhận!";
                 return RedirectToAction($"Details/{id}");
             }
             TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
@@ -213,16 +208,22 @@ namespace _20T1020433.Web.Controllers
         {
             //TODO: Code chức năng chuyển đơn hàng sang trạng thái đang giao hàng (nếu được phép)
             if (id <= 0)
-                return RedirectToAction("Index");
+                return RedirectToAction("Index");            
             ViewBag.OrderID = id;
-            if (Request.HttpMethod == "GET")            {
-
+            if (Request.HttpMethod == "GET")
+            {
                 return View();
+            }
+            if (shipperID <= 0)
+            {
+                TempData[ERROR_MESSAGE] = "Bạn chưa chọn Shipper!";
+                return RedirectToAction($"Details/{id}");
             }
             var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
             if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
             {
                 OrderService.ShipOrder(id, shipperID);
+                TempData[SUCCESS_MESSAGE] = "Đơn hàng đã được chuyển sang trạng thái đang giao hàng!";
                 return RedirectToAction($"Details/{id}");
             }
             TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
@@ -242,6 +243,7 @@ namespace _20T1020433.Web.Controllers
             if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
             {
                 OrderService.FinishOrder(id);
+                TempData[SUCCESS_MESSAGE] = "Đơn hàng đã chuyển sang trạng thái hoàn tất!";
                 return RedirectToAction($"Details/{id}");
             }
             TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
@@ -261,6 +263,7 @@ namespace _20T1020433.Web.Controllers
             if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
             {
                 OrderService.CancelOrder(id);
+                TempData[SUCCESS_MESSAGE] = "Đơn hàng đã chuyển sang trạng thái bị hủy!";
                 return RedirectToAction($"Details/{id}");
             }
             TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
@@ -280,6 +283,7 @@ namespace _20T1020433.Web.Controllers
             if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
             {
                 OrderService.RejectOrder(id);
+                TempData[SUCCESS_MESSAGE] = "Đơn hàng đã chuyển sang trạng thái bị từ chối!";
                 return RedirectToAction($"Details/{id}");
             }
             TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
@@ -328,7 +332,7 @@ namespace _20T1020433.Web.Controllers
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        [HttpPost]        
+        [HttpPost]
         public ActionResult AddToCart(OrderDetail data)
         {
             if (data == null)
@@ -389,7 +393,7 @@ namespace _20T1020433.Web.Controllers
         /// <param name="customerID"></param>
         /// <param name="employeeID"></param>
         /// <returns></returns>
-        [HttpPost]        
+        [HttpPost]
         public ActionResult Init(int customerID = 0, int employeeID = 0)
         {
             List<OrderDetail> shoppingCart = GetShoppingCart();

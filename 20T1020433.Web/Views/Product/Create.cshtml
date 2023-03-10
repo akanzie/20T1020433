@@ -18,7 +18,8 @@
                     <input type="text"
                            class="form-control"
                            id="ProductName"
-                           name="ProductName">
+                           name="ProductName"
+                           value="@Model.ProductName">
                     @Html.ValidationMessageFor(m => m.ProductName, "", new { @style = "color:#f00" })
                 </div>
             </div>
@@ -45,7 +46,8 @@
                     <input type="text"
                            class="form-control"
                            id="Unit"
-                           name="Unit">
+                           name="Unit"
+                           value="@Model.Unit">
                     @Html.ValidationMessageFor(m => m.Unit, "", new { @style = "color:#f00" })
                 </div>
             </div>
@@ -56,7 +58,8 @@
                     <input type="text"
                            class="form-control"
                            id="Price"
-                           name="unPrice">
+                           name="unPrice"
+                           value="@Model.Price">
                     @Html.ValidationMessageFor(m => m.Price, "", new { @style = "color:#f00" })
                     @Html.HiddenFor(m => m.Price)
                 </div>

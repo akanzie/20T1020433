@@ -1,10 +1,18 @@
 ﻿@model _20T1020433.Web.Models.OrderSearchInput
 @{
     ViewBag.Title = "Tra cứu đơn hàng";
+    string Message = ViewBag.SuccessMessage.ToString();
 }
 
 <div class="box box-primary">
     <div class="box-body">
+        @if (!string.IsNullOrWhiteSpace(Message))
+        {
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Thành công!</strong> @Message
+            </div>
+        }
         <!--Form đầu vào tìm kiếm-->
         <form id="formSearch" action="~/Order/Search">
             <div class="row">
