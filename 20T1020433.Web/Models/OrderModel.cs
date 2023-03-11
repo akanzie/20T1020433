@@ -11,5 +11,6 @@ namespace _20T1020433.Web.Models
         public Order Order { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
         public decimal Total { get; set; } = 0;
+        
     }
 }

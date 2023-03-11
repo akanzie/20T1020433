@@ -99,7 +99,7 @@ namespace _20T1020433.Web.Controllers
             {
                 CategoryID = 0
             };
-            ViewBag.Title = "Bổ sung loại hàng";            
+            ViewBag.Title = "Bổ sung loại hàng";
             return View("Edit", data);
         }
         /// <summary>
@@ -115,7 +115,7 @@ namespace _20T1020433.Web.Controllers
             if (data == null)
                 return RedirectToAction("Index");
             ViewBag.Title = "Cập nhật loại hàng";
-            
+
             return View(data);
         }
         /// <summary>
@@ -128,7 +128,7 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Save(Category data)
         {
             try
-            {
+            {                
                 if (string.IsNullOrWhiteSpace(data.CategoryName))
                     ModelState.AddModelError("CategoryName", "Tên không được để trống");
                 if (string.IsNullOrWhiteSpace(data.Description))
@@ -156,7 +156,7 @@ namespace _20T1020433.Web.Controllers
                 //Ghi lại log lỗi
                 return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
             }
-            
+
         }
         /// <summary>
         /// 
@@ -166,16 +166,15 @@ namespace _20T1020433.Web.Controllers
         {
             if (id <= 0)
                 return RedirectToAction("Index");
+            var data = CommonDataService.GetCategory(id);
+            if (data == null)
+                return RedirectToAction("Index");
             if (Request.HttpMethod == "POST")
             {
                 CommonDataService.DeleteCategory(id);
                 TempData[SUCCESS_MESSAGE] = $"Xóa loại hàng thành công!";
                 return RedirectToAction("Index");
             }
-
-            var data = CommonDataService.GetCategory(id);
-            if (data == null)
-                return RedirectToAction("Index");
             return View(data);
         }
     }

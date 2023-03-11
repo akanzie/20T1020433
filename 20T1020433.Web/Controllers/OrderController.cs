@@ -100,11 +100,14 @@ namespace _20T1020433.Web.Controllers
             //TODO: Code chức năng để lấy chi tiết đơn hàng cần edit            
             if (orderID <= 0 || productID <= 0)
                 return RedirectToAction("Index");
+            var data = OrderService.GetOrder(orderID);
+            if (data == null)
+                return RedirectToAction("Index");
             var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
-            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(orderID).EmployeeID)
+            if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
-                var data = OrderService.GetOrderDetail(orderID, productID);
-                if (data == null)
+                var orderDetail = OrderService.GetOrderDetail(orderID, productID);
+                if (orderDetail == null)
                     return RedirectToAction("Index");
                 return View(data);
             }
@@ -144,8 +147,11 @@ namespace _20T1020433.Web.Controllers
             //TODO: Code chức năng xóa 1 chi tiết trong đơn hàng
             if (orderID <= 0 || productID <= 0)
                 return RedirectToAction("Index");
+            var data = OrderService.GetOrder(orderID);
+            if (data == null)
+                return RedirectToAction("Index");
             var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
-            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(orderID).EmployeeID)
+            if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
                 OrderService.DeleteOrderDetail(orderID, productID);
                 TempData[SUCCESS_MESSAGE] = "Xóa thành công!";
@@ -164,12 +170,13 @@ namespace _20T1020433.Web.Controllers
             //TODO: Code chức năng để xóa đơn hàng (nếu được phép xóa)
             if (id <= 0)
                 return RedirectToAction("Index");
+            var data = OrderService.GetOrder(id);
+            if (data == null)
+                return RedirectToAction("Index");
             var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
-            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
+            if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
-                var data = OrderService.GetOrder(id);
-                if (data == null)
-                    return RedirectToAction("Index");
+                
                 if (data.Status > 1)
                 {
                     TempData[ERROR_MESSAGE] = "Không thể xóa đơn hàng này!";
@@ -194,7 +201,13 @@ namespace _20T1020433.Web.Controllers
             if (id <= 0)
                 return RedirectToAction("Index");
             var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
-            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
+            var userId = Convert.ToInt32(userAccount.UserId);
+            var data = OrderService.GetOrder(id);
+            if (data == null)
+            {
+                return RedirectToAction("Index");
+            }
+            if (userId == data.EmployeeID)
             {
                 OrderService.AcceptOrder(id);
                 TempData[SUCCESS_MESSAGE] = "Đơn hàng đã được chấp nhận!";
@@ -219,12 +232,17 @@ namespace _20T1020433.Web.Controllers
         public string Shipping(int id = 0, int shipperID = 0)
         {
             //TODO: Code chức năng chuyển đơn hàng sang trạng thái đang giao hàng (nếu được phép)
+            if (id <= 0)
+                return "Có lỗi xảy ra!";
             if (shipperID <= 0)
             {
                 return "Vui lòng chọn người giao hàng";
             }
+            var data = OrderService.GetOrder(id);
+            if (data == null)
+                return "Có lỗi xảy ra!";
             var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
-            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
+            if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
                 OrderService.ShipOrder(id, shipperID);
                 TempData[SUCCESS_MESSAGE] = "Đơn hàng đã được chuyển sang trạng thái đang giao hàng!";
@@ -233,7 +251,6 @@ namespace _20T1020433.Web.Controllers
             {
                 TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
             }
-
             return "";
         }
 
@@ -247,8 +264,11 @@ namespace _20T1020433.Web.Controllers
             //TODO: Code chức năng ghi nhận hoàn tất đơn hàng (nếu được phép)
             if (id <= 0)
                 return RedirectToAction("Index");
+            var data = OrderService.GetOrder(id);
+            if (data == null)
+                return RedirectToAction("Index");
             var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
-            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
+            if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
                 OrderService.FinishOrder(id);
                 TempData[SUCCESS_MESSAGE] = "Đơn hàng đã chuyển sang trạng thái hoàn tất!";
@@ -267,8 +287,11 @@ namespace _20T1020433.Web.Controllers
             //TODO: Code chức năng hủy đơn hàng (nếu được phép)
             if (id <= 0)
                 return RedirectToAction("Index");
+            var data = OrderService.GetOrder(id);
+            if (data == null)
+                return RedirectToAction("Index");
             var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
-            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
+            if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
                 OrderService.CancelOrder(id);
                 TempData[SUCCESS_MESSAGE] = "Đơn hàng đã chuyển sang trạng thái bị hủy!";
@@ -287,8 +310,11 @@ namespace _20T1020433.Web.Controllers
             //TODO: Code chức năng từ chối đơn hàng (nếu được phép)
             if (id <= 0)
                 return RedirectToAction("Index");
+            var data = OrderService.GetOrder(id);
+            if (data == null)
+                return RedirectToAction("Index");
             var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
-            if (Convert.ToInt32(userAccount.UserId) == OrderService.GetOrder(id).EmployeeID)
+            if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
                 OrderService.RejectOrder(id);
                 TempData[SUCCESS_MESSAGE] = "Đơn hàng đã chuyển sang trạng thái bị từ chối!";
