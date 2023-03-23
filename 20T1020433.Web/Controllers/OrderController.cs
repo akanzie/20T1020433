@@ -109,7 +109,7 @@ namespace _20T1020433.Web.Controllers
                 var orderDetail = OrderService.GetOrderDetail(orderID, productID);
                 if (orderDetail == null)
                     return RedirectToAction("Index");
-                return View(data);
+                return View(orderDetail);
             }
             TempData[ERROR_MESSAGE] = "Bạn không được phép thay đổi hóa đơn này!";
             return RedirectToAction($"Details/{orderID}");
@@ -133,6 +133,7 @@ namespace _20T1020433.Web.Controllers
                 return $"Giá {data.SalePrice} không hợp lệ";
             }
             OrderService.SaveOrderDetail(data.OrderID, data.ProductID, data.Quantity, data.SalePrice);
+            TempData[SUCCESS_MESSAGE] = "Chỉnh sửa hóa đơn thành công";
             return "";
         }
         /// <summary>
