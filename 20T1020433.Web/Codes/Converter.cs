@@ -44,7 +44,7 @@ namespace _20T1020433.Web
         public static DateTime? DMYStringToDateTime(string s, string format = "d/M/yyyy")
         {
             try
-            {
+            {                
                 return DateTime.ParseExact(s, format, CultureInfo.InvariantCulture);
             }
             catch

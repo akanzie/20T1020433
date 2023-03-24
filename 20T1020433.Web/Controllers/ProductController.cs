@@ -17,7 +17,7 @@ namespace _20T1020433.Web.Controllers
         private const int PAGE_SIZE = 10;
         private const string PRODUCT_SEARCH = "SearchProductCondition";
         private const string SUCCESS_MESSAGE = "SuccessMessage";
-        private const string ERROR_MESSAGE = "ErrorMessage";        
+        private const string ERROR_MESSAGE = "ErrorMessage";
         /// <summary>
         /// Tìm kiếm, hiển thị mặt hàng dưới dạng phân trang
         /// </summary>
@@ -83,6 +83,7 @@ namespace _20T1020433.Web.Controllers
         /// <returns></returns>        
         public ActionResult Edit(int id = 0)
         {
+            ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
             if (id <= 0)
                 return RedirectToAction("Index");
             var product = ProductDataService.GetProduct(id);
@@ -109,7 +110,7 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Save(Product data, string unPrice, HttpPostedFileBase uploadPhoto)
         {
             try
-            {                
+            {
                 decimal? d = Converter.StringToDecimal(unPrice);
                 if (d == null)
                     ModelState.AddModelError("Price", $"Giá { unPrice}  không hợp lệ.");
@@ -122,19 +123,19 @@ namespace _20T1020433.Web.Controllers
                 if (data.CategoryID <= 0)
                     ModelState.AddModelError("CategoryID", "Vui lòng chọn loại hàng");
                 if (string.IsNullOrWhiteSpace(data.Unit))
-                    ModelState.AddModelError("Unit", "Đơn vị tính không được để trống");                
+                    ModelState.AddModelError("Unit", "Đơn vị tính không được để trống");
                 if (string.IsNullOrWhiteSpace(data.Photo))
                 {
                     data.Photo = "";
-                }                
+                }
                 if (uploadPhoto != null)
                 {
                     string path = Server.MapPath("~/Photo/Product");
                     string fileName = $"{DateTime.Now.Ticks}_{uploadPhoto.FileName}";
                     string filePath = System.IO.Path.Combine(path, fileName);
-                    uploadPhoto.SaveAs(filePath);      
+                    uploadPhoto.SaveAs(filePath);
                     data.Photo = fileName;
-                }                
+                }
                 if (data.Photo == "")
                 {
                     ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
@@ -152,7 +153,7 @@ namespace _20T1020433.Web.Controllers
                     Photos = ProductDataService.ListPhotos(data.ProductID)
                 };
                 if (!ModelState.IsValid)
-                {                   
+                {
                     if (data.ProductID == 0)
                         return View("Create", data);
                     else
@@ -216,6 +217,15 @@ namespace _20T1020433.Web.Controllers
         [Route("photo/{method?}/{productID?}/{photoID?}")]
         public ActionResult Photo(string method = "add", int productID = 0, long photoID = 0)
         {
+            if (productID <= 0)
+            {
+                return RedirectToAction("Index");
+            }
+            var product = ProductDataService.GetProduct(productID);
+            if (product == null)
+            {
+                return RedirectToAction("Index");
+            }
             switch (method)
             {
                 case "add":
@@ -227,7 +237,7 @@ namespace _20T1020433.Web.Controllers
                     ViewBag.Title = "Bổ sung ảnh";
                     return View(data);
                 case "edit":
-                    if (photoID <= 0 || productID <= 0)
+                    if (photoID <= 0)
                         return RedirectToAction($"Edit/{productID}");
                     data = ProductDataService.GetPhoto(photoID);
                     if (data == null)
@@ -235,7 +245,10 @@ namespace _20T1020433.Web.Controllers
                     ViewBag.Title = "Thay đổi ảnh";
                     return View(data);
                 case "delete":
-                    if (photoID <= 0 || productID <= 0)
+                    if (photoID <= 0)
+                        return RedirectToAction($"Edit/{productID}");
+                    data = ProductDataService.GetPhoto(photoID);
+                    if (data == null)
                         return RedirectToAction($"Edit/{productID}");
                     ProductDataService.DeletePhoto(photoID);
                     TempData[SUCCESS_MESSAGE] = $"Xóa ảnh thành công!";
@@ -266,9 +279,11 @@ namespace _20T1020433.Web.Controllers
                     ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
                 }
                 if (string.IsNullOrWhiteSpace(data.Description))
-                    ModelState.AddModelError("Description", "Giá trị thuộc tính không được để trống");
-                if (data.DisplayOrder == 0)
-                    ModelState.AddModelError("DisplayOrder", "Thứ tự hiển thị không được để trống");
+                    ModelState.AddModelError("Description", "Giá trị thuộc tính không được để trống");                
+                if (data.DisplayOrder <= 0)
+                {
+                    ModelState.AddModelError("DisplayOrder", "Thứ tự hiển thị không hợp lệ");
+                }
                 if (!ModelState.IsValid)
                 {
                     ViewBag.Title = data.PhotoID == 0 ? "Bổ sung ảnh" : "Cập nhật ảnh";
@@ -302,13 +317,18 @@ namespace _20T1020433.Web.Controllers
         [Route("attribute/{method?}/{productID?}/{attributeID?}")]
         public ActionResult Attribute(string method = "add", int productID = 0, long attributeID = 0)
         {
+            if (productID <= 0)
+            {
+                return RedirectToAction("Index");
+            }
+            var product = ProductDataService.GetProduct(productID);
+            if (product == null)
+            {
+                return RedirectToAction("Index");
+            }
             switch (method)
             {
                 case "add":
-                    if (productID <= 0)
-                    {
-                        return RedirectToAction("Index");
-                    }
                     var data = new ProductAttribute()
                     {
                         AttributeID = 0,
@@ -317,16 +337,18 @@ namespace _20T1020433.Web.Controllers
                     ViewBag.Title = "Bổ sung thuộc tính";
                     return View(data);
                 case "edit":
-                    if (attributeID <= 0 || productID <= 0)
+                    if (attributeID <= 0)
                         return RedirectToAction($"Edit/{productID}");
-
                     data = ProductDataService.GetAttribute(attributeID);
                     if (data == null)
-                        return RedirectToAction("Index");
+                        return RedirectToAction($"Edit/{productID}");
                     ViewBag.Title = "Thay đổi thuộc tính";
                     return View(data);
                 case "delete":
-                    if (attributeID <= 0 || productID <= 0)
+                    if (attributeID <= 0)
+                        return RedirectToAction($"Edit/{productID}");
+                    data = ProductDataService.GetAttribute(attributeID);
+                    if (data == null)
                         return RedirectToAction($"Edit/{productID}");
                     ProductDataService.DeleteAttribute(attributeID);
                     TempData[SUCCESS_MESSAGE] = $"Xóa thuộc tính thành công!";
@@ -345,8 +367,8 @@ namespace _20T1020433.Web.Controllers
                     ModelState.AddModelError("AttributeName", "Tên thuộc tính không được để trống");
                 if (string.IsNullOrWhiteSpace(data.AttributeValue))
                     ModelState.AddModelError("AttributeValue", "Giá trị thuộc tính không được để trống");
-                if (data.DisplayOrder == 0)
-                    ModelState.AddModelError("DisplayOrder", "Thứ tự thuộc tính không được để trống");
+                if (data.DisplayOrder <= 0)
+                    ModelState.AddModelError("DisplayOrder", "Thứ tự thuộc tính không hợp lệ");
                 if (!ModelState.IsValid)
                 {
                     ViewBag.Title = data.AttributeID == 0 ? "Bổ sung thuộc tính" : "Cập nhật thuộc tính";

@@ -102,16 +102,30 @@ namespace _20T1020433.Web.Controllers
                     ModelState.AddModelError("FirstName", "Tên không được để trống");
                 if (string.IsNullOrWhiteSpace(data.LastName))
                     ModelState.AddModelError("LastName", "Họ không được để trống");
-                if (string.IsNullOrWhiteSpace(data.BirthDate.ToString(CultureInfo.InvariantCulture)))
-                    ModelState.AddModelError("BirthDate", "Vui lòng chọn ngày sinh");
+                DateTime minDate = DateTime.ParseExact("2/1/1753", "d/M/yyyy", CultureInfo.InvariantCulture);
+                DateTime maxDate = DateTime.ParseExact("30/12/9999", "d/M/yyyy", CultureInfo.InvariantCulture);
+                if (data.BirthDate < minDate || data.BirthDate > maxDate)
+                {
+                    ModelState.AddModelError("BirthDate", $"Ngày {birthday} không hợp lệ!");
+                }
                 if (string.IsNullOrWhiteSpace(data.Photo))
                 {
-                    data.Photo = "";                    
+                    data.Photo = "";
                 }
                 if (string.IsNullOrWhiteSpace(data.Notes))
                     ModelState.AddModelError("Notes", "Ghi chú không được để trống");
                 if (string.IsNullOrWhiteSpace(data.Email))
                     ModelState.AddModelError("Email", "Email không được để trống");
+                else
+                {
+                    foreach (var item in CommonDataService.ListOfEmployees(""))
+                    {
+                        if (item.Email == data.Email)
+                        {
+                            ModelState.AddModelError("Email", "Email không hợp lệ!");
+                        }
+                    }
+                }
                 if (uploadPhoto != null)
                 {
                     string path = Server.MapPath("~/Photo");

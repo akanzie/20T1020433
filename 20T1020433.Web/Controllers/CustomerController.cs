@@ -105,6 +105,16 @@ namespace _20T1020433.Web.Controllers
                     ModelState.AddModelError("PostalCode", "Mã bưu chính không được để trống");
                 if (string.IsNullOrWhiteSpace(data.Email))
                     ModelState.AddModelError("Email", "Email không được để trống");
+                else
+                {
+                    foreach (var item in CommonDataService.ListOfCustomers(""))
+                    {
+                        if (item.Email == data.Email)
+                        {
+                            ModelState.AddModelError("Email", "Email không hợp lệ!");
+                        }
+                    }
+                }
                 if (!ModelState.IsValid)
                 {
                     ViewBag.Title = data.CustomerID == 0 ? "Bổ sung khách hàng" : "Cập nhật khách hàng";

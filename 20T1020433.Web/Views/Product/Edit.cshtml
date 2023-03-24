@@ -1,6 +1,7 @@
 ﻿@model _20T1020433.Web.Models.ProductModel
 @{
     ViewBag.Title = "Cập nhật mặt hàng";
+    string Message = ViewBag.SuccessMessage.ToString();
 }
 
 <div class="box box-primary">
@@ -14,6 +15,13 @@
     </div>
 
     <div class="box-body">
+        @if (!string.IsNullOrWhiteSpace(Message))
+        {
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Thành công!</strong> @Message
+            </div>
+        }
         <form class="form-horizontal" action="~/Product/Save" method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
 
@@ -23,7 +31,7 @@
                 <div class="col-sm-10">
                     @Html.TextBoxFor(m => m.ProductName,
                         new { @class = "form-control", @placeholder = "", @autofocus = "autofocus" })
-                     @Html.ValidationMessageFor(m => m.ProductName, "", new { @style = "color:#f00" })
+                    @Html.ValidationMessageFor(m => m.ProductName, "", new { @style = "color:#f00" })
                 </div>
             </div>
 
@@ -68,15 +76,15 @@
                 <label class="control-label col-sm-2">Ảnh minh họa:</label>
                 <div class="col-sm-10">
                     <label for="Photo-Uploader" style="cursor: pointer" title="Click để thay đổi ảnh">
-                        <img id="photo" src="~/Photo/Product/@Model.Photo" class="img-thumbnail" style="width: 125px; height: 140px;" alt="">
+                        <img id="image" src="~/Photo/Product/@Model.Photo" class="img-thumbnail" style="width: 125px; height: 140px;" alt="">
                     </label>
                     <input accept="image/*" type="file"
                            id="Photo-Uploader"
                            name="uploadPhoto"
                            value="@Model.Photo"
-                           onchange="document.getElementById('photo').src = window.URL.createObjectURL(this.files[0])">
+                           onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
                     @Html.ValidationMessageFor(m => m.Photo, "", new { @style = "color:#f00" })
-                    @Html.HiddenFor(m => m.Photo)                    
+                    <input type="hidden" id="Photo" name="Photo" value="@Model.Photo" />
                 </div>
             </div>
 

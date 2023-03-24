@@ -20,10 +20,10 @@
                     </label>
                     <input accept="image/*" type="file"
                            id="Photo-Uploader"
-                           name="uploadPhoto"                           
+                           name="uploadPhoto"
                            onchange="document.getElementById('photo').src = window.URL.createObjectURL(this.files[0])">
                     @Html.ValidationMessageFor(m => m.Photo, "", new { @style = "color:#f00" })
-                    @Html.HiddenFor(m => m.Photo)
+                    <input type="hidden" id="Photo" name="Photo" value="@Model.Photo" />
                 </div>
             </div>
 
