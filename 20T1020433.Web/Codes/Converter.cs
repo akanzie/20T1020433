@@ -13,6 +13,10 @@ namespace _20T1020433.Web
         {
             try
             {
+                if (s == null)
+                {
+                    return null;
+                }
                 return decimal.Parse(s, CultureInfo.InvariantCulture);
             }
             catch

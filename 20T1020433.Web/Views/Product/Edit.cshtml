@@ -47,7 +47,7 @@
                 <label class="control-label col-sm-2">Đơn vị tính:</label>
                 <div class="col-sm-10">
                     @Html.TextBoxFor(m => m.Unit,
-                        new { @class = "form-control", @placeholder = ""})
+                        new { @class = "form-control", @placeholder = "", @autofocus = "autofocus" })
                     @Html.ValidationMessageFor(m => m.Unit, "", new { @style = "color:#f00" })
                 </div>
             </div>
@@ -73,9 +73,10 @@
                     <input accept="image/*" type="file"
                            id="Photo-Uploader"
                            name="uploadPhoto"
+                           value="@Model.Photo"
                            onchange="document.getElementById('photo').src = window.URL.createObjectURL(this.files[0])">
-
-                    @Html.HiddenFor(m => m.Photo)
+                    @Html.ValidationMessageFor(m => m.Photo, "", new { @style = "color:#f00" })
+                    @Html.HiddenFor(m => m.Photo)                    
                 </div>
             </div>
 
@@ -125,7 +126,7 @@
             {
                 <tr>
                     <td style="vertical-align: middle">
-                        <img src="~/Photo/Product/@item.Photo" alt="" style="width: 100px"/>
+                        <img src="~/Photo/Product/@item.Photo" alt="" style="width: 100px; height: 100px"/>
                     </td>
                     <td style="vertical-align: middle;">
                         @item.Description

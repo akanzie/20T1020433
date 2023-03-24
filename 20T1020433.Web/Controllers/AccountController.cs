@@ -50,7 +50,7 @@ namespace _20T1020433.Web.Controllers
         //chi dinh
         [HttpPost]
         public ActionResult Login(string userName = "", string password = "")
-        {
+        {            
             ViewBag.Message = TempData[MESSAGE] ?? "";
             ViewBag.UserName = userName;
             if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
@@ -110,13 +110,20 @@ namespace _20T1020433.Web.Controllers
                 ModelState.AddModelError("", "Mật khẩu không khớp");
                 return View();
             }
+            if (oldPassword == newPassword)
+            {
+                ModelState.AddModelError("", "Mật khẩu mới đã trùng với mật khẩu cũ!");
+                return View();
+            }
             var check = UserAccountService.ChangePassword(AccountTypes.Employee, userName, oldPassword, newPassword);
             if(check == false)
             {
                 ModelState.AddModelError("", "Mật khẩu cũ không đúng");
                 return View();
             }
+            //Response.Write("<script>alert('Đổi mật khẩu thành công! Vui lòng đăng nhập lại!')</script>");
             TempData[MESSAGE] = "Đổi mật khẩu thành công! Vui lòng đăng nhập lại!";
+            //return View("Login");
             return RedirectToAction("Logout");
 
         }

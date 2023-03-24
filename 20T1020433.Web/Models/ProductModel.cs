@@ -10,5 +10,6 @@ namespace _20T1020433.Web.Models
     {
         public List<ProductAttribute> Attributes { get; set; }
         public List<ProductPhoto> Photos { get; set; }
+        
     }
 }

@@ -17,7 +17,7 @@ namespace _20T1020433.Web.Controllers
         private const int PAGE_SIZE = 10;
         private const string PRODUCT_SEARCH = "SearchProductCondition";
         private const string SUCCESS_MESSAGE = "SuccessMessage";
-        private const string ERROR_MESSAGE = "ErrorMessage";
+        private const string ERROR_MESSAGE = "ErrorMessage";        
         /// <summary>
         /// Tìm kiếm, hiển thị mặt hàng dưới dạng phân trang
         /// </summary>
@@ -109,19 +109,7 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Save(Product data, string unPrice, HttpPostedFileBase uploadPhoto)
         {
             try
-            {
-                ProductModel model = new ProductModel()
-                {
-                    ProductID = data.ProductID,
-                    ProductName = data.ProductName,
-                    CategoryID = data.CategoryID,
-                    SupplierID = data.SupplierID,
-                    Unit = data.Unit,
-                    Price = data.Price,
-                    Photo = data.Photo,
-                    Attributes = ProductDataService.ListAttributes(data.ProductID),
-                    Photos = ProductDataService.ListPhotos(data.ProductID)
-                };
+            {                
                 decimal? d = Converter.StringToDecimal(unPrice);
                 if (d == null)
                     ModelState.AddModelError("Price", $"Giá { unPrice}  không hợp lệ.");
@@ -134,26 +122,37 @@ namespace _20T1020433.Web.Controllers
                 if (data.CategoryID <= 0)
                     ModelState.AddModelError("CategoryID", "Vui lòng chọn loại hàng");
                 if (string.IsNullOrWhiteSpace(data.Unit))
-                    ModelState.AddModelError("Unit", "Đơn vị tính không được để trống");
+                    ModelState.AddModelError("Unit", "Đơn vị tính không được để trống");                
                 if (string.IsNullOrWhiteSpace(data.Photo))
                 {
                     data.Photo = "";
-                }
-
+                }                
                 if (uploadPhoto != null)
                 {
                     string path = Server.MapPath("~/Photo/Product");
                     string fileName = $"{DateTime.Now.Ticks}_{uploadPhoto.FileName}";
                     string filePath = System.IO.Path.Combine(path, fileName);
-                    uploadPhoto.SaveAs(filePath);
+                    uploadPhoto.SaveAs(filePath);      
                     data.Photo = fileName;
-                }
-                if (string.IsNullOrWhiteSpace(data.Photo))
+                }                
+                if (data.Photo == "")
                 {
                     ModelState.AddModelError("Photo", "Vui lòng chọn ảnh");
                 }
-                if (!ModelState.IsValid)
+                ProductModel model = new ProductModel()
                 {
+                    ProductID = data.ProductID,
+                    ProductName = data.ProductName,
+                    CategoryID = data.CategoryID,
+                    SupplierID = data.SupplierID,
+                    Unit = data.Unit,
+                    Price = data.Price,
+                    Photo = data.Photo,
+                    Attributes = ProductDataService.ListAttributes(data.ProductID),
+                    Photos = ProductDataService.ListPhotos(data.ProductID)
+                };
+                if (!ModelState.IsValid)
+                {                   
                     if (data.ProductID == 0)
                         return View("Create", data);
                     else
@@ -161,7 +160,6 @@ namespace _20T1020433.Web.Controllers
                         return View("Edit", model);
                     }
                 }
-
                 if (data.ProductID == 0)
                 {
                     ProductDataService.AddProduct(data);
@@ -172,8 +170,6 @@ namespace _20T1020433.Web.Controllers
                     ProductDataService.UpdateProduct(data);
                     TempData[SUCCESS_MESSAGE] = $"Cập nhật mặt hàng: {data.ProductName} thành công!";
                 }
-
-
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -303,7 +299,7 @@ namespace _20T1020433.Web.Controllers
         /// <param name="productID"></param>
         /// <param name="attributeID"></param>
         /// <returns></returns>
-        [Route("attribute/{method?}/{productID}/{attributeID?}")]
+        [Route("attribute/{method?}/{productID?}/{attributeID?}")]
         public ActionResult Attribute(string method = "add", int productID = 0, long attributeID = 0)
         {
             switch (method)
