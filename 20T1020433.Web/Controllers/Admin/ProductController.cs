@@ -83,7 +83,7 @@ namespace _20T1020433.Web.Controllers
         /// <returns></returns>        
         public ActionResult Edit(int id = 0)
         {
-            ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
+            
             if (id <= 0)
                 return RedirectToAction("Index");
             var product = ProductDataService.GetProduct(id);
@@ -109,8 +109,8 @@ namespace _20T1020433.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Save(Product data, string unPrice, HttpPostedFileBase uploadPhoto)
         {
-            try
-            {
+            //try
+            //{
                 decimal? d = Converter.StringToDecimal(unPrice);
                 if (d == null)
                     ModelState.AddModelError("Price", $"Giá { unPrice}  không hợp lệ.");
@@ -172,12 +172,12 @@ namespace _20T1020433.Web.Controllers
                     TempData[SUCCESS_MESSAGE] = $"Cập nhật mặt hàng: {data.ProductName} thành công!";
                 }
                 return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                //Ghi lại log lỗi
-                return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    //Ghi lại log lỗi
+            //    return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
+            //}
         }
         /// <summary>
         /// Xóa mặt hàng
@@ -262,8 +262,8 @@ namespace _20T1020433.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SavePhoto(ProductPhoto data, HttpPostedFileBase uploadPhoto)
         {
-            try
-            {
+            //try
+            //{
                 if (string.IsNullOrWhiteSpace(data.Photo))
                     data.Photo = "";
                 if (uploadPhoto != null)
@@ -300,12 +300,12 @@ namespace _20T1020433.Web.Controllers
                     TempData[SUCCESS_MESSAGE] = $"Cập nhật ảnh thành công!";
                 }
                 return RedirectToAction($"Edit/{data.ProductID}");
-            }
-            catch (Exception ex)
-            {
-                //Ghi lại log lỗi
-                return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    //Ghi lại log lỗi
+            //    return Content("Có lỗi xảy ra. Vui lòng thử lại sau!");
+            //}
         }
         /// <summary>
         /// Các chức năng quản lý thuộc tính của mặt hàng

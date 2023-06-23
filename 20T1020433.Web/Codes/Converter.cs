@@ -13,6 +13,8 @@ namespace _20T1020433.Web
         {
             try
             {
+                decimal a = decimal.Parse(s);
+                s = a.ToString(CultureInfo.InvariantCulture);                
                 if (s == null)
                 {
                     return null;
@@ -28,6 +30,7 @@ namespace _20T1020433.Web
         {
             try
             {
+                
                 return int.Parse(s, CultureInfo.InvariantCulture);
             }
             catch
