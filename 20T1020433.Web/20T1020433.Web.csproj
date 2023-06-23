@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -45,6 +46,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -122,33 +129,90 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Codes\Converter.cs" />
     <Compile Include="Codes\SelectListHelper.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CategoryController.cs" />
-    <Compile Include="Controllers\CustomerController.cs" />
-    <Compile Include="Controllers\EmployeeController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\OrderController.cs" />
-    <Compile Include="Controllers\ProductController.cs" />
-    <Compile Include="Controllers\ShipperController.cs" />
-    <Compile Include="Controllers\SupplierController.cs" />
+    <Compile Include="Controllers\Admin\AccountController.cs" />
+    <Compile Include="Controllers\Admin\CategoryController.cs" />
+    <Compile Include="Controllers\Admin\CustomerController.cs" />
+    <Compile Include="Controllers\Admin\EmployeeController.cs" />
+    <Compile Include="Controllers\Admin\AdminHomeController.cs" />
+    <Compile Include="Controllers\Web\HomeController.cs" />
+    <Compile Include="Controllers\Admin\OrderController.cs" />
+    <Compile Include="Controllers\Admin\ProductController.cs" />
+    <Compile Include="Controllers\Admin\ShipperController.cs" />
+    <Compile Include="Controllers\Admin\SupplierController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\Web\ShopController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\CategorySearchOutput.cs" />
-    <Compile Include="Models\CustomerSearchOutput.cs" />
-    <Compile Include="Models\EmployeeSearchOutput.cs" />
-    <Compile Include="Models\OrderModel.cs" />
-    <Compile Include="Models\OrderSearchOutput.cs" />
-    <Compile Include="Models\PaginationSearchInput.cs" />
-    <Compile Include="Models\PaginationSearchOutput.cs" />
-    <Compile Include="Models\ProductModel.cs" />
-    <Compile Include="Models\ProductSearchOutput.cs" />
-    <Compile Include="Models\ShipperSearchOutput.cs" />
-    <Compile Include="Models\SupplierSearchOutput.cs" />
+    <Compile Include="Models\Admin\CategorySearchOutput.cs" />
+    <Compile Include="Models\Admin\CustomerSearchOutput.cs" />
+    <Compile Include="Models\Admin\EmployeeSearchOutput.cs" />
+    <Compile Include="Models\Admin\OrderModel.cs" />
+    <Compile Include="Models\Admin\OrderSearchOutput.cs" />
+    <Compile Include="Models\Admin\PaginationSearchInput.cs" />
+    <Compile Include="Models\Admin\PaginationSearchOutput.cs" />
+    <Compile Include="Models\Admin\ProductModel.cs" />
+    <Compile Include="Models\Admin\ProductSearchOutput.cs" />
+    <Compile Include="Models\Admin\ShipperSearchOutput.cs" />
+    <Compile Include="Models\Admin\SupplierSearchOutput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bootstrap-shop-template\bootstrap-shop-template.jpg" />
+    <Content Include="bootstrap-shop-template\cart.html" />
+    <Content Include="bootstrap-shop-template\checkout.html" />
+    <Content Include="bootstrap-shop-template\contact.html" />
+    <Content Include="bootstrap-shop-template\css\style.css" />
+    <Content Include="bootstrap-shop-template\css\style.min.css" />
+    <Content Include="bootstrap-shop-template\detail.html" />
+    <Content Include="bootstrap-shop-template\img\carousel-1.jpg" />
+    <Content Include="bootstrap-shop-template\img\carousel-2.jpg" />
+    <Content Include="bootstrap-shop-template\img\cat-1.jpg" />
+    <Content Include="bootstrap-shop-template\img\cat-2.jpg" />
+    <Content Include="bootstrap-shop-template\img\cat-3.jpg" />
+    <Content Include="bootstrap-shop-template\img\cat-4.jpg" />
+    <Content Include="bootstrap-shop-template\img\cat-5.jpg" />
+    <Content Include="bootstrap-shop-template\img\cat-6.jpg" />
+    <Content Include="bootstrap-shop-template\img\offer-1.png" />
+    <Content Include="bootstrap-shop-template\img\offer-2.png" />
+    <Content Include="bootstrap-shop-template\img\payments.png" />
+    <Content Include="bootstrap-shop-template\img\product-1.jpg" />
+    <Content Include="bootstrap-shop-template\img\product-2.jpg" />
+    <Content Include="bootstrap-shop-template\img\product-3.jpg" />
+    <Content Include="bootstrap-shop-template\img\product-4.jpg" />
+    <Content Include="bootstrap-shop-template\img\product-5.jpg" />
+    <Content Include="bootstrap-shop-template\img\product-6.jpg" />
+    <Content Include="bootstrap-shop-template\img\product-7.jpg" />
+    <Content Include="bootstrap-shop-template\img\product-8.jpg" />
+    <Content Include="bootstrap-shop-template\img\user.jpg" />
+    <Content Include="bootstrap-shop-template\img\vendor-1.jpg" />
+    <Content Include="bootstrap-shop-template\img\vendor-2.jpg" />
+    <Content Include="bootstrap-shop-template\img\vendor-3.jpg" />
+    <Content Include="bootstrap-shop-template\img\vendor-4.jpg" />
+    <Content Include="bootstrap-shop-template\img\vendor-5.jpg" />
+    <Content Include="bootstrap-shop-template\img\vendor-6.jpg" />
+    <Content Include="bootstrap-shop-template\img\vendor-7.jpg" />
+    <Content Include="bootstrap-shop-template\img\vendor-8.jpg" />
+    <Content Include="bootstrap-shop-template\index.html" />
+    <Content Include="bootstrap-shop-template\js\main.js" />
+    <Content Include="bootstrap-shop-template\lib\easing\easing.js" />
+    <Content Include="bootstrap-shop-template\lib\easing\easing.min.js" />
+    <Content Include="bootstrap-shop-template\lib\owlcarousel\assets\ajax-loader.gif" />
+    <Content Include="bootstrap-shop-template\lib\owlcarousel\assets\owl.carousel.css" />
+    <Content Include="bootstrap-shop-template\lib\owlcarousel\assets\owl.carousel.min.css" />
+    <Content Include="bootstrap-shop-template\lib\owlcarousel\assets\owl.theme.default.css" />
+    <Content Include="bootstrap-shop-template\lib\owlcarousel\assets\owl.theme.default.min.css" />
+    <Content Include="bootstrap-shop-template\lib\owlcarousel\assets\owl.theme.green.css" />
+    <Content Include="bootstrap-shop-template\lib\owlcarousel\assets\owl.theme.green.min.css" />
+    <Content Include="bootstrap-shop-template\lib\owlcarousel\assets\owl.video.play.png" />
+    <Content Include="bootstrap-shop-template\lib\owlcarousel\owl.carousel.js" />
+    <Content Include="bootstrap-shop-template\lib\owlcarousel\owl.carousel.min.js" />
+    <Content Include="bootstrap-shop-template\LICENSE.txt" />
+    <Content Include="bootstrap-shop-template\mail\contact.js" />
+    <Content Include="bootstrap-shop-template\mail\contact.php" />
+    <Content Include="bootstrap-shop-template\mail\jqBootstrapValidation.min.js" />
+    <Content Include="bootstrap-shop-template\READ-ME.txt" />
+    <Content Include="bootstrap-shop-template\shop.html" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -159,6 +223,100 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="bootstrap-shop-template\lib\owlcarousel\LICENSE" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\bootstrap-grid.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\bootstrap-reboot.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\bootstrap.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_alert.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_background-variant.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_badge.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_border-radius.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_box-shadow.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_breakpoints.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_buttons.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_caret.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_clearfix.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_deprecate.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_float.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_forms.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_gradients.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_grid-framework.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_grid.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_hover.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_image.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_list-group.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_lists.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_nav-divider.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_pagination.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_reset-text.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_resize.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_screen-reader.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_size.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_table-row.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_text-emphasis.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_text-hide.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_text-truncate.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_transition.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\mixins\_visibility.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_align.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_background.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_borders.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_clearfix.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_display.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_embed.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_flex.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_float.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_interactions.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_overflow.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_position.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_screenreaders.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_shadows.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_sizing.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_spacing.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_stretched-link.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_text.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\utilities\_visibility.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\vendor\_rfs.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_alert.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_badge.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_breadcrumb.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_button-group.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_buttons.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_card.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_carousel.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_close.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_code.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_custom-forms.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_dropdown.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_forms.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_functions.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_grid.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_images.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_input-group.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_jumbotron.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_list-group.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_media.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_mixins.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_modal.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_nav.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_navbar.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_pagination.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_popover.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_print.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_progress.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_reboot.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_root.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_spinners.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_tables.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_toasts.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_tooltip.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_transitions.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_type.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_utilities.scss" />
+    <Content Include="bootstrap-shop-template\scss\bootstrap\scss\_variables.scss" />
+    <Content Include="bootstrap-shop-template\scss\style.scss" />
+    <None Include="Properties\PublishProfiles\WebBH1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\WebBH1 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -6388,9 +6546,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Themes\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.css.map" />
     <Content Include="Themes\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.min.css.map" />
@@ -6502,7 +6658,6 @@
     <Content Include="Themes\dist\css\adminlte.min.css.map" />
     <Content Include="Themes\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Themes\plugins\input-mask\phone-codes\phone-codes.json" />
-    <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_SideBar.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_ControlSideBar.cshtml" />
@@ -6544,9 +6699,18 @@
     <Content Include="Views\Order\SearchProducts.cshtml" />
     <Content Include="Views\Order\SelectShipper.cshtml" />
     <Content Include="Views\Order\Search.cshtml" />
+    <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\AdminHome\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutCustomer.cshtml" />
+    <Content Include="Views\Shared\_Topbar.cshtml" />
+    <Content Include="Views\Shared\_Footer2.cshtml" />
+    <Content Include="Views\Shared\_TopbarLogged.cshtml" />
+    <Content Include="Views\Shop\Search.cshtml" />
+    <Content Include="Views\Shop\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Web\" />
     <Folder Include="Photo\Product\" />
   </ItemGroup>
   <ItemGroup>
@@ -6609,7 +6773,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
   </Target>
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

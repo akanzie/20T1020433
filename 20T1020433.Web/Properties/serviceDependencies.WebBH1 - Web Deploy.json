@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/webbh1/databases/LiteComerceDB",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:LiteComerceDB",
+      "secretStore": "AzureAppSettings"
+    },
+    "mssql2": {
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings:DB",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

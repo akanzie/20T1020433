@@ -320,7 +320,7 @@ namespace _20T1020433.DataLayers.SQLServer
             return result;
         }
 
-        public IList<Product> List(int page = 1, int pageSize = 0, string searchValue = "", int categoryID = 0, int supplierID = 0, int orderByPrice = 0)
+        public IList<Product> List(int page = 1, int pageSize = 0, string searchValue = "", int categoryID = 0, int supplierID = 0, int sortByPrice = 0)
         {
             List<Product> data = new List<Product>();
 
@@ -330,7 +330,7 @@ namespace _20T1020433.DataLayers.SQLServer
             using (SqlConnection cn = OpenConnection())
             {
                 SqlCommand cmd = new SqlCommand();
-                if (orderByPrice == 1)
+                if (sortByPrice == 1)
                 {
                     cmd.CommandText = @"SELECT *
                                     FROM 
@@ -343,7 +343,7 @@ namespace _20T1020433.DataLayers.SQLServer
                                     ) AS t
                                     WHERE (@PageSize = 0) OR (t.RowNumber BETWEEN (@Page - 1) * @PageSize + 1 AND @Page * @PageSize);";
                 }
-                else if (orderByPrice == 2)
+                else if (sortByPrice == 2)
                 {
                     cmd.CommandText = @"SELECT *
                                     FROM 

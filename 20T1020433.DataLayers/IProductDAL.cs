@@ -21,7 +21,7 @@ namespace _20T1020433.DataLayers
         /// <param name="categoryID">Mã loại hàng cần tìm (0 nếu không tìm theo loại hàng)</param>
         /// <param name="supplierID">Mã nhà cung cấp cần tìm (0 nếu không tìm theo nhà cung cấp)</param>
         /// <returns></returns>
-        IList<Product> List(int page = 1, int pageSize = 0, string searchValue = "", int categoryID = 0, int supplierID = 0, int orderByPrice = 0);
+        IList<Product> List(int page = 1, int pageSize = 0, string searchValue = "", int categoryID = 0, int supplierID = 0, int sortByPrice = 0);
         /// <summary>
         /// Đếm số lượng mặt hàng tìm kiếm được
         /// </summary>
