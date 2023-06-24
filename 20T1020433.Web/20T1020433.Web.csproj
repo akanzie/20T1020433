@@ -6707,6 +6707,7 @@
     <Content Include="Views\Shared\_TopbarLogged.cshtml" />
     <Content Include="Views\Shop\Search.cshtml" />
     <Content Include="Views\Shop\Index.cshtml" />
+    <Content Include="Views\Shop\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

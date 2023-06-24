@@ -9,37 +9,38 @@
         <div class="col-12 pb-1">
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <form id="formSearch" action="~/Shop/Search">
-                    <div class="input-group">
-                        <input type="hidden" name="PageSize" value="@Model.PageSize" />
-                        <input autofocus type="text" class="form-control" name="searchValue" placeholder="Search by name" value="@Model.SearchValue">
-                        <div class="input-group-append">
-                            <button type="submit" class="text-primary" style="">
-                                <i class="fa fa-search"></i>
-                            </button>
+                    <div class="row">
+                        <div class="input-group col-sm-3">
+                            <input type="hidden" name="PageSize" value="@Model.PageSize" />
+                            <input autofocus type="text" class="form-control" name="searchValue" placeholder="Search by name" value="@Model.SearchValue">
+                            <div class="input-group-append">
+                                <button type="submit" class="text-primary" style="">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="dropdown col-sm-3">
+                            @Html.DropDownListFor(m => m.CategoryID, SelectListHelper.Categories(), new
+                            {
+                                @class = "form-control"@*, @onchange = "this.form.submit();"*@})
+                        </div>
+                        <div class="dropdown col-sm-3">
+                            @Html.DropDownListFor(m => m.SupplierID, SelectListHelper.Suppliers(), new
+                            {
+                                @class = "form-control"@*, @onchange = "this.form.submit();"*@})
+                        </div>
+                        <div class="dropdown ml-4">
+                            <select class="form-control"
+                                    data-val="true"
+                                    id="SortByPrice"
+                                    name="SortByPrice">
+                                <option value="0">-- Giá --</option>
+                                <option value="1">Giá: Thấp đến cao</option>
+                                <option value="2">Giá: Cao đến thấp</option>
+                            </select>
                         </div>
                     </div>
                 </form>
-                <div class="dropdown col-sm-3">
-                    @Html.DropDownListFor(m => m.CategoryID, SelectListHelper.Categories(), new
-                    {
-                        @class = "form-control"@*, @onchange = "this.form.submit();"*@})
-                </div>
-                <div class="dropdown col-sm-3">
-                    @Html.DropDownListFor(m => m.SupplierID, SelectListHelper.Suppliers(), new
-                    {
-                        @class = "form-control"@*, @onchange = "this.form.submit();"*@})
-                </div>
-                <div class="dropdown ml-4">
-                    <select class="form-control"
-                            data-val="true"
-                            id="SortByPrice"
-                            name="SortByPrice">
-                        <option value="0">-- Giá --</option>
-                        <option value="1">Giá: Thấp đến cao</option>
-                        <option value="2">Giá: Cao đến thấp</option>
-                    </select>
-                </div>
-
             </div>
         </div>
         <div id="searchResult"></div>
