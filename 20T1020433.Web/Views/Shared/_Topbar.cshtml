@@ -9,53 +9,85 @@
                 <a class="text-dark" href="">Support</a>
             </div>
         </div>
-        <div class="col-lg-6 text-center text-lg-right">
-            <div class="d-inline-flex align-items-center">
-                <a class="text-dark px-2" href="">
-                    Đăng nhập
-                </a>
-                <span class="text-muted px-2">|</span>
-                <a class="text-dark px-2" href="">
-                    Đăng ký
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="row align-items-center py-3 px-xl-5">
-        <div class="col-lg-3 d-none d-lg-block">
-            <a href="" class="text-decoration-none">
-                <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">AK</span>Shop</h1>
-            </a>
-        </div>
-        <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-            <a href="" class="text-decoration-none d-block d-lg-none">
-                <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
-            </a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                <div class="navbar-nav mr-auto py-0">
-                    <a href="~/" class="nav-item nav-link active">Home</a>
-                    <a href="~/Shop/Index" class="nav-item nav-link">Shop</a>
-                    <a href="~/Shop/Detail" class="nav-item nav-link">Shop Detail</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Pages</a>
-                        <div class="dropdown-menu rounded-0 m-0">
-                            <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                            <a href="checkout.html" class="dropdown-item">Checkout</a>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="nav-item nav-link">Contact</a>
-                </div>                
-                <div class="navbar-nav mr-auto py-0" style="float : right">
-                    <a href="" class="btn border">
-                        <i class="fas fa-shopping-cart text-primary"></i>
-                        <span class="badge">0</span>
+        @{
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+        }
+        @if (userAccount == null)
+        {
+            <div class="col-lg-6 text-center text-lg-right">
+                <div class="d-inline-flex align-items-center">
+                    <a class="text-dark px-2" href="~/User/Login">
+                        Đăng nhập
+                    </a>
+                    <span class="text-muted px-2">|</span>
+                    <a class="text-dark px-2" href="~/User/Register">
+                        Đăng ký
                     </a>
                 </div>
             </div>
-        </nav>
-        
+        }
+        else
+        {
+            <div class="col-lg-6 text-center text-lg-right">
+                <div class="nav-item dropdown user user-menu open">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="hidden-xs">@userAccount.FullName</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="~/User/Profile" class="dropdown-item">Tài khoản của tôi</a>
+                        <a href="~/User/Purchase" class="dropdown-item">Đơn mua</a>
+                        <a href="~/User/ChangePassword" class="dropdown-item">Đổi mật khẩu</a>
+                        <a href="~/User/Logout" class="dropdown-item">Đăng xuất</a>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
+<div class="row align-items-center py-3 px-xl-5">
+    <div class="col-lg-3 d-none d-lg-block">
+        <a href="" class="text-decoration-none">
+            <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">AK</span>Shop</h1>
+        </a>
+    </div>
+    <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+        <a href="" class="text-decoration-none d-block d-lg-none">
+            <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <div class="navbar-nav mr-auto py-0">
+                <a href="~/" class="nav-item nav-link">Home</a>
+                <a href="~/Shop/Index" class="nav-item nav-link">Shop</a>
+                <a href="contact.html" class="nav-item nav-link">Contact</a>
+            </div>
+            <div class="navbar-nav mr-auto py-0" style="float : right">
+                <a href="~/Shop/ShoppingCart" class="nav-item nav-link">
+                    <i class="fas fa-shopping-cart text-primary"></i>
+                    Shopping Cart
+                </a>
+            </div>
+        </div>
+    </nav>
+
+</div>
+@section scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var currentPath = window.location.pathname; // Lấy đường dẫn trang hiện tại            
+            currentPath = "~/" + currentPath;
+            // Lặp qua tất cả các liên kết có class "nav-link"
+            $(".nav-link").each(function () {
+                var linkPath = $(this).attr("href"); // Lấy đường dẫn từ thuộc tính "href" của liên kết
+
+                // So sánh đường dẫn trang hiện tại với đường dẫn của liên kết
+                if (currentPath === linkPath) {
+                    $(this).addClass("active"); // Thêm lớp "active" vào liên kết nếu trang trùng khớp
+                }
+            });
+        });
+    </script>
+}

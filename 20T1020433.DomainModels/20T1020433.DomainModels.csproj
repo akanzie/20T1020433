@@ -44,6 +44,7 @@
     <Compile Include="Category.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Customer.cs" />
+    <Compile Include="CustomRoles.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderDetail.cs" />

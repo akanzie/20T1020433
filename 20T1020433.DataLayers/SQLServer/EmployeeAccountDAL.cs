@@ -32,7 +32,7 @@ namespace _20T1020433.DataLayers.SQLServer
             using (SqlConnection connection = OpenConnection())
             {
                 SqlCommand cmd = connection.CreateCommand();
-                cmd.CommandText = @"SELECT EmployeeID, FirstName, LastName, Email, Photo
+                cmd.CommandText = @"SELECT EmployeeID, FirstName, LastName, Email, Photo, Role
                                     FROM   Employees
                                     WHERE  Email = @Email AND Password = @Password";
 
@@ -52,7 +52,7 @@ namespace _20T1020433.DataLayers.SQLServer
                             Email = Convert.ToString(dbReader["Email"]),
                             Photo = Convert.ToString(dbReader["Photo"]),
                             Password = "",
-                            RoleNames = ""
+                            RoleNames = Convert.ToString(dbReader["Role"])
 
                         };
 
@@ -87,8 +87,6 @@ namespace _20T1020433.DataLayers.SQLServer
                 connection.Close();
             }
             return result;
-        }
-        
-
+        }        
     }
 }
