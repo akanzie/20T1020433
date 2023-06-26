@@ -156,6 +156,8 @@
     <Compile Include="Areas\Admin\Models\ProductSearchOutput.cs" />
     <Compile Include="Areas\Admin\Models\ShipperSearchOutput.cs" />
     <Compile Include="Areas\Admin\Models\SupplierSearchOutput.cs" />
+    <Compile Include="Models\OrderSearchInput.cs" />
+    <Compile Include="Models\OrderSearchOutput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -6706,18 +6708,20 @@
     <Content Include="Areas\Admin\Views\HomeAdmin\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutCustomer.cshtml" />
     <Content Include="Views\Shared\_Topbar.cshtml" />
-    <Content Include="Views\Shared\_Footer2.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shop\Search.cshtml" />
     <Content Include="Views\Shop\Index.cshtml" />
     <Content Include="Views\Shop\Detail.cshtml" />
     <Content Include="Views\Shop\ShoppingCart.cshtml" />
-    <Content Include="Views\Shop\Order.cshtml" />
+    <Content Include="Views\User\OrderDetail.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\User\Profile.cshtml" />
     <Content Include="Views\User\Purchase.cshtml" />
-    <Content Include="Views\Shared\_SideBar.cshtml" />
+    <Content Include="Views\Shared\_SideBarUser.cshtml" />
     <Content Include="Views\Shared\_LayoutUser.cshtml" />
+    <Content Include="Views\Shared\_TopbarUser.cshtml" />
+    <Content Include="Views\User\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

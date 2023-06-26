@@ -1,17 +1,69 @@
-﻿
+﻿@model _20T1020433.Web.Models.OrderSearchInput
 @{
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
 }
 
-<!DOCTYPE html>
+<div class="box box-primary">
+    <div class="box-body">
+        <!--Form đầu vào tìm kiếm-->
+        <form id="formSearch" action="~/User/Search">
+            <div class="row">
+                <input type="hidden" name="PageSize" value="@Model.PageSize" />
+                <input type="hidden" name="CustomerID" value="@userAccount.UserId">
+                <div class="col-sm-2">
+                    <select class="form-control" name="Status" id="status">
+                        <option value="0">-- Trạng thái --</option>
+                        <option value="1">Đơn hàng mới (chờ duyệt)</option>
+                        <option value="2">Đơn hàng đã duyệt (chờ chuyển hàng)</option>
+                        <option value="3">Đơn hàng đang được giao</option>
+                        <option value="4">Đơn hàng đã hoàn tất thành công</option>
+                        <option value="-1">Đơn hàng đã hủy</option>
+                        <option value="-2">Đơn hàng bị từ chối</option>
+                    </select>
+                </div>                
+            </div>
+        </form>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Purchase</title>
-</head>
-<body>
-    <div> 
+        <!-- Kết quả tìm kiếm -->
+        <div id="searchResult"></div>
     </div>
-</body>
-</html>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#formSearch").submit(function (e) {
+                e.preventDefault();
+                doSearch(1);
+                return;
+            });
+            doSearch(@Model.Page);
+        })
+        function doSearch(page) {
+            var url = $("#formSearch").prop("action");
+            var postData = $("#formSearch").serializeArray();
+            postData.push({ "name": "page", "value": page });
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: postData,
+                error: function () {
+                    alert("Your request is not valid!");
+                },
+                success: function (data) {
+                    $("#searchResult").html(data);
+                }
+            });
+            return;
+        }
+        $(document).ready(function () {
+            // Gán sự kiện "change" cho phần tử select có id là "status"
+            $('#status').change(function () {
+                // Gửi biểu mẫu khi tùy chọn thay đổi
+                $('#formSearch').submit();
+            });
+        });
+    </script>
+}

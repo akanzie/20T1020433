@@ -30,12 +30,12 @@
 
 <body>
     <!-- Topbar Start -->
-    @Html.Partial("_Topbar")
+    @Html.Partial("_TopbarUser")
     <!-- Topbar End -->
     <!-- Content Header (Page header) -->
     <div class="container-fluid pt-5">
         <div class="row px-xl-5">
-            @Html.Partial("_SideBar")
+            @Html.Partial("_SideBarUser")
             <section class="col-lg-9 col-md-12">
                 @RenderBody()
             </section>
@@ -45,7 +45,7 @@
     <!-- /.content -->
     <!-- Shop End -->
     <!-- Footer Start -->
-    @Html.Partial("_Footer2")
+    @Html.Partial("_Footer")
     <!-- Footer End -->
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>

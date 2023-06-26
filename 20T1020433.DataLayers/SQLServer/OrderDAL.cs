@@ -429,5 +429,78 @@ namespace _20T1020433.DataLayers.SQLServer
             }
             return result;
         }
+
+        public int Count(int status = -99, int customerID = 0)
+        {
+            int count = 0;            
+
+            using (var connection = OpenConnection())
+            {
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = @"SELECT  COUNT(*)
+                                    FROM    Orders as o
+                                            LEFT JOIN Customers AS c ON o.CustomerID = c.CustomerID
+                                            LEFT JOIN Employees AS e ON o.EmployeeID = e.EmployeeID
+                                            LEFT JOIN Shippers AS s ON o.ShipperID = s.ShipperID
+                                    WHERE   (@Status = 0 OR o.Status = @Status)
+                                        AND (o.CustomerID = @CustomerID)";
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@Status", status);
+                cmd.Parameters.AddWithValue("@CustomerID", customerID);               
+
+                count = Convert.ToInt32(cmd.ExecuteScalar());
+
+                connection.Close();
+            }
+            return count;
+        }
+
+        public IList<Order> List(int page = 1, int pageSize = 0, int status = 0, int customerID = 0)
+        {
+            List<Order> data = new List<Order>();            
+
+            using (var connection = OpenConnection())
+            {
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = @"SELECT  *
+                                    FROM    (
+                                            SELECT  o.*,
+                                                    c.CustomerName,
+                                                    c.ContactName as CustomerContactName,
+                                                    c.Address as CustomerAddress,
+                                                    c.Email as CustomerEmail,
+                                                    e.FirstName as EmployeeFirstName,
+                                                    e.LastName as EmployeeLastName,
+                                                    s.ShipperName,
+                                                    s.Phone as ShipperPhone,
+                                                    ROW_NUMBER() OVER(ORDER BY o.OrderID DESC) AS RowNumber
+                                            FROM    Orders as o
+                                                    LEFT JOIN Customers AS c ON o.CustomerID = c.CustomerID
+                                                    LEFT JOIN Employees AS e ON o.EmployeeID = e.EmployeeID
+                                                    LEFT JOIN Shippers AS s ON o.ShipperID = s.ShipperID
+                                            WHERE   (@Status = 0 OR o.Status = @Status)
+                                                AND (o.CustomerID = @CustomerID)                                                  
+                                            ) AS t
+                                    WHERE (@PageSize = 0) OR (t.RowNumber BETWEEN(@Page -1)*@PageSize + 1 AND @Page*@PageSize)
+                                    ORDER BY t.RowNumber";
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@Page", page);
+                cmd.Parameters.AddWithValue("@PageSize", pageSize);
+                cmd.Parameters.AddWithValue("@Status", status);
+                cmd.Parameters.AddWithValue("@CustomerID", customerID);                
+
+                using (var dbReader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                {
+                    while (dbReader.Read())
+                    {
+                        data.Add(DataReaderToOrder(dbReader));
+                    }
+                    dbReader.Close();
+                }
+
+                connection.Close();
+            }
+            return data;
+        }
     }
 }

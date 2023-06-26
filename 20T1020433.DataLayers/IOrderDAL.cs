@@ -22,6 +22,16 @@ namespace _20T1020433.DataLayers
         /// <returns></returns>
         IList<Order> List(int page = 1, int pageSize = 0, int status = 0, string searchValue = "");
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="customerID"></param>
+        /// <param name="searchValue"></param>
+        /// <returns></returns>
+        int Count(int status = -99, int customerID = 0);
+        IList<Order> List(int page = 1, int pageSize = 0, int status = 0, int customerID = 0);
+
+        /// <summary>
         /// Đếm số lượng đơn hàng thỏa điều kiện tìm kiếm
         /// </summary>
         /// <param name="status">Trạng thái đơn hàng (-99 nếu không tìm theo trạng thái)</param>

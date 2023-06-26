@@ -8,13 +8,16 @@ using System.Web.Services.Description;
 using System.Web.UI;
 using _20T1020433.BusinessLayers;
 using _20T1020433.DomainModels;
+using _20T1020433.Web.Areas.Admin.Models;
+using _20T1020433.Web.Models;
 
 namespace _20T1020433.Web.Controllers
 {
-    [Authorize]
     public class UserController : Controller
     {
+        private const string ORDER_SEARCH = "SearchOrderCondition";
         private const string MESSAGE = "Message";
+        private const int PAGE_SIZE = 10;
         public ActionResult Index()
         {
             return View();
@@ -29,11 +32,11 @@ namespace _20T1020433.Web.Controllers
         {
             var cookie = Converter.CookieToUserAccount(User.Identity.Name);
             if (cookie != null)
-                return RedirectToAction("Index","Home");
-            ViewBag.Message = TempData[MESSAGE] ?? "";            
+                return RedirectToAction("Index", "Home");
+            ViewBag.Message = TempData[MESSAGE] ?? "";
             return View();
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -46,7 +49,7 @@ namespace _20T1020433.Web.Controllers
         //chi dinh
         [HttpPost]
         public ActionResult Login(string userName = "", string password = "")
-        {            
+        {
             ViewBag.Message = TempData[MESSAGE] ?? "";
             ViewBag.UserName = userName;
             if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
@@ -75,6 +78,11 @@ namespace _20T1020433.Web.Controllers
         /// <returns></returns>
         public ActionResult Logout()
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (userAccount == null)
+            {
+                return RedirectToAction("Login");
+            }
             //Xoa thong tin dang nhap cua nguoi dung
             Session.Clear();
 
@@ -83,6 +91,11 @@ namespace _20T1020433.Web.Controllers
         }
         public ActionResult ChangePassword()
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (userAccount == null)
+            {
+                return RedirectToAction("Login");
+            }
             return View();
         }
         /// <summary>
@@ -95,11 +108,16 @@ namespace _20T1020433.Web.Controllers
         [HttpPost]
         public ActionResult ChangePassword(string userName = "", string oldPassword = "", string newPassword = "", string newPass = "")
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (userAccount == null)
+            {
+                return RedirectToAction("Login");
+            }
             if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
             {
                 ModelState.AddModelError("", "Vui lòng nhập đầy đủ thông tin!");
                 return View();
-            }      
+            }
             if (newPass != newPassword)
             {
                 ModelState.AddModelError("", "Mật khẩu không khớp");
@@ -111,7 +129,7 @@ namespace _20T1020433.Web.Controllers
                 return View();
             }
             var check = UserAccountService.ChangePassword(AccountTypes.Customer, userName, oldPassword, newPassword);
-            if(check == false)
+            if (check == false)
             {
                 ModelState.AddModelError("", "Mật khẩu cũ không đúng");
                 return View();
@@ -124,14 +142,98 @@ namespace _20T1020433.Web.Controllers
         public ActionResult Profile()
         {
             var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (userAccount == null)
+            {
+                return RedirectToAction("Login");
+            }
             var data = CommonDataService.GetCustomer(int.Parse(userAccount.UserId));
             if (data == null)
-                return RedirectToAction("Index","Home");            
+                return RedirectToAction("Index", "Home");
             return View(data);
         }
         public ActionResult Purchase()
-        {            
-            return View();
+        {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (userAccount == null)
+            {
+                return RedirectToAction("Login");
+            }
+            Models.OrderSearchInput condition = Session[ORDER_SEARCH] as Models.OrderSearchInput;
+            //ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
+            if (condition == null)
+            {
+                condition = new Models.OrderSearchInput()
+                {
+                    CustomerID = int.Parse(userAccount.UserId),
+                    Status = 0,
+                    Page = 1,
+                    PageSize = PAGE_SIZE
+                };
+            }
+            return View(condition);
+        }
+        public ActionResult Search(Models.OrderSearchInput condition)
+        {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (userAccount == null)
+            {
+                return RedirectToAction("Login");
+            }
+            int rowCount = 0;
+            var data = OrderService.ListOrders(condition.Page,
+                condition.PageSize, condition.Status, condition.CustomerID,
+                out rowCount);
+            var result = new Models.OrderSearchOutput()
+            {
+                CustomerID = condition.CustomerID,
+                Page = condition.Page,
+                PageSize = condition.PageSize,
+                Status = condition.Status,
+                RowCount = rowCount,
+                Data = data
+            };
+            Session[ORDER_SEARCH] = condition;
+            return View(result);
+        }
+        public ActionResult OrderDetail(int id = 0)
+        {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (userAccount == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            //TODO: Code chức năng lấy và hiển thị thông tin của đơn hàng và chi tiết của đơn hàng
+            //ViewBag.ErrorMessage = TempData[ERROR_MESSAGE] ?? "";
+            //ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
+            if (id <= 0)
+                return RedirectToAction("Index");
+            var order = OrderService.GetOrder(id);
+            if (order == null)
+            {
+                return RedirectToAction("Index");
+            }
+            var data = new OrderModel()
+            {
+                Order = order,
+                OrderDetails = OrderService.ListOrderDetails(id)
+            };
+            if (data == null)
+                return RedirectToAction("Index");
+            return View(data);
+        }
+        public ActionResult Cancel(int id = 0)
+        {
+            //TODO: Code chức năng hủy đơn hàng (nếu được phép)
+            if (id <= 0)
+                return RedirectToAction("Index");
+            var data = OrderService.GetOrder(id);
+            if (data == null)
+                return RedirectToAction("Index");            
+
+            OrderService.CancelOrder(id);
+            //TempData[SUCCESS_MESSAGE] = "Đơn hàng đã chuyển sang trạng thái bị hủy!";
+            return RedirectToAction($"Details/{id}");
+
         }
     }
 }

@@ -174,34 +174,13 @@ namespace _20T1020433.Web.Controllers.Web
                 return RedirectToAction("ShoppingCart");
             }
 
-            int orderID = OrderService.InitOrder(1, 1, DateTime.Now, shoppingCart);
+            int orderID = OrderService.InitOrder(customerID, 1, DateTime.Now, shoppingCart);
 
             Session.Remove(SHOPPING_CART); //Xóa giỏ hàng 
 
-            return RedirectToAction($"User/Purchase/{orderID}");
-        }
-        [Authorize]
-        public ActionResult Order(int id = 0)
-        {
-            //TODO: Code chức năng lấy và hiển thị thông tin của đơn hàng và chi tiết của đơn hàng
-            //ViewBag.ErrorMessage = TempData[ERROR_MESSAGE] ?? "";
-            //ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
-            if (id <= 0)
-                return RedirectToAction("Index");
-            var order = OrderService.GetOrder(id);
-            if (order == null)
-            {
-                return RedirectToAction("Index");
-            }
-            var data = new OrderModel()
-            {
-                Order = order,
-                OrderDetails = OrderService.ListOrderDetails(id)
-            };
-            if (data == null)
-                return RedirectToAction("Index");
-            return View(data);
-        }        
+            return RedirectToAction("Purchase", "User");
+        }       
+              
     }
 
 }
