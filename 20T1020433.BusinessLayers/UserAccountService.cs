@@ -17,6 +17,7 @@ namespace _20T1020433.BusinessLayers
 
         private static IUserAccountDAL employeeAccountDB;
         private static IUserAccountDAL customerAccountDB;
+        private static IUserAccountDAL shipperAccountDB;
 
         /// <summary>
         /// 
@@ -26,6 +27,7 @@ namespace _20T1020433.BusinessLayers
             string connectionString = ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
             employeeAccountDB = new DataLayers.SQLServer.EmployeeAccountDAL(connectionString);
             customerAccountDB = new DataLayers.SQLServer.CustomerAccountDAL(connectionString);
+            shipperAccountDB = new DataLayers.SQLServer.ShipperAccountDAL(connectionString);
 
         }
 
@@ -34,10 +36,14 @@ namespace _20T1020433.BusinessLayers
             if (accountType == AccountTypes.Employee)
             {
                 return employeeAccountDB.Authorize(userName, password);
+            } 
+            else if (accountType == AccountTypes.Customer) 
+            {
+                return customerAccountDB.Authorize(userName, password);
             }
             else
             {
-                return customerAccountDB.Authorize(userName, password);
+                return shipperAccountDB.Authorize(userName, password);
             }
         }
 
@@ -48,11 +54,14 @@ namespace _20T1020433.BusinessLayers
             {
                 return employeeAccountDB.ChangePassword(userName, password, oldPassword);
             }
-            else
+            else if (accountType == AccountTypes.Customer)
             {
                 return customerAccountDB.ChangePassword(userName, password, oldPassword);
             }
-
+            else
+            {
+                return shipperAccountDB.ChangePassword(userName, password, oldPassword);
+            }
         }
         
     }

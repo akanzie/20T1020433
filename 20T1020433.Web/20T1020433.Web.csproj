@@ -129,6 +129,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeAdminController.cs" />
+    <Compile Include="Areas\ShipperArea\Controllers\AccountController.cs" />
+    <Compile Include="Areas\ShipperArea\Controllers\HomeController.cs" />
+    <Compile Include="Areas\ShipperArea\Controllers\OrderController.cs" />
+    <Compile Include="Areas\ShipperArea\Models\OrderModel.cs" />
+    <Compile Include="Areas\ShipperArea\Models\OrderSearchInput.cs" />
+    <Compile Include="Areas\ShipperArea\Models\OrderSearchOutput.cs" />
+    <Compile Include="Areas\ShipperArea\ShipperAreaRegistration.cs" />
     <Compile Include="Codes\Converter.cs" />
     <Compile Include="Codes\SelectListHelper.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
@@ -320,6 +327,20 @@
     <Content Include="bootstrap-shop-template\scss\style.scss" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\web.config" />
+    <Content Include="Areas\ShipperArea\Views\Account\Login.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\Account\ChangePassword.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\Home\Index.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\Order\Index.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\Order\Details.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\Shared\_ControlSidebar.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\Shared\_Footer.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\Shared\_Header.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\Shared\_LayoutShipper.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\Shared\_Sidebar.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\Shared\Error.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\Order\Search.cshtml" />
+    <Content Include="Areas\ShipperArea\Views\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\WebBH1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\WebBH1 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -6726,6 +6747,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\ShipperArea\Data\" />
     <Folder Include="Photo\Product\" />
   </ItemGroup>
   <ItemGroup>

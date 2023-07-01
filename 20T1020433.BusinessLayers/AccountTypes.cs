@@ -9,6 +9,7 @@ namespace _20T1020433.BusinessLayers
     public enum AccountTypes
     {
         Employee,
-        Customer
+        Customer,
+        Shipper
     }
 }

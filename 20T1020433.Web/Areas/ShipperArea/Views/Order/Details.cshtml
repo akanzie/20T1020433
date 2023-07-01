@@ -1,0 +1,191 @@
+﻿@model _20T1020433.Web.Areas.ShipperArea.Models.OrderModel
+@{
+    ViewBag.Title = "Quản lý đơn hàng";
+    int stt = 0;
+    decimal sumTotal = 0;
+    string errorMessage = ViewBag.ErrorMessage.ToString();
+    string successMessage = ViewBag.SuccessMessage.ToString();
+    var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+}
+
+<div class="box box-primary">
+    <div class="box-header text-right">
+        @if (!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            <div class="alert alert-warning alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Lỗi!</strong> @errorMessage
+            </div>
+        }
+        @if (!string.IsNullOrWhiteSpace(successMessage))
+        {
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Thành công!</strong> @successMessage
+            </div>
+        }
+        <div class="btn-group">
+            <!-- //TODO
+            YÊU CẦU: Đối với các chức năng liên quan đến đơn hàng, chỉ được hiển thị menu/nút của những chức năng
+            phù hợp với trạng thái hiện tại của đơn hàng (ví dụ: Nếu đơn hàng chưa được chấp nhận thì không được chuyển để giao hàng)
+            -->
+
+            <div class="btn-group">
+                @{
+                    if (Model.Order.Status == 2)
+                    {
+                        <a href="~/ShipperArea/Order/Get/@Model.Order.OrderID" onclick="return confirm('Xác nhận nhận giao đơn hàng này?')" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                            Nhận giao hàng
+                        </a>
+                    }
+                }
+
+            </div>            
+            <a href="~/ShipperArea/Order" class="btn btn-sm btn-info">Quay lại</a>
+        </div>
+    </div>
+    <div class="box-body form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-sm-2">Mã đơn hàng:</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">@Model.Order.OrderID</p>
+            </div>
+            <label class="control-label col-sm-2">Ngày lập đơn hàng:</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">@(Model.Order.OrderTime == null ? "" : Model.Order.OrderTime.ToString("dd/MM/yyyy H:mm"))</p>
+            </div>
+            <label class="control-label col-sm-2">Nhân viên phụ trách:</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">@Model.Order.EmployeeFullName</p>
+            </div>
+            <label class="control-label col-sm-2">Ngày nhận đơn hàng:</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">@(Model.Order.AcceptTime == null ? "" : Model.Order.AcceptTime.Value.ToString("dd/MM/yyyy H:mm"))</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2">Khách hàng:</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">@Model.Order.CustomerName</p>
+            </div>
+            <label class="control-label col-sm-2">Tên giao dịch:</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">@Model.Order.CustomerContactName</p>
+            </div>
+            <label class="control-label col-sm-2">Địa chỉ:</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">@Model.Order.CustomerAddress</p>
+            </div>
+            <label class="control-label col-sm-2">Email:</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">@Model.Order.CustomerEmail</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2">Người giao hàng:</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">@Model.Order.ShipperName</p>
+            </div>
+            <label class="control-label col-sm-2">Điện thoại:</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">@Model.Order.ShipperPhone</p>
+            </div>
+            <label class="control-label col-sm-2">Nhận giao hàng lúc:</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">@(Model.Order.ShippedTime == null ? "" : Model.Order.ShippedTime.Value.ToString("dd/MM/yyyy H:mm"))</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2">Trạng thái đơn hàng:</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">@Model.Order.StatusDescription</p>
+            </div>
+            <label class="control-label col-sm-2">Thời điểm hoàn tất:</label>
+            <div class="col-sm-4">
+                <p class="form-control-static">@(Model.Order.FinishedTime == null ? "" : Model.Order.FinishedTime.Value.ToString("dd/MM/yyyy H:mm"))</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <caption><h4>Danh sách mặt hàng thuộc đơn hàng</h4></caption>
+                <thead>
+                    <tr class="bg-primary">
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Tên hàng</th>
+                        <th class="text-center">ĐVT</th>
+                        <th class="text-center">Số lượng</th>
+                        <th class="text-center">Giá</th>
+                        <th class="text-center">Thành tiền</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.OrderDetails)
+                    {
+                        stt += 1;
+                        <tr>
+                            <td class="text-center">
+                                @stt
+                            </td>
+                            <td>@item.ProductName</td>
+                            <td class="text-center">@item.Unit</td>
+                            <td class="text-center">@item.Quantity</td>
+                            <td class="text-right">@string.Format("{0:N}", item.SalePrice)</td>
+                            <td class="text-right">@string.Format("{0:N}", item.TotalPrice)</td>
+                            
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="5" class="text-right">Tổng cộng:</th>
+                        <th class="text-right">
+                            @{
+                                foreach (var item in Model.OrderDetails)
+                                {
+                                    sumTotal += item.TotalPrice;
+                                }
+                            }
+                            @string.Format("{0:N}", sumTotal)
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="dialogModal" class="modal fade" role="dialog">
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".btn-modal").click(function (e) {
+                e.preventDefault();
+                var link = $(this).prop("href");
+                $.ajax({
+                    url: link,
+                    type: "GET",
+                    async: false,
+                    error: function () {
+                        alert("Your request is not valid!");
+                    },
+                    success: function (data) {
+                        $("#dialogModal").empty();
+                        $("#dialogModal").html(data);
+                        $("#dialogModal").modal();
+                    }
+                });
+            });
+            $()
+        })
+    </script>
+}

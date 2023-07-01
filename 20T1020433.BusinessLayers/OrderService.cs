@@ -46,13 +46,25 @@ namespace _20T1020433.BusinessLayers
         {
             return orderDB.Get(orderID);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="status"></param>
+        /// <param name="searchValue"></param>
+        /// <param name="rowCount"></param>
+        /// <returns></returns>
         public static List<Order> ListOrders(int page, int pageSize, int status, string searchValue, out int rowCount)
         {
             rowCount = orderDB.Count(status, searchValue);
             return orderDB.List(page, pageSize, status, searchValue).ToList();
         }
-
+        public static List<Order> ListOrders(int page, int pageSize, int status, int shipperID, string searchValue, out int rowCount)
+        {
+            rowCount = orderDB.Count(status, shipperID, searchValue);
+            return orderDB.List(page, pageSize, status, shipperID, searchValue).ToList();
+        }
         /// <summary>
         /// Khởi tạo 1 đơn hàng mới (tạo đơn hàng mới ở trạng thái Init). Hàm trả về
         /// mã của đơn hàng được tạo mới

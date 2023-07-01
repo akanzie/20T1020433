@@ -21,6 +21,7 @@ namespace _20T1020433.DataLayers
         /// <param name="searchValue">tên khách hàng hoặc tên người giao hàng cần tìm (chuỗi rỗng nếu không tìm kiếm)</param>
         /// <returns></returns>
         IList<Order> List(int page = 1, int pageSize = 0, int status = 0, string searchValue = "");
+        IList<Order> List(int page = 1, int pageSize = 0, int status = 0, int shipperID = 0, string searchValue = "");
         /// <summary>
         /// 
         /// </summary>
@@ -38,6 +39,14 @@ namespace _20T1020433.DataLayers
         /// <param name="searchValue">tên khách hàng, tên nhân viên hoặc tên người giao hàng cần tìm (chuỗi rỗng nếu không tìm kiếm)</param>
         /// <returns></returns>
         int Count(int status = -99, string searchValue = "");
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="shipperID"></param>
+        /// <param name="searchValue"></param>
+        /// <returns></returns>
+        int Count(int status = -99, int shipperID = 0, string searchValue = "");
         /// <summary>
         /// Lấy thông tin đơn hàng theo mã đơn hàng
         /// </summary>

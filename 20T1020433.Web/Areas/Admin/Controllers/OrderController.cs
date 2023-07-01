@@ -33,7 +33,7 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
             if (condition == null)
             {
                 condition = new OrderSearchInput()
-                {
+                {                    
                     Status = 0,
                     Page = 1,
                     PageSize = PAGE_SIZE,
@@ -50,8 +50,7 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
                 condition.SearchValue,
                 out rowCount);
             var result = new OrderSearchOutput()
-            {
-
+            {                
                 Page = condition.Page,
                 PageSize = condition.PageSize,
                 SearchValue = condition.SearchValue,
