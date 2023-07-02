@@ -7,10 +7,10 @@
 <div class="align-content-lg-center">
     <div class="row pb-3">
         <div class="col-12 pb-1">
-            <div class="d-flex align-items-center justify-content-between mb-4">
+            <div class="align-items-center justify-content-between mb-4" style="background-color: #e8e4e4; padding: 5px; ">
                 <form id="formSearch" action="~/Shop/Search">
                     <div class="row">
-                        <div class="input-group col-sm-3">
+                        <div class="input-group col-sm-4">
                             <input type="hidden" name="PageSize" value="@Model.PageSize" />
                             <input autofocus type="text" class="form-control" name="searchValue" placeholder="Search by name" value="@Model.SearchValue">
                             <div class="input-group-append">
@@ -19,17 +19,17 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="dropdown col-sm-3">
+                        <div class="dropdown col-sm-2">
                             @Html.DropDownListFor(m => m.CategoryID, SelectListHelper.Categories(), new
                             {
                                 @class = "form-control"@*, @onchange = "this.form.submit();"*@})
                         </div>
                         <div class="dropdown col-sm-3">
                             @Html.DropDownListFor(m => m.SupplierID, SelectListHelper.Suppliers(), new
-                            {
-                                @class = "form-control"@*, @onchange = "this.form.submit();"*@})
+                       {
+                           @class = "form-control", /*@onchange = "this.form.submit();"*/})
                         </div>
-                        <div class="dropdown ml-4">
+                        <div class="dropdown col-ml-2">
                             <select class="form-control"
                                     data-val="true"
                                     id="SortByPrice"

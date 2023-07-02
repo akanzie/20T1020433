@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace _20T1020433.Web.Areas.ShipperArea.Controllers
 {
-    
+
     [RoutePrefix("Order")]
     public class OrderController : Controller
     {
@@ -53,11 +53,22 @@ namespace _20T1020433.Web.Areas.ShipperArea.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
+            List<Order> data = null;
             int rowCount = 0;
-            var data = OrderService.ListOrders(condition.Page,
-                condition.PageSize, condition.Status, condition.ShipperID, 
+            if (condition.Status == 0 || condition.Status == 2)
+            {
+                data = OrderService.ListOrders(condition.Page,
+                condition.PageSize, condition.Status,
                 condition.SearchValue,
                 out rowCount);
+            }
+            else
+            {
+                data = OrderService.ListOrders(condition.Page,
+                               condition.PageSize, condition.Status, condition.ShipperID,
+                               condition.SearchValue,
+                               out rowCount);
+            }
             var result = new OrderSearchOutput()
             {
                 ShipperID = condition.ShipperID,
@@ -117,17 +128,17 @@ namespace _20T1020433.Web.Areas.ShipperArea.Controllers
             }
             //TODO: Code chức năng chấp nhận đơn hàng (nếu được phép)
             if (id <= 0)
-                return RedirectToAction("Index");  
+                return RedirectToAction("Index");
             var data = OrderService.GetOrder(id);
             if (data == null)
             {
                 return RedirectToAction("Index");
-            }          
+            }
             var userId = Convert.ToInt32(userAccount.UserId);
             OrderService.ShipOrder(id, int.Parse(userAccount.UserId));
             TempData[SUCCESS_MESSAGE] = "Đơn hàng đã được nhận!";
-            return RedirectToAction($"Details/{id}");            
-        }        
+            return RedirectToAction($"Details/{id}");
+        }
 
     }
 }

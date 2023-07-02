@@ -127,8 +127,8 @@ namespace _20T1020433.Web.Controllers
             {
                 ModelState.AddModelError("", "Mật khẩu mới đã trùng với mật khẩu cũ!");
                 return View();
-            }
-            var check = UserAccountService.ChangePassword(AccountTypes.Customer, userName, oldPassword, newPassword);
+            }            
+            var check = UserAccountService.ChangePassword(AccountTypes.Customer, userAccount.UserName, oldPassword, newPassword);
             if (check == false)
             {
                 ModelState.AddModelError("", "Mật khẩu cũ không đúng");

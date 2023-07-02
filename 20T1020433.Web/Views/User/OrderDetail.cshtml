@@ -7,13 +7,9 @@
     var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
 }
 
-<div class="box box-primary">
-    <div class="box-header text-right">
-        <div class="btn-group">
-            <!-- //TODO
-            YÊU CẦU: Đối với các chức năng liên quan đến đơn hàng, chỉ được hiển thị menu/nút của những chức năng
-            phù hợp với trạng thái hiện tại của đơn hàng (ví dụ: Nếu đơn hàng chưa được chấp nhận thì không được chuyển để giao hàng)
-            -->
+<div class="box box-primary" style="background-color: #e8e4e4; padding: 10px; ">
+    <div class="box-header text-right" style="height: 50px;">
+        <div class="btn-group">           
 
             <div class="btn-group">
                 @{
@@ -33,26 +29,26 @@
         </div>
     </div>
     <div class="box-body form-horizontal">
-        <div class="form-group">
-            <label class="control-label col-sm-2">Mã đơn hàng:</label>
-            <div class="col-sm-4">
+        <div class="form-group row">
+            <label class="control-label col-sm-3">Mã đơn hàng:</label>
+            <div class="col-sm-2">
                 <p class="form-control-static">@Model.Order.OrderID</p>
             </div>
-            <label class="control-label col-sm-2">Ngày lập đơn hàng:</label>
+            <label class="control-label col-sm-3">Ngày lập đơn hàng:</label>
             <div class="col-sm-4">
                 <p class="form-control-static">@(Model.Order.OrderTime == null ? "" : Model.Order.OrderTime.ToString("dd/MM/yyyy H:mm"))</p>
             </div>
-            <label class="control-label col-sm-2">Nhân viên phụ trách:</label>
-            <div class="col-sm-4">
+            <label class="control-label col-sm-3">Nhân viên phụ trách:</label>
+            <div class="col-sm-2">
                 <p class="form-control-static">@Model.Order.EmployeeFullName</p>
             </div>
-            <label class="control-label col-sm-2">Ngày nhận đơn hàng:</label>
+            <label class="control-label col-sm-3">Ngày nhận đơn hàng:</label>
             <div class="col-sm-4">
                 <p class="form-control-static">@(Model.Order.AcceptTime == null ? "" : Model.Order.AcceptTime.Value.ToString("dd/MM/yyyy H:mm"))</p>
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group row">
             <label class="control-label col-sm-2">Khách hàng:</label>
             <div class="col-sm-4">
                 <p class="form-control-static">@Model.Order.CustomerName</p>
@@ -71,28 +67,28 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-sm-2">Người giao hàng:</label>
-            <div class="col-sm-4">
+        <div class="form-group row">
+            <label class="control-label col-sm-3">Người giao hàng:</label>
+            <div class="col-sm-3">
                 <p class="form-control-static">@Model.Order.ShipperName</p>
             </div>
             <label class="control-label col-sm-2">Điện thoại:</label>
             <div class="col-sm-4">
                 <p class="form-control-static">@Model.Order.ShipperPhone</p>
             </div>
-            <label class="control-label col-sm-2">Nhận giao hàng lúc:</label>
-            <div class="col-sm-4">
+            <label class="control-label col-sm-3">Nhận giao hàng lúc:</label>
+            <div class="col-sm-3">
                 <p class="form-control-static">@(Model.Order.ShippedTime == null ? "" : Model.Order.ShippedTime.Value.ToString("dd/MM/yyyy H:mm"))</p>
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-sm-2">Trạng thái đơn hàng:</label>
-            <div class="col-sm-4">
+        <div class="form-group row">
+            <label class="control-label col-sm-3">Trạng thái đơn hàng:</label>
+            <div class="col-sm-7">
                 <p class="form-control-static">@Model.Order.StatusDescription</p>
             </div>
-            <label class="control-label col-sm-2">Thời điểm hoàn tất:</label>
-            <div class="col-sm-4">
+            <label class="control-label col-sm-3">Thời điểm hoàn tất:</label>
+            <div class="col-sm-3">
                 <p class="form-control-static">@(Model.Order.FinishedTime == null ? "" : Model.Order.FinishedTime.Value.ToString("dd/MM/yyyy H:mm"))</p>
             </div>
         </div>
@@ -142,8 +138,7 @@
                                 }
                             }
                             @string.Format("{0:N}", sumTotal)
-                        </th>
-                        <th></th>
+                        </th>                        
                     </tr>
                 </tfoot>
             </table>

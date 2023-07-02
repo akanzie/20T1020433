@@ -34,7 +34,7 @@
                 @{
                     if (Model.Order.Status == 2)
                     {
-                        <a href="~/ShipperArea/Order/Get/@Model.Order.OrderID" onclick="return confirm('Xác nhận nhận giao đơn hàng này?')" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                        <a href="~/ShipperArea/Order/Get/@Model.Order.OrderID" class="btn btn-sm btn-primary">
                             Nhận giao hàng
                         </a>
                     }
@@ -153,8 +153,7 @@
                                 }
                             }
                             @string.Format("{0:N}", sumTotal)
-                        </th>
-                        <th></th>
+                        </th>                        
                     </tr>
                 </tfoot>
             </table>
