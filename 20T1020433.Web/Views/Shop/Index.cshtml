@@ -1,47 +1,55 @@
 ﻿@model _20T1020433.Web.Areas.Admin.Models.ProductSearchInput
+@using _20T1020433.BusinessLayers;
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+
 }
 
 <!-- Shop Product Start -->
 <div class="align-content-lg-center">
     <div class="row pb-3">
         <div class="col-12 pb-1">
-            <div class="align-items-center justify-content-between mb-4" style="background-color: #e8e4e4; padding: 5px; ">
-                <form id="formSearch" action="~/Shop/Search">
-                    <div class="row">
-                        <div class="input-group col-sm-4">
+            <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+                <form class="collapse navbar-collapse justify-content-between" id="formSearch" action="~/Shop/Search">
+                    <div class="navbar-nav py-0" id="category">
+                        @{
+                            foreach (var item in CommonDataService.ListOfCategories(""))
+                            {
+                                <a href="~/Shop/Search?CategoryID=@item.CategoryID" data-category-id="@item.CategoryID" class="nav-item search-link nav-link">@item.CategoryName</a>
+                            }
+                        }
+                    </div>
+
+                    <div class="navbar-form navbar-left">
+                        <div class="input-group">
                             <input type="hidden" name="PageSize" value="@Model.PageSize" />
+                            <input type="hidden" name="CategoryID" value="" />
                             <input autofocus type="text" class="form-control" name="searchValue" placeholder="Search by name" value="@Model.SearchValue">
-                            <div class="input-group-append">
-                                <button type="submit" class="text-primary" style="">
-                                    <i class="fa fa-search"></i>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="glyphicon-search"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="dropdown col-sm-2">
-                            @Html.DropDownListFor(m => m.CategoryID, SelectListHelper.Categories(), new
-                            {
-                                @class = "form-control"@*, @onchange = "this.form.submit();"*@})
-                        </div>
-                        <div class="dropdown col-sm-3">
-                            @Html.DropDownListFor(m => m.SupplierID, SelectListHelper.Suppliers(), new
-                       {
-                           @class = "form-control", /*@onchange = "this.form.submit();"*/})
-                        </div>
-                        <div class="dropdown col-ml-2">
-                            <select class="form-control"
-                                    data-val="true"
-                                    id="SortByPrice"
-                                    name="SortByPrice">
-                                <option value="0">-- Giá --</option>
-                                <option value="1">Giá: Thấp đến cao</option>
-                                <option value="2">Giá: Cao đến thấp</option>
-                            </select>
-                        </div>
                     </div>
                 </form>
-            </div>
+            </nav>
+            @*<div class="align-items-center justify-content-between mb-4" style="background-color: #e8e4e4; padding: 5px; ">
+                    <form id="formSearch" action="~/Shop/Search">
+                        <div class="row">
+                            <div class="dropdown col-ml-2">
+                                <select class="form-control"
+                                        data-val="true"
+                                        id="SortByPrice"
+                                        name="SortByPrice">
+                                    <option value="0">-- Giá --</option>
+                                    <option value="1">Giá: Thấp đến cao</option>
+                                    <option value="2">Giá: Cao đến thấp</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>*@
         </div>
         <div id="searchResult"></div>
     </div>
@@ -58,7 +66,27 @@
                 doSearch(1);
                 return;
             });
+            $(".search-link").click(function (event) {
+
+                    event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ a (chuyển hướng đến trang mới)
+
+                    var categoryID = $(this).data("category-id"); // Lấy giá trị data-category-id từ thẻ a
+                    $(".search-link").each(function () {
+                        if ($(this).data("category-id") != categoryID)
+                            $(this).removeClass("nav-link-active");
+                    });
+                    $(this).addClass('nav-link-active');
+                    // Kích hoạt form search với loại hàng đã chọn
+                    var form = $("#formSearch");
+                    form.attr("action", "Search");
+                    // Cập nhật các tham số cần thiết cho form search
+                    // ví dụ: form.find('input[name="categoryID"]').val(categoryID);
+                    form.find('input[name="CategoryID"]').val(categoryID);
+                    form.find('input[name="PageSize"]').val(12);
+                    form.submit(); // Gửi form search đi
+                });
             doSearch(@Model.Page);
+
         })
         function doSearch(page) {
             var url = $("#formSearch").prop("action");

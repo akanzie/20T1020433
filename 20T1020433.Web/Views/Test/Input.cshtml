@@ -1,17 +1,303 @@
-﻿@model _20T1020433.Web.Controllers.Person
-@{
-    ViewBag.Title = "Input";
+﻿
+@{ 
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
 
-<h2>Person</h2>
+<head>
+    <meta charset="utf-8">
+    <title>AKSHOP</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
 
-<form action="~/Test/Input" method="post">
-    <label>Name: </label>
-    <input type="text" name="Name" value="@Model.Name" />
-    <label>BirthDate: </label>
-    <input type="text" name="BirthDate" value="@Model.BirthDate" />
-    <label>Salary: </label>
-    <input type="text" name="Salary" value="@Model.Salary"/>
-    <button type="submit">Submit</button>
-</form>
-<script>alert('Đổi mật khẩu thành công! Vui lòng đăng nhập lại!')</script>
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/bootstrap-shop-template/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/bootstrap-shop-template/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-secondary" style="margin-top: 0.2rem; margin-bottom: 0.2rem">
+        <div class="row">
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="d-inline-flex align-items-center">
+                    <a class="text-dark" href="">FAQs</a>
+                    <span class="text-muted px-2">|</span>
+                    <a class="text-dark" href="">Help</a>
+                    <span class="text-muted px-2">|</span>
+                    <a class="text-dark" href="">Support</a>
+                </div>
+            </div>
+
+            <div class="col-lg-6 text-center text-lg-right">
+                <div class="d-inline-flex align-items-center">
+                    <a class="text-dark px-2" href="/User/Login">
+                        Đăng nhập
+                    </a>
+                    <span class="text-muted px-2">|</span>
+                    <a class="text-dark px-2" href="/User/Register">
+                        Đăng ký
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row align-items-center py-2 px-xl-5">
+        <div class="col-lg-3 d-none d-lg-block">
+            <a href="/" class="text-decoration-none">
+                <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">AK</span>Shop</h1>
+            </a>
+        </div>
+        <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0" style="width: 960px;">
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav py-0">
+                    <a href="/" class="nav-item nav-link">Home</a>
+                    <a href="/Shop/Index" class="nav-item nav-link">Shop</a>
+                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                </div>
+                <div class="navbar-nav py-0" style="float : right">
+                    <a href="/Shop/ShoppingCart" class="nav-item nav-link">
+                        <i class="fas fa-shopping-cart text-primary"></i>
+                        Shopping Cart
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+    </div>
+
+    <!-- Topbar End -->
+    <!-- Content Header (Page header) -->
+    <!-- Main content -->
+    <section class="container-fluid pt-5">
+
+
+
+        <!-- Shop Product Start -->
+        <div class="align-content-lg-center">
+            <div class="row pb-3">
+                <div class="col-12 pb-1">
+                    <div class="align-items-center justify-content-between mb-4" style="background-color: #e8e4e4; padding: 5px; ">
+                        <form id="formSearch" action="/Shop/Search">
+                            <div class="row">
+                                <div class="input-group col-sm-4">
+                                    <input type="hidden" name="PageSize" value="10" />
+                                    <input autofocus type="text" class="form-control" name="searchValue" placeholder="Search by name">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="text-primary" style="">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="dropdown col-sm-2">
+                                    <select class="form-control" data-val="true" data-val-number="The field CategoryID must be a number." data-val-required="The CategoryID field is required." id="CategoryID" name="CategoryID">
+                                        <option selected="selected" value="0">-- Loại h&#224;ng --</option>
+                                        <option value="1">Beverages</option>
+                                        <option value="2">Condiments</option>
+                                        <option value="3">Confections</option>
+                                        <option value="4">Dairy Products</option>
+                                        <option value="5">Grains/Cereals</option>
+                                        <option value="6">Meat/Poultry</option>
+                                        <option value="7">Produce</option>
+                                        <option value="8">Seafood</option>
+                                    </select>
+                                </div>
+                                <div class="dropdown col-sm-3">
+                                    <select class="form-control" data-val="true" data-val-number="The field SupplierID must be a number." data-val-required="The SupplierID field is required." id="SupplierID" name="SupplierID">
+                                        <option selected="selected" value="0">-- Nh&#224; cung cấp --</option>
+                                        <option value="18">Aux joyeux</option>
+                                        <option value="16">Bigfoot Breweries</option>
+                                        <option value="5">Cooperativa de Quesos &#39;Las Cabras&#39;</option>
+                                        <option value="27">Escargots Nouveaux</option>
+                                        <option value="1">Exotic Liquid</option>
+                                        <option value="29">For&#234;ts d&#39;&#233;rables</option>
+                                        <option value="14">Formaggi Fortini s.r.l.</option>
+                                        <option value="28">Gai p&#226;turage</option>
+                                        <option value="24">G&#39;day, Mate</option>
+                                        <option value="3">Grandma Kelly&#39;s Homestead</option>
+                                        <option value="11">Heli S&#252;&#223;waren GmbH &amp; Co. KG</option>
+                                        <option value="23">Karkki Oy</option>
+                                        <option value="20">Leka Trading</option>
+                                        <option value="21">Lyngbysild</option>
+                                        <option value="25">Ma Maison</option>
+                                        <option value="6">Mayumi&#39;s</option>
+                                        <option value="19">New England Seafood Cannery</option>
+                                        <option value="2">New Orleans Cajun Delights</option>
+                                        <option value="13">Nord-Ost-Fisch Handelsgesellschaft mbH</option>
+                                        <option value="15">Norske Meierier</option>
+                                        <option value="26">Pasta Buttini s.r.l.</option>
+                                        <option value="7">Pavlova, Ltd.</option>
+                                        <option value="9">PB Kn&#228;ckebr&#246;d AB</option>
+                                        <option value="12">Plutzer Lebensmittelgro&#223;m&#228;rkte AG</option>
+                                        <option value="10">Refrescos Americanas LTDA</option>
+                                        <option value="8">Specialty Biscuits, Ltd.</option>
+                                        <option value="17">Svensk Sj&#246;f&#246;da AB</option>
+                                        <option value="4">Tokyo Traders</option>
+                                        <option value="22">Zaanse Snoepfabriek</option>
+                                    </select>
+                                </div>
+                                <div class="dropdown col-ml-2">
+                                    <select class="form-control"
+                                            data-val="true"
+                                            id="SortByPrice"
+                                            name="SortByPrice">
+                                        <option value="0">-- Giá --</option>
+                                        <option value="1">Giá: Thấp đến cao</option>
+                                        <option value="2">Giá: Cao đến thấp</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="searchResult"></div>
+            </div>
+        </div>
+        <!-- Shop Product End -->
+
+
+
+    </section>
+    <!-- /.content -->
+    <!-- Shop End -->
+    <!-- Footer Start -->
+    <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
+        <div class="row px-xl-5 pt-5">
+            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+                <a href="" class="text-decoration-none">
+                    <h1 class="mb-4 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border border-white px-3 mr-1">E</span>Shopper</h1>
+                </a>
+                <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum dolore amet erat.</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
+                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-4 mb-5">
+                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
+                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+                            <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
+                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+                            <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
+                        <form action="">
+                            <div class="form-group">
+                                <input type="text" class="form-control border-0 py-4" placeholder="Your Name" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
+                                       required="required" />
+                            </div>
+                            <div>
+                                <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border-top border-light mx-xl-5 py-4">
+            <div class="col-md-6 px-xl-0">
+                <p class="mb-md-0 text-center text-md-left text-dark">
+                    &copy; <a class="text-dark font-weight-semi-bold" href="#">Your Site Name</a>. All Rights Reserved.
+
+                    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                    Designed by <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a>
+                </p>
+            </div>
+            <div class="col-md-6 px-xl-0 text-center text-md-right">
+                <img class="img-fluid" src="img/payments.png" alt="">
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer End -->
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="" ~ /bootstrap-shop-template/lib/easing/easing.min.js"></script>
+    <script src="" ~ /bootstrap-shop-template/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="" ~ /bootstrap-shop-template/mail/jqBootstrapValidation.min.js"></script>
+    <script src="" ~ /bootstrap-shop-template/mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="" ~ /bootstrap-shop-template/js/main.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.sidebar-menu').tree()
+        })</script>
+
+    <script>
+        $(document).ready(function () {
+            $("#formSearch").submit(function (e) {
+                e.preventDefault();
+                doSearch(1);
+                return;
+            });
+            doSearch(1);
+        })
+        function doSearch(page) {
+            var url = $("#formSearch").prop("action");
+            var postData = $("#formSearch").serializeArray();
+            postData.push({ "name": "page", "value": page });
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: postData,
+                error: function () {
+                    alert("Your request is not valid!");
+                },
+                success: function (data) {
+                    $("#searchResult").html(data);
+                }
+            });
+
+            return;
+        }
+    </script>
+
+</body>
+
+</html>
