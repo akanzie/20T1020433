@@ -45,6 +45,7 @@
     <Compile Include="ICountryDAL.cs" />
     <Compile Include="IOrderDAL.cs" />
     <Compile Include="IProductDAL.cs" />
+    <Compile Include="IShopDAL.cs" />
     <Compile Include="ISupplierDAL.cs" />
     <Compile Include="IUserAccountDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="SQLServer\ProductDAL.cs" />
     <Compile Include="SQLServer\ShipperAccountDAL.cs" />
     <Compile Include="SQLServer\ShipperDAL.cs" />
+    <Compile Include="SQLServer\ShopDAL.cs" />
     <Compile Include="SQLServer\SupplierDAL.cs" />
     <Compile Include="SQLServer\_BaseDAL.cs" />
   </ItemGroup>

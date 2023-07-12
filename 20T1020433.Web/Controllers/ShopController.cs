@@ -13,8 +13,8 @@ namespace _20T1020433.Web.Controllers.Web
     public class ShopController : Controller
     {
         private const int PAGE_SIZE = 10;
-        private const string PRODUCT_SEARCH = "SearchProductCondition";
-        private const string SHOPPING_CART = "ShoppingCart";
+        private const string SHOP_SEARCH = "SearchShopProductCondition";
+        private const string SHOPPING_CART = "ShoppingCartCustomer";
         private const string SUCCESS_MESSAGE = "SuccessMessage";
         private const string ERROR_MESSAGE = "ErrorMessage";
 
@@ -25,7 +25,7 @@ namespace _20T1020433.Web.Controllers.Web
         /// <returns></returns>
         public ActionResult Index()
         {
-            ProductSearchInput condition = Session[PRODUCT_SEARCH] as ProductSearchInput;
+            ProductSearchInput condition = Session[SHOP_SEARCH] as ProductSearchInput;
             ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
             if (condition == null)
             {
@@ -59,7 +59,7 @@ namespace _20T1020433.Web.Controllers.Web
                 RowCount = rowCount,
                 Data = data
             };
-            Session[PRODUCT_SEARCH] = condition;
+            Session[SHOP_SEARCH] = condition;
             return View(result);
         }        
         private List<OrderDetail> GetShoppingCart()

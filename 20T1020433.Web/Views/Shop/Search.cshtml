@@ -1,4 +1,5 @@
 ﻿@model _20T1020433.Web.Areas.Admin.Models.ProductSearchOutput
+@using _20T1020433.BusinessLayers;
 @{
     Layout = null;
 }
@@ -6,18 +7,19 @@
     @foreach (var item in Model.Data)
     {
         <div class="col-lg-3 col-md-6 col-sm-12 pb-1" style="width:314px">
-            <div class="card product-item border-0 mb-4">               
-                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0 text-center">
-                    <img class="img-fluid w-75" src="~/Photo/Product/@item.Photo" alt="">
+            <div class="card product-item border-0 mb-4">
+                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0 text-center" style="height: 260px; display: flex; justify-content: center; align-items: center;">
+                    <img class="img-fluid w-75 product-image" data-product-id="@item.ProductID" src="~/Photo/Product/@item.Photo" alt="">
                 </div>
                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                     <h6 class="text-truncate mb-3">@item.ProductName</h6>
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex" style="margin-left: 50px; margin-right: 50px">
                         <h6>$@string.Format("{0:0.00}", item.Price)</h6>
+                        <h6 style="margin-left: auto;">@ShopService.CountProductSold(item.ProductID) sold</h6>
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-center border">
-                    <a href="~/Shop/Detail/@item.ProductID" class="btn btn-sm text-dark btn-block" style="background-color: #e8e4e4;"><i class="fas fa-shopping-cart text-primary mr-1"></i>Mua</a>                    
+                    <a href="~/Shop/Detail/@item.ProductID" data-product-id="@item.ProductID" class="btn btn-sm text-dark btn-block product-link" style="background-color: #e8e4e4;"><i class="fas fa-shopping-cart text-primary mr-1"></i>Buy Now</a>
                 </div>
             </div>
         </div>
@@ -44,3 +46,17 @@
         </nav>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $(".product-image").click(function () {
+            var productID = $(this).data("product-id");
+            $(".product-link").each(function () {
+                if ($(this).data("product-id") == productID) {
+                    window.location.href = $(this).attr("href");
+                    return false; // Ngăn chặn việc lặp lại cho các thẻ a khác
+                }
+            });
+        });
+    });
+</script>
+
