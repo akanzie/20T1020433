@@ -43,6 +43,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         //}
         public ActionResult Index()
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_SUPPLIER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             PaginationSearchInput condition = Session[SUPPLIER_SEARCH] as PaginationSearchInput;
             ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
             if (condition == null)
@@ -60,6 +65,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
 
         public ActionResult Search(PaginationSearchInput condition)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_SUPPLIER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             int rowCount = 0;
             var data = CommonDataService.ListOfSuppliers(condition.Page, 
                 condition.PageSize, 
@@ -82,6 +92,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Create()
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_SUPPLIER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             var data = new Supplier()
             {
                 SupplierID = 0
@@ -95,6 +110,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Edit(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_SUPPLIER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             if (id <= 0)
                 return RedirectToAction("Index");
             var data = CommonDataService.GetSupplier(id);
@@ -159,6 +179,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Delete(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_SUPPLIER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             if (id <= 0)
                 return RedirectToAction("Index");
 

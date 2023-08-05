@@ -68,8 +68,10 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("", "Đăng nhập thất bại!");
                 return View();
-            }            
+            }
+            var roles = UserAccountService.GetRoles(Convert.ToInt32(userAccount.UserId));
             // -> JSON
+            Session["EmployeeRoles"] = roles;            
             string cookieValue = Newtonsoft.Json.JsonConvert.SerializeObject(userAccount);
             FormsAuthentication.SetAuthCookie(cookieValue, false);
             return RedirectToAction("Index", "HomeAdmin");

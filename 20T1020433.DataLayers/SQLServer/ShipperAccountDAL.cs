@@ -83,5 +83,15 @@ namespace _20T1020433.DataLayers.SQLServer
             }
             return result;
         }
+
+        public IList<Role> GetRoles(int userID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsInRole(int employeeID, int roleID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

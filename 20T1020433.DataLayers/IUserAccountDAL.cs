@@ -29,5 +29,7 @@ namespace _20T1020433.DataLayers
         /// <param name="newPassword"></param>
         /// <returns></returns>
         bool ChangePassword(string userName, string oldPassword, string newPassword);
+        IList<Role> GetRoles(int userID);
+        bool IsInRole(int employeeID, int roleID);
     }
 }

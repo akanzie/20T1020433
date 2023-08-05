@@ -27,6 +27,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             //TODO: Code chức năng tìm kiếm, phân trang cho đơn hàng
             OrderSearchInput condition = Session[ORDER_SEARCH] as OrderSearchInput;
             ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
@@ -44,6 +49,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         }
         public ActionResult Search(OrderSearchInput condition)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             int rowCount = 0;
             var data = OrderService.ListOrders(condition.Page,
                 condition.PageSize, condition.Status,
@@ -68,6 +78,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Details(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             //TODO: Code chức năng lấy và hiển thị thông tin của đơn hàng và chi tiết của đơn hàng
             ViewBag.ErrorMessage = TempData[ERROR_MESSAGE] ?? "";
             ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
@@ -96,13 +111,17 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         [Route("EditDetail/{orderID?}/{productID?}")]
         public ActionResult EditDetail(int orderID = 0, int productID = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             //TODO: Code chức năng để lấy chi tiết đơn hàng cần edit            
             if (orderID <= 0 || productID <= 0)
                 return RedirectToAction("Index");
             var data = OrderService.GetOrder(orderID);
             if (data == null)
                 return RedirectToAction("Index");
-            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
             if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
                 var orderDetail = OrderService.GetOrderDetail(orderID, productID);
@@ -121,7 +140,7 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public string UpdateDetail(OrderDetail data)
-        {
+        {            
             //TODO: Code chức năng để cập nhật chi tiết đơn hàng
             if (data.Quantity < 1)
             {
@@ -144,13 +163,17 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         [Route("DeleteDetail/{orderID?}/{productID?}")]
         public ActionResult DeleteDetail(int orderID = 0, int productID = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             //TODO: Code chức năng xóa 1 chi tiết trong đơn hàng
             if (orderID <= 0 || productID <= 0)
                 return RedirectToAction("Index");
             var data = OrderService.GetOrder(orderID);
             if (data == null)
                 return RedirectToAction("Index");
-            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
             if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
                 OrderService.DeleteOrderDetail(orderID, productID);
@@ -167,13 +190,17 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Delete(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             //TODO: Code chức năng để xóa đơn hàng (nếu được phép xóa)
             if (id <= 0)
                 return RedirectToAction("Index");
             var data = OrderService.GetOrder(id);
             if (data == null)
                 return RedirectToAction("Index");
-            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
             if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
                 
@@ -197,10 +224,14 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Accept(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             //TODO: Code chức năng chấp nhận đơn hàng (nếu được phép)
             if (id <= 0)
                 return RedirectToAction("Index");
-            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
             var userId = Convert.ToInt32(userAccount.UserId);
             var data = OrderService.GetOrder(id);
             if (data == null)
@@ -218,6 +249,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         }
         public ActionResult SelectShipper(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             //TODO: Code chức năng chuyển đơn hàng sang trạng thái đang giao hàng (nếu được phép)
             if (id <= 0)
                 return RedirectToAction("Index");
@@ -231,6 +267,7 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>        
         public string Shipping(int id = 0, int shipperID = 0)
         {
+                      
             //TODO: Code chức năng chuyển đơn hàng sang trạng thái đang giao hàng (nếu được phép)
             if (id <= 0)
                 return "Có lỗi xảy ra!";
@@ -241,7 +278,7 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
             var data = OrderService.GetOrder(id);
             if (data == null)
                 return "Có lỗi xảy ra!";
-            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name); 
             if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
                 OrderService.ShipOrder(id, shipperID);
@@ -261,13 +298,17 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Finish(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             //TODO: Code chức năng ghi nhận hoàn tất đơn hàng (nếu được phép)
             if (id <= 0)
                 return RedirectToAction("Index");
             var data = OrderService.GetOrder(id);
             if (data == null)
                 return RedirectToAction("Index");
-            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
             if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
                 OrderService.FinishOrder(id);
@@ -284,13 +325,17 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Cancel(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             //TODO: Code chức năng hủy đơn hàng (nếu được phép)
             if (id <= 0)
                 return RedirectToAction("Index");
             var data = OrderService.GetOrder(id);
             if (data == null)
                 return RedirectToAction("Index");
-            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
             if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
                 OrderService.CancelOrder(id);
@@ -307,13 +352,17 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Reject(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             //TODO: Code chức năng từ chối đơn hàng (nếu được phép)
             if (id <= 0)
                 return RedirectToAction("Index");
             var data = OrderService.GetOrder(id);
             if (data == null)
                 return RedirectToAction("Index");
-            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
             if (Convert.ToInt32(userAccount.UserId) == data.EmployeeID)
             {
                 OrderService.RejectOrder(id);
@@ -330,7 +379,7 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         private List<OrderDetail> GetShoppingCart()
-        {
+        {            
             List<OrderDetail> shoppingCart = Session[SHOPPING_CART] as List<OrderDetail>;
             if (shoppingCart == null)
             {
@@ -345,6 +394,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Create()
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.CREATE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             ViewBag.ErrorMessage = TempData[ERROR_MESSAGE] ?? "";
             return View(GetShoppingCart());
         }
@@ -356,6 +410,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult SearchProducts(int page = 1, string searchValue = "")
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             int rowCount = 0;
             var data = ProductDataService.ListProducts(page, PAGE_SIZE, searchValue, 0, 0, 0, out rowCount);
             ViewBag.Page = page;
@@ -369,6 +428,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult AddToCart(OrderDetail data)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.CREATE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             if (data == null)
             {
                 TempData[ERROR_MESSAGE] = "Dữ liệu không hợp lệ";
@@ -403,6 +467,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult RemoveFromCart(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.CREATE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             List<OrderDetail> shoppingCart = GetShoppingCart();
             int index = shoppingCart.FindIndex(m => m.ProductID == id);
             if (index >= 0)
@@ -416,6 +485,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult ClearCart()
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.CREATE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             List<OrderDetail> shoppingCart = GetShoppingCart();
             shoppingCart.Clear();
             Session[SHOPPING_CART] = shoppingCart;
@@ -430,6 +504,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Init(int customerID = 0, int employeeID = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.CREATE_ORDER))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             List<OrderDetail> shoppingCart = GetShoppingCart();
             if (shoppingCart == null || shoppingCart.Count == 0)
             {

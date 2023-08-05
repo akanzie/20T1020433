@@ -56,6 +56,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         private const string SUCCESS_MESSAGE = "SuccessMessage";
         public ActionResult Index()
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_CATEGORY))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             PaginationSearchInput condition = Session[CATEGORY_SEARCH] as PaginationSearchInput;
             ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
             if (condition == null)
@@ -73,6 +78,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
 
         public ActionResult Search(PaginationSearchInput condition)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_CATEGORY))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             int rowCount = 0;
             var data = CommonDataService.ListOfCategories(condition.Page,
                 condition.PageSize,
@@ -95,6 +105,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Create()
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_CATEGORY))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             var data = new Category()
             {
                 CategoryID = 0
@@ -108,6 +123,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Edit(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_CATEGORY))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             if (id <= 0)
                 return RedirectToAction("Index");
 
@@ -164,6 +184,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Delete(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_CATEGORY))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             if (id <= 0)
                 return RedirectToAction("Index");
             var data = CommonDataService.GetCategory(id);

@@ -24,6 +24,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_PRODUCT))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             ProductSearchInput condition = Session[PRODUCT_SEARCH] as ProductSearchInput;
             ViewBag.SuccessMessage = TempData[SUCCESS_MESSAGE] ?? "";
             if (condition == null)
@@ -43,6 +48,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         }
         public ActionResult Search(ProductSearchInput condition)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_PRODUCT))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             int rowCount = 0;
             var data = ProductDataService.ListProducts(condition.Page,
                 condition.PageSize,
@@ -68,6 +78,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult Create()
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_PRODUCT))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             var data = new Product()
             {
                 ProductID = 0
@@ -83,7 +98,12 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>        
         public ActionResult Edit(int id = 0)
         {
-            
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_PRODUCT))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
+
             if (id <= 0)
                 return RedirectToAction("Index");
             var product = ProductDataService.GetProduct(id);
@@ -186,6 +206,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         /// <returns></returns>        
         public ActionResult Delete(int id = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_PRODUCT))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             ViewBag.ErrorMessage = TempData[ERROR_MESSAGE] ?? "";
             if (id <= 0)
                 return RedirectToAction("Index");
@@ -217,6 +242,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         [Route("photo/{method?}/{productID?}/{photoID?}")]
         public ActionResult Photo(string method = "add", int productID = 0, long photoID = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_PRODUCT))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             if (productID <= 0)
             {
                 return RedirectToAction("Index");
@@ -317,6 +347,11 @@ namespace _20T1020433.Web.Areas.Admin.Controllers
         [Route("attribute/{method?}/{productID?}/{attributeID?}")]
         public ActionResult Attribute(string method = "add", int productID = 0, long attributeID = 0)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (!UserAccountService.IsInRole(Convert.ToInt32(userAccount.UserId), EmployeeRoles.MANAGE_PRODUCT))
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
             if (productID <= 0)
             {
                 return RedirectToAction("Index");

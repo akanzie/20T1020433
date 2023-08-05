@@ -36,8 +36,8 @@ namespace _20T1020433.BusinessLayers
             if (accountType == AccountTypes.Employee)
             {
                 return employeeAccountDB.Authorize(userName, password);
-            } 
-            else if (accountType == AccountTypes.Customer) 
+            }
+            else if (accountType == AccountTypes.Customer)
             {
                 return customerAccountDB.Authorize(userName, password);
             }
@@ -63,6 +63,13 @@ namespace _20T1020433.BusinessLayers
                 return shipperAccountDB.ChangePassword(userName, password, oldPassword);
             }
         }
-        
+        public static List<Role> GetRoles(int userID)
+        {
+            return employeeAccountDB.GetRoles(userID).ToList();
+        } 
+        public static bool IsInRole(int employeeID, int roleID)
+        {
+            return employeeAccountDB.IsInRole(employeeID, roleID);
+        }
     }
 }

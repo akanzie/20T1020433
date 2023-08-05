@@ -87,6 +87,56 @@ namespace _20T1020433.DataLayers.SQLServer
                 connection.Close();
             }
             return result;
+        }
+        public IList<Role> GetRoles(int userID)
+        {
+            List<Role> data = new List<Role>();           
+
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"SELECT EmployeeID, e.RoleID, RoleName
+                                    FROM Employee_Roles  e inner join Roles r on e.RoleID = r.RoleID
+                                    WHERE EmployeeID = @EmployeeID;";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                cmd.Parameters.AddWithValue("@EmployeeID", userID);
+                var dbReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dbReader.Read())
+                {
+                    data.Add(new Role()
+                    {
+                        UserID = Convert.ToInt32(dbReader["EmployeeID"]),
+                        RoleID = Convert.ToInt32(dbReader["RoleID"]),
+                        RoleName = Convert.ToString(dbReader["RoleName"])
+                    });
+                }
+                dbReader.Close();
+                cn.Close();
+            }
+
+            return data;
+        }
+        public bool IsInRole(int roleID, int employeeID)
+        {
+            using (var connection = OpenConnection())
+            {
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = @"SELECT 1
+                                    FROM Employee_Roles  e
+                                    WHERE RoleID = @RoleID and EmployeeID = @EmployeeID;";
+                cmd.Parameters.AddWithValue("@RoleID", roleID);
+                cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
+
+                object result = cmd.ExecuteScalar();                
+                connection.Close();
+                if (result != null && result != DBNull.Value)
+                {
+                    return true;
+                }
+            }
+            return false;
         }        
     }
 }

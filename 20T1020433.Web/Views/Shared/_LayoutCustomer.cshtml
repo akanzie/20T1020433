@@ -64,9 +64,21 @@
 
     <!-- Template Javascript -->
     <script src="" ~ /bootstrap-shop-template/js/main.js"></script>
+
     <script>
         $(document).ready(function () {
             $('.sidebar-menu').tree()
+            var currentPath = window.location.pathname; // Lấy đường dẫn trang hiện tại
+            currentPath = "~" + currentPath;
+            // Lặp qua tất cả các liên kết có class "nav-link"
+            $(".nav-link").each(function () {
+                var linkPath = $(this).attr("href"); // Lấy đường dẫn từ thuộc tính "href" của liên kết
+
+                // So sánh đường dẫn trang hiện tại với đường dẫn của liên kết
+                if (currentPath === linkPath) {
+                    $(this).addClass("active"); // Thêm lớp "active" vào liên kết nếu trang trùng khớp
+                }
+            });
         })</script>
     @RenderSection("scripts", required: false)
 </body>

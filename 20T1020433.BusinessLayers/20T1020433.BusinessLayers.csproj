@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountTypes.cs" />
+    <Compile Include="EmployeeRoles.cs" />
     <Compile Include="CommonDataService.cs" />
     <Compile Include="OrderService.cs" />
     <Compile Include="ProductDataService.cs" />

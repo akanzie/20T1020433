@@ -142,6 +142,7 @@
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\CustomerController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ErrorController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -6744,12 +6745,15 @@
     <Content Include="Views\Shared\_LayoutUser.cshtml" />
     <Content Include="Views\Shared\_TopbarUser.cshtml" />
     <Content Include="Views\User\Search.cshtml" />
+    <Content Include="Areas\Admin\Views\Error\NotFound.cshtml" />
+    <Content Include="Areas\Admin\Views\Error\ServerError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\ShipperArea\Data\" />
     <Folder Include="Photo\Product\" />
+    <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
