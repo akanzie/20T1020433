@@ -1,4 +1,5 @@
 ﻿using _20T1020433.BusinessLayers;
+using _20T1020433.DataLayers.SQLServer;
 using _20T1020433.DomainModels;
 using _20T1020433.Web.Areas.Admin.Models;
 using System;
@@ -43,8 +44,13 @@ namespace _20T1020433.Web.Controllers.Web
         }
         public ActionResult Search(ProductSearchInput condition)
         {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (userAccount == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
             int rowCount = 0;
-            var data = ProductDataService.ListProducts(condition.Page,
+            var data = ShopService.ListProducts(int.Parse(userAccount.UserId), condition.Page,
                 condition.PageSize,
                 condition.SearchValue, condition.CategoryID, condition.SupplierID, condition.SortByPrice,
                 out rowCount);
@@ -77,7 +83,12 @@ namespace _20T1020433.Web.Controllers.Web
         {
             if (id <= 0)
                 return RedirectToAction("Index");
-            var product = ProductDataService.GetProduct(id);
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (userAccount == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            var product = ShopService.GetProduct(int.Parse(userAccount.UserId), id);
             if (product == null)
                 return RedirectToAction("Index");
             var data = new ProductModel()

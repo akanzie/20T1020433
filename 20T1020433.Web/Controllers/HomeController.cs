@@ -9,15 +9,17 @@ using System.Web.Mvc;
 namespace _20T1020433.Web.Controllers
 {
     public class HomeController : Controller
-    {        
-        // GET: Home
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
+    {      
+
         public ActionResult Index()
-        {            
-            return View();
+        {
+            var userAccount = Converter.CookieToUserAccount(User.Identity.Name);
+            if (userAccount == null)
+            {
+                return RedirectToAction("Login", "User");
+            } 
+            var recommendedProducts = ShopService.GetRecommendations(int.Parse(userAccount.UserId), 10);
+            return View(recommendedProducts);
         }
     }
 }
